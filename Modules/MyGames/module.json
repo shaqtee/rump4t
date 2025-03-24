@@ -1,0 +1,11 @@
+{
+    "name": "MyGames",
+    "alias": "mygames",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\MyGames\\App\\Providers\\MyGamesServiceProvider"
+    ],
+    "files": []
+}

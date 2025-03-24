@@ -1,0 +1,11 @@
+{
+    "name": "ScoreHandicap",
+    "alias": "scorehandicap",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\ScoreHandicap\\App\\Providers\\ScoreHandicapServiceProvider"
+    ],
+    "files": []
+}

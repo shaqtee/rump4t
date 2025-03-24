@@ -1,0 +1,5 @@
+@include('Admin.Layouts.head')
+@include('Admin.Layouts.sidebar')
+@include('Admin.Layouts.header')
+@include('Admin.Layouts.content')
+@include('Admin.Layouts.footer')

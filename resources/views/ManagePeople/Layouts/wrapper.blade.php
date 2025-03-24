@@ -1,0 +1,5 @@
+@include('ManagePeople.Layouts.head')
+@include('ManagePeople.Layouts.sidebar')
+@include('ManagePeople.Layouts.header')
+@include('ManagePeople.Layouts.content')
+@include('ManagePeople.Layouts.footer')

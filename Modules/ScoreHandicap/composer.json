@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/scorehandicap",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ScoreHandicap\\": "",
+            "Modules\\ScoreHandicap\\App\\": "app/",
+            "Modules\\ScoreHandicap\\Database\\Factories\\": "database/factories/",
+            "Modules\\ScoreHandicap\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\ScoreHandicap\\Tests\\": "tests/"
+        }
+    }
+}

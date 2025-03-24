@@ -1,0 +1,12 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.aksi.dgolf",
+    "sha256_cert_fingerprints": [
+      "90:A9:63:49:08:12:CA:4C:52:18:4D:20:D1:E1:F8:B2:CA:76:CA:9C:8F:90:93:6F:9B:AD:6E:82:DA:09:FC:41",
+      "35:A5:0B:0C:CB:66:50:43:DB:7C:BB:2D:AE:8F:3B:07:2A:C7:7A:F5:83:D7:94:3E:81:B4:27:C6:CD:BE:DD:97",
+      "97:63:2E:9F:B1:F7:04:DF:61:B4:99:44:91:9C:9D:1E:00:E9:EE:ED:7A:B9:6C:B7:5D:3A:A0:95:0A:18:0D:44"
+    ]
+  }
+}]

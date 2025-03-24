@@ -1,0 +1,136 @@
+<div class="col-xl-12 mt-3">
+    <div class="card mg-b-20">
+        <div class="card-header pb-0">
+            <div class="d-flex justify-content-between">
+                <h4 class="card-title mg-b-0">{{ $title }}</h4>
+            </div>
+            <div class="row justify-content-start mt-3">
+                <div class="col-auto">
+                    <a href="{{ route('elections.create') }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row g-3 mb-3 justify-content-between align-items-center">
+                <div class="col-auto">
+                    <label for="perPage">Show</label>
+                    <select id="perPage" class="form-control" style="width: auto;" onchange="changePage(this.value)">
+                        <option value="10" {{ request('size') == 10 ? 'selected' : '' }}>10</option>
+                        <option value="15" {{ request('size') == 15 ? 'selected' : '' }}>15</option>
+                        <option value="20" {{ request('size') == 20 ? 'selected' : '' }}>20</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <form action="{{ route('elections.index') }}" method="GET" class="d-flex">
+                            <select id="searchIndex" class="form-control" style="margin-right: 10px;">
+                                @foreach ($columns as $items => $values)
+                                    @foreach ($values as $item => $value)
+                                        <option value="{{ $item }}" data-placeholder="{{ $value['Label'] }}"> {{ $value['Label'] }}</option>
+                                    @endforeach
+                                @endforeach
+                            </select>
+                            <input class="form-control" type="text" id="dynamicInput" name="" placeholder="">
+                        <button class="btn btn-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered mg-b-0 text-md-nowrap text-center">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Title</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th colspan="3">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($elections as $key => $election)
+                            <tr>
+                                <th scope="row">{{ $elections->firstItem() + $key }}</th>
+                                <td>{{ $election->title }}</td>
+                                <td>{{ $election->start_date }}</td>
+                                <td>{{ $election->end_date }}</td>
+                                <td>
+                                    @if ($election->end_date < now())
+                                        <span class="badge badge-success">Finished</span>
+                                    @else
+                                        <span class="badge badge-warning">Ongoing</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a class="btn btn-info" href="{{ route('elections.edit', ['election' => $election->id]) }}">EDIT</a>
+                                </td>
+                                <td>
+                                    <form action="{{ route('elections.destroy', ['election' => $election->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">DELETE</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <a class="btn btn-success {{ ($election->end_date > now()) ? 'disabled' : '' }}" href="{{ route('socialmedia.elections.resultsCandidate', ['id' => $election->id]) }}">RESULTS</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <ul class="pagination pagination-success justify-content-center mt-3">
+                        @if ($elections->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="icon ion-ios-arrow-back"></i></span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $elections->previousPageUrl() }}" rel="prev"><i class="icon ion-ios-arrow-back"></i></a>
+                            </li>
+                        @endif
+
+                        @if ($elections->currentPage() > 3)
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $elections->url(1) }}">1</a>
+                            </li>
+                            @if ($elections->currentPage() > 4)
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            @endif
+                        @endif
+
+                        @foreach(range(1, $elections->lastPage()) as $i)
+                            @if ($i >= $elections->currentPage() - 2 && $i <= $elections->currentPage() + 2)
+                                @if ($i == $elections->currentPage())
+                                    <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
+                                @else
+                                    <li class="page-item"><a class="page-link" href="{{ $elections->url($i) }}">{{ $i }}</a></li>
+                                @endif
+                            @endif
+                        @endforeach
+
+                        @if ($elections->currentPage() < $elections->lastPage() - 2)
+                            @if ($elections->currentPage() < $elections->lastPage() - 3)
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            @endif
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $elections->url($elections->lastPage()) }}">{{ $elections->lastPage() }}</a>
+                            </li>
+                        @endif
+
+                        @if ($elections->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $elections->nextPageUrl() }}" rel="next"><i class="icon ion-ios-arrow-forward"></i></a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="icon ion-ios-arrow-forward"></i></span>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

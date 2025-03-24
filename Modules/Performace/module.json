@@ -1,0 +1,11 @@
+{
+    "name": "Performace",
+    "alias": "performace",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Performace\\App\\Providers\\PerformaceServiceProvider"
+    ],
+    "files": []
+}

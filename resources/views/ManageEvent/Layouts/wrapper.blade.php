@@ -1,0 +1,5 @@
+@include('ManageEvent.Layouts.head')
+@include('ManageEvent.Layouts.sidebar')
+@include('ManageEvent.Layouts.header')
+@include('ManageEvent.Layouts.content')
+@include('ManageEvent.Layouts.footer')
