@@ -1,0 +1,173 @@
+VALEX-UPDATE  (23-May-2020)
+
+1)Update the name in custom pages
+
+2)added new js to fix the language select dropdown issue
+
+3) Toast page issue fixed
+
+4) sweetalert popup modal spacing issue fixed
+
+5) logo shriking issue fixed
+
+//////////////////////////////////
+
+1)Update the name in custom pages 
+
+//////////////////////////////////
+
+STEP1: Update the name in custom pages i.e  signin.html,signup.html,forgot.html,reset.html,lockscreen.html in(leftmenu & horizontalmenu both dark nd light version)
+
+open above htmlpages  and change the name fr h1 as shown below
+
+PREVIOUS:
+
+<h1 class="main-logo1 ml-1 mr-0 my-auto tx-28">Mi<span>nt</span>ro</h1>
+
+UPDATED:
+
+<h1 class="main-logo1 ml-1 mr-0 my-auto tx-28">Va<span>le</span>x</h1>
+
+
+############### ADD sccs nd css styles ###############
+  
+
+SCSS:  add below scss in _custom-styles.scss   --> rootpath(assets/scss/custom/_custom-styles.scss)
+
+CSS:   add below css in style.css at end of the page  --> rootpath(assets/scss/style.css)
+
+ADD:
+
+.main-logo1{
+    font-family: poppins;
+    font-weight: 600;
+}
+
+@media (min-width: 576px){
+  .dropdown.nav-itemd-none .dropdown-menu:after {
+	border-bottom: 9px solid #ffffff;
+   }
+}
+
+
+///////////////////////////////////////////////////////
+
+2)added new js to fix the language select dropdown issue
+
+///////////////////////////////////////////////////////
+
+
+
+Step:1   Add below js in custom.js file at line number 22  ---------> root-path(assets/js/custom.js)
+
+$('.country-flag1').on('click', function(e){
+    $('.main-header .dropdown > a').parent().siblings().removeClass('show');
+});
+
+
+
+///////////////////////////////////////////////////////
+
+3)Toast page issue fixed
+
+///////////////////////////////////////////////////////
+
+
+Please replace the bootstrap.bundle.min.js(assets/plugins/bootstrap/js/bootstrap.bundle.min.js) file these updated file
+
+
+///////////////////////////////////////////////////////
+
+4) sweetalert popup modal spacing issue fixed
+
+///////////////////////////////////////////////////////
+
+Step1: Go to the  sweetalert.css(assets/plugins/sweet-alert/sweetalert.css) file add the below code
+
+.timer-alert .sa-button-container{
+	
+  display:none;
+
+}
+
+.timer-alert p{
+
+  padding-bottom:0;
+
+}
+
+.timer-alert .sweet-alert h2{
+	
+  padding-top:0
+
+}
+
+.sweet-alert .sa-icon.sa-error,  .sweet-alert .sa-icon.sa-warning, .sweet-alert .sa-icon.sa-info,
+.sweet-alert .sa-icon.sa-info,
+.sweet-alert .sa-icon.sa-success{
+	
+  margin-bottom: 25px;
+
+}
+
+
+Step2: and Please replace the sweet-alert.js(assets/js/sweet-alert.js) file these updated file
+
+
+///////////////////////////////////////////////////////
+
+5) logo shriking issue fixed
+
+///////////////////////////////////////////////////////
+
+
+Method1:
+
+Step1:
+
+Please add the below code in skin-modes.scss(assets/css/skin-modes.scss) line no:933
+
+.leftmenu-color.app.sidebar-mini.sidenav-toggled  .desktop-logo.logo-dark{
+   display:none;
+}
+
+Step2:
+
+What every changes you have done in skin-modes.scss by running gulp skin command the changes is generated in css.
+
+If you don't have know about gulp Please check the gulp tutorials, for template gulp task commands please chcek the documentation folder.
+
+
+Method2:
+
+There is another method the change you had done is scss file please update the same thing in css file then only you will get the output.
+
+Note:If you had change in scss file and not in css then you won't get Output.
+
+Step1:
+
+Please add the below code in skin-modes.scss(assets/css/skin-modes.scss) line no:933
+
+.leftmenu-color.app.sidebar-mini.sidenav-toggled  .desktop-logo.logo-dark{
+   display:none;
+}
+
+Step2:
+
+Please add the below code in skin-modes.css(assets/css/skin-modes.css) line no:589
+
+.leftmenu-color.app.sidebar-mini.sidenav-toggled  .desktop-logo.logo-dark{
+   display:none;
+}
+
+
+
+
+
+
+
+
+
+
+
+

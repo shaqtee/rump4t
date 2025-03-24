@@ -1,0 +1,11 @@
+{
+    "name": "Masters",
+    "alias": "masters",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Masters\\App\\Providers\\MastersServiceProvider"
+    ],
+    "files": []
+}
