@@ -4,13 +4,13 @@ variables:
   SSH_HOST: ${CI_COMMIT_BRANCH}_ssh_host
   ENV_VARIABLE: ${CI_COMMIT_BRANCH}_ssh_private_key
 
-before_script:
-  - apt-get update -qq
-  - apt-get install -qq ssh
-  - mkdir -p ~/.ssh
-  - echo -e "${!ENV_VARIABLE}" > ~/.ssh/id_rsa
-  - chmod 600 ~/.ssh/id_rsa
-  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+#before_script:
+#  - apt-get update -qq
+#  - apt-get install -qq ssh
+#  - mkdir -p ~/.ssh
+#  - echo -e "${!ENV_VARIABLE}" > ~/.ssh/id_rsa
+#  - chmod 600 ~/.ssh/id_rsa
+#  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
 # dev:
 #   script:
