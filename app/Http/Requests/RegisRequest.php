@@ -25,8 +25,11 @@ class RegisRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            // 'email' => 'required',
+            "name" => 'required',
             'phone' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            "region" => 'required',
         ];
 
         return $rules;
@@ -35,8 +38,11 @@ class RegisRequest extends FormRequest
     public function attributes()
     {
         return [
-            // 'email' => 'Email',
+            'name' => 'Nama',
             'phone' => 'Telephone Number',
+            'email' => 'Email',
+            'password' => 'Password',
+            'region' => 'Region'
         ];
     }
 

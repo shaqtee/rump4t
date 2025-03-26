@@ -28,7 +28,7 @@ Route::apiResource('dimensions', DimensionsController::class)->only('index', 'st
 
 Route::prefix('sign-up')->group(function() {
     Route::post('get-user', [AuthController::class, 'get_user2']);
-    Route::post('registrasi', [AuthController::class, 'registrasi']);
+    Route::post('registrasi', [AuthController::class, 'registrasi']); // new sync
     Route::post('verifikasi-phone-user', [AuthController::class, 'verifikasi_phone_user']);
     Route::post('continue-registration', [AuthController::class, 'continue_registration']);
     Route::post('verifikasi-email-user', [AuthController::class, 'verifikasi_email_user']);
@@ -37,12 +37,14 @@ Route::prefix('sign-up')->group(function() {
 });
 
 Route::prefix('sign-in')->group(function() {
-    Route::post('get-user', [AuthController::class, 'get_user']);
+    Route::post('get-user', [AuthController::class, 'get_user']); // new sync
     Route::post('login-to-send-otp', [AuthController::class, 'login_to_send_otp']);
     Route::post('verify-login', [AuthController::class, 'verify_login'])->name('login');
     Route::post('login-cepat', [AuthController::class, 'loginCepat'])->name('login');
     Route::post('resend-otp-login', [AuthController::class, 'resend_otp_login']);
 });
+
+Route::get('list-region', [AuthController::class, 'list_region']); // new
 
 Route::prefix('auth')->middleware('auth:api')->group(function () {
     Route::get('check-login', function(){

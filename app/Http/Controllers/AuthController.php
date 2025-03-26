@@ -26,6 +26,7 @@ use Modules\Community\App\Models\Community;
 use Modules\Community\App\Models\MemberEvent;
 use Modules\Community\App\Models\MembersCommonity;
 use Modules\Masters\App\Models\MasterConfiguration;
+use Modules\Masters\App\Models\MasterReferences;
 use Modules\MyGames\App\Models\MemberLetsPlay;
 use Modules\Performace\App\Http\Controllers\PerformaceController;
 use Modules\ScoreHandicap\App\Models\ScoreHandicap;
@@ -41,8 +42,9 @@ class AuthController extends Controller
     protected $community;
     protected $memberCommunity;
     protected $performanceController;
+    protected $references;
 
-    public function __construct(User $model, ApiResponse $api, Helper $helper, UserInterface $interface, MasterConfiguration $config, CompanyProfile $companyProfile, Community $community, MembersCommonity $memberCommunity, PerformaceController $performanceController)
+    public function __construct(User $model, ApiResponse $api, Helper $helper, UserInterface $interface, MasterConfiguration $config, CompanyProfile $companyProfile, Community $community, MembersCommonity $memberCommunity, PerformaceController $performanceController, MasterReferences $references)
     {
         $this->model = $model;
         $this->api = $api;
@@ -53,6 +55,7 @@ class AuthController extends Controller
         $this->community = $community;
         $this->memberCommunity = $memberCommunity;
         $this->performanceController = $performanceController;
+        $this->references = $references;
     }
 
     //register
@@ -84,45 +87,24 @@ class AuthController extends Controller
         }
     }
 
+    // register sync this
     public  function registrasi(RegisRequest $request){ //Tombol Send Verification Code Hal-6
         DB::beginTransaction();
         try {
             $datas = $request->validated();
-
+            
             $userCheck = $this->model->where('phone', $request->phone)->first();
 
             if($userCheck && $userCheck->flag_done_profile != '1'){
                 $userCheck->delete();
             }
-
+            
             if($userCheck && $userCheck->flag_done_profile == '1'){
                 return  $this->api->error("Phone Number Has Already Been Registered");
             }
 
-            $datas['otp_code'] = $this->helper->otpCodeFrom($this->model, 'phone');
-            $datas['otp_expired'] = $this->helper->addTimeFromNow($this->config);
-            $diffOtpExpired = $this->helper->addTimeFromNow($this->config, $datas['otp_expired']);
-
+            // return response()->json($datas);
             $newUser = $this->model->create($datas);
-
-            $newUser->otp_expired_second = $this->helper->__timeOtpExpired($newUser->otp_expired, $diffOtpExpired);
-
-            // $sendSuccess = $this->helper->sendWhatsappFonnte("$newUser->phone|$newUser->otp_code");
-
-            // if ($sendSuccess['status'] == false ) {
-            //     return $this->api->error('Failed : ' .$sendSuccess['reason']);
-            // }
-            // $sendSuccess = $this->helper->sendSmsViro($newUser->phone, $newUser->otp_code);
-
-            // if($sendSuccess['status'] != 200){
-            //     return $this->api->error('Failed : ' .$sendSuccess['requestError']['serviceException']['messageId']. ', WHY : ' .$sendSuccess['requestError']['serviceException']['text'], $sendSuccess['status']);
-            // }
-
-            $sendSuccess = $this->helper->sendWhatsappKoala($newUser->phone, $newUser->otp_code);//, $newUser->otp_expired_second);
-
-            if($sendSuccess['statusCode'] != 200){
-                return $this->api->error('Failed : ' . $sendSuccess['statusMessage']. ', WHY : ' . $sendSuccess['message'], $sendSuccess['statusCode']);
-            }
 
             DB::commit();
             return $this->api->success($newUser, "Successfully Registration");
@@ -455,7 +437,7 @@ class AuthController extends Controller
         }
     }
 
-    //Login
+    // Login sync this
     public function get_user(Request $request){  //Tombol Login Hal 4
         try {
             $users = $this->model;
@@ -474,7 +456,26 @@ class AuthController extends Controller
                 }
             }
 
-            return $this->api->success($user);
+            $credentials = $request->only('email', 'password');
+            
+            if (!Auth::attempt($credentials)) {
+                return response()->json(['message' => 'Unauthorized'], 401);
+            }
+            
+            $auth_user = Auth::user();
+
+            $data = [
+                "user" => [
+                    "id" => $auth_user->id ?? null,
+                    "name" => $auth_user->name ?? null,
+                    "active" => $auth_user->active ?? null,
+                    "email" => $auth_user->email ?? null,
+                    "phone" => $auth_user->phone ?? null,
+                    "region" => $auth_user->region ?? null,
+                ]
+            ];
+
+            return $this->api->success($data, 'Successfully Login');
         } catch(\Throwable $e) {
             if (config('envconfig.app_debug')) {
                 return $this->api->error_code($e->getMessage(), $e->getCode());
@@ -906,159 +907,6 @@ class AuthController extends Controller
         }
     }
 
-    // public function update_email_phone(Request $request){
-    //     DB::beginTransaction();
-    //     try {
-    //         $datas = $request->all();
-    //         $id = Auth::id();
-    //         $phone = $request->phone;
-    //         $email = $request->email;
-    //         $user = $this->model->find($id);
-
-    //         if($phone){
-    //             $isExists = $this->model->where('id', '!=', $user->id)->where('phone', $phone)->first();
-
-    //             if($isExists){
-    //                 return  $this->api->error("Phone Number Has Already");
-    //             }
-
-    //             $datas['phone_verified_at'] = null;
-    //             $datas['otp_code']= $this->helper->otpCodeFrom($this->model, 'email');
-    //             $datas['otp_expired'] = $this->helper->addTimeFromNow($this->config);
-    //             $diffOtpExpired = $this->helper->addTimeFromNow($this->config, $datas['otp_expired']);
-
-    //             $user->update($datas);
-
-    //             $user->otp_expired_second = $this->helper->__timeOtpExpired($user->otp_expired, $diffOtpExpired);
-
-    //             $email = new VerivicationEmail($user);
-    //             Mail::to($user->email)->send($email);
-
-    //         } else {
-    //             $isExists = $this->model->where('id', '!=', $user->id)->where('email', $email)->first();
-
-    //             if($isExists){
-    //                 return  $this->api->error("Email Has Already");
-    //             }
-
-    //             $datas['email_verified_at'] = null;
-    //             $datas['otp_code']= $this->helper->otpCodeFrom($this->model, 'phone');
-    //             $datas['otp_expired'] = $this->helper->addTimeFromNow($this->config);
-    //             $diffOtpExpired = $this->helper->addTimeFromNow($this->config, $datas['otp_expired']);
-
-    //             $user->update($datas);
-
-    //             $user->otp_expired_second = $this->helper->__timeOtpExpired($user->otp_expired, $diffOtpExpired);
-    //             //kirim sms
-    //             // $sendSuccess = $this->helper->sendWhatsappFonnte("$user->phone|$user->otp_code");
-
-    //             // if ($sendSuccess['status'] == false ) {
-    //             //     return $this->api->error('Failed : ' .$sendSuccess['reason']);
-    //             // }
-    //             $sendSuccess = $this->helper->sendSmsViro($user->phone, $user->otp_code);
-
-    //             if($sendSuccess['status'] != 200){
-    //                 return $this->api->error('Failed : ' .$sendSuccess['requestError']['serviceException']['messageId']. ', WHY : ' .$sendSuccess['requestError']['serviceException']['text'], $sendSuccess['status']);
-    //             }
-    //         }
-
-    //         DB::commit();
-    //         return $this->api->success($user);
-    //     } catch(\Throwable $e) {
-    //         DB::rollBack();
-    //         if (config('envconfig.app_debug')) {
-    //             return $this->api->error_code($e->getMessage(), $e->getCode());
-    //         } else {
-    //             return $this->api->error_code_log("Internal Server Error", $e->getMessage());
-    //         };
-    //     }
-    // }
-
-    // public function verify_update_email_phone(Request $request){ //Tombol Send Verification Code Hal 6 dan hal 11
-    //     DB::beginTransaction();
-    //     try {
-    //         $users = $this->model;
-    //         $lenOtp = strlen($request->otp_code);
-
-    //         if(isset($request->phone)){
-
-    //             $user = $users->where('phone', $request->phone)->first();
-
-    //             if(!$user){
-    //                 return  $this->api->error("Phone Number Not Found!");
-    //             }
-
-    //             if($user->active != '1'){
-    //                 return  $this->api->error("User Is Non Active");
-    //             }
-
-    //             if($lenOtp < 6 || $lenOtp > 6){
-    //                 return  $this->api->error("Invalid OTP Length! Please Enter a 6 Digit OTP");
-    //             }
-
-    //             if(!$user->email_verified_at){
-    //                 return  $this->api->error("Your Email Is Not Verified, Can't Update Phone Number");
-    //             }
-
-    //             if(now()->gt($user->otp_expired)){
-    //                 return $this->api->error("OTP Login Expired!, Please Resend OTP");
-    //             }
-
-    //             if($user->otp_code != $request->otp_code){
-    //                 return $this->api->error("OTP Login Code Not Same");
-    //             }
-
-    //             $user->update([
-    //                 'otp_code' => null,
-    //                 'otp_expired' => null,
-    //                 'phone_verified_at' => now(),
-    //             ]);
-    //         } else {
-    //             $user = $users->where('email', $request->email)->first();
-
-    //             if(!$user){
-    //                 return  $this->api->error("Email Not Found!");
-    //             }
-
-    //             if($user->active != '1'){
-    //                 return  $this->api->error("User Is Non Active");
-    //             }
-
-    //             if($lenOtp < 4 || $lenOtp > 4){
-    //                 return  $this->api->error("Invalid OTP Length! Please Enter a 4 Digit OTP");
-    //             }
-
-    //             if(!$user->phone_verified_at){
-    //                 return  $this->api->error("Your Phone Number Is Not Verified, Can't Update Email");
-    //             }
-
-    //             if(now()->gt($user->otp_expired)){
-    //                 return $this->api->error("OTP Login Expired!, Please Resend OTP");
-    //             }
-
-    //             if($user->otp_code != $request->otp_code){
-    //                 return $this->api->error("OTP Login Code Not Same");
-    //             }
-
-    //             $user->update([
-    //                 'otp_code' => null,
-    //                 'otp_expired' => null,
-    //                 'email_verified_at' => now(),
-    //             ]);
-    //         }
-
-    //         DB::commit();
-    //         return  $this->api->success($user, 'Succcesss');
-    //     } catch(\Throwable $e) {
-    //         DB::rollBack();
-    //         if (config('envconfig.app_debug')) {
-    //             return $this->api->error_code($e->getMessage(), $e->getCode());
-    //         } else {
-    //             return $this->api->error_code_log("Internal Server Error", $e->getMessage());
-    //         };
-    //     }
-    // }
-
     public  function update_cross(Request $request){ //Tombol Send Verification Code Hal-6
         DB::beginTransaction();
         try {
@@ -1361,16 +1209,27 @@ class AuthController extends Controller
         }
     }
 
+    public function list_region()
+    {
+        $list_region = $this->references
+            ->where('parameter', 'm_region')
+            ->orWhere('parameter', 'm_area')
+            ->get();
+
+        return $this->api->success($list_region, 'success');
+    }
+
     public function loginCepat(Request $request){
+        
         DB::beginTransaction();
         try {
 
             $credentials = $request->only('email', 'password');
-
+            
             if (!Auth::attempt($credentials)) {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
-
+            
             $user = Auth::user();
 
             $data = [
