@@ -1,0 +1,303 @@
+{
+	"info": {
+		"_postman_id": "9e994699-7553-4862-8dff-bcccfcde2527",
+		"name": "Rump4t",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8468503"
+	},
+	"item": [
+		{
+			"name": "Autentikasi",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"adi.sakti@live.com\",\r\n    \"password\": \"123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}sign-in/get-user",
+							"host": [
+								"{{local}}sign-in"
+							],
+							"path": [
+								"get-user"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"adi.sakti@live.com\",\r\n    \"password\": \"123123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://rump4t.test/api/sign-in/get-user",
+									"protocol": "https",
+									"host": [
+										"rump4t",
+										"test"
+									],
+									"path": [
+										"api",
+										"sign-in",
+										"get-user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 26 Mar 2025 19:28:59 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "58"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Successfully Login\",\n    \"code\": 200,\n    \"data\": {\n        \"user\": {\n            \"id\": 3,\n            \"name\": \"Adi Sakti\",\n            \"active\": null,\n            \"email\": \"adi.sakti@live.com\",\n            \"phone\": \"081334090986\",\n            \"region\": 2\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Adi Sakti\",\r\n    \"phone\":\"081334090986\",\r\n    \"email\":\"adi.sakti@live.com\",\r\n    \"password\":\"123123\",\r\n    \"region\": 2 // id list region\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}sign-up/registrasi",
+							"host": [
+								"{{local}}sign-up"
+							],
+							"path": [
+								"registrasi"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Adi Sakti\",\r\n    \"phone\":\"081334090986\",\r\n    \"email\":\"adi.sakti@live.com\",\r\n    \"password\":\"123123\",\r\n    \"region\": 2 // id list region\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://rump4t.test/api/sign-up/registrasi",
+									"protocol": "https",
+									"host": [
+										"rump4t",
+										"test"
+									],
+									"path": [
+										"api",
+										"sign-up",
+										"registrasi"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 26 Mar 2025 19:19:06 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "58"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Successfully Registration\",\n    \"code\": 200,\n    \"data\": {\n        \"name\": \"Adi Sakti\",\n        \"phone\": \"081334090986\",\n        \"email\": \"adi.sakti@live.com\",\n        \"region\": 2,\n        \"updated_at\": \"2025-03-26T19:19:06.000000Z\",\n        \"created_at\": \"2025-03-26T19:19:06.000000Z\",\n        \"id\": 3\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "list region",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://rump4t.test/api/list-region",
+									"protocol": "https",
+									"host": [
+										"rump4t",
+										"test"
+									],
+									"path": [
+										"api",
+										"list-region"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 26 Mar 2025 19:24:29 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"code\": 200,\n    \"data\": [\n        {\n            \"id\": 2,\n            \"parameter\": \"m_region\",\n            \"code\": null,\n            \"value\": \"Jakarta\",\n            \"description\": null,\n            \"start_date\": null,\n            \"end_date\": null,\n            \"start\": null,\n            \"end\": null,\n            \"sort\": null,\n            \"created_by\": null,\n            \"updated_by\": null,\n            \"is_active\": 1,\n            \"parent_id\": null,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 3,\n            \"parameter\": \"m_region\",\n            \"code\": null,\n            \"value\": \"Semarang\",\n            \"description\": null,\n            \"start_date\": null,\n            \"end_date\": null,\n            \"start\": null,\n            \"end\": null,\n            \"sort\": null,\n            \"created_by\": null,\n            \"updated_by\": null,\n            \"is_active\": 1,\n            \"parent_id\": null,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 4,\n            \"parameter\": \"m_area\",\n            \"code\": null,\n            \"value\": \"Ambarawa\",\n            \"description\": null,\n            \"start_date\": null,\n            \"end_date\": null,\n            \"start\": null,\n            \"end\": null,\n            \"sort\": null,\n            \"created_by\": null,\n            \"updated_by\": null,\n            \"is_active\": 1,\n            \"parent_id\": 3,\n            \"created_at\": null,\n            \"updated_at\": null\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "local",
+			"value": "https://rump4t.test/api/",
+			"type": "default"
+		}
+	]
+}
