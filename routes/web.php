@@ -49,7 +49,7 @@ use App\Http\Controllers\ManagePeople\Modules\Events\ManageWinnerCategoryControl
 // });
 
 Route::redirect('', 'login-web');
-Route::get('dgolf/profile-user/{id}', [AuthWebController::class, 'webViewProfile'])->name('dgolf.profile-user');
+Route::get('rump4t/profile-user/{id}', [AuthWebController::class, 'webViewProfile'])->name('rump4t.profile-user');
 Route::middleware(['guest'])->group(function(){
     Route::get('login-web', [AuthWebController::class, 'view_login'])->name('login');
     Route::post('login-web', [AuthWebController::class, 'login'])->name('login-web');
