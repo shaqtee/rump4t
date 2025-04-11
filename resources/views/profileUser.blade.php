@@ -111,7 +111,7 @@
 <body>
     <div class="background">
         <div class="card">
-            <img src="{{ asset('/images/logo-dgolf3.png') }}" alt="Logo-Dgolf" class="logo">
+            {{-- <img src="{{ asset('/images/logo-dgolf3.png') }}" alt="Logo-Dgolf" class="logo"> --}}
             <img src="{{ $datas->image }}" alt="Player Image" class="player-image">
             <div class="card-details">
                 <h2 class="player-name">{{ $datas->name }}</h2>
@@ -119,13 +119,13 @@
                     <tr>
                         <th>ID</th>
                         <td>:</td>
-                        <td>{{ $datas->player_id }}</td>
+                        <td>{{ $datas->id }}</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <th>HCP Index</th>
                         <td>:</td>
                         <td>{{ $hcp }}</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th>Member Since</th>
                         <td>:</td>

@@ -27,6 +27,7 @@ use Modules\Community\App\Models\MemberEvent;
 use Modules\Community\App\Models\MembersCommonity;
 use Modules\Masters\App\Models\MasterConfiguration;
 use Modules\Masters\App\Models\MasterReferences;
+use Modules\Masters\App\Models\MasterCity;
 use Modules\MyGames\App\Models\MemberLetsPlay;
 use Modules\Performace\App\Http\Controllers\PerformaceController;
 use Modules\ScoreHandicap\App\Models\ScoreHandicap;
@@ -43,8 +44,9 @@ class AuthController extends Controller
     protected $memberCommunity;
     protected $performanceController;
     protected $references;
+    protected $city;
 
-    public function __construct(User $model, ApiResponse $api, Helper $helper, UserInterface $interface, MasterConfiguration $config, CompanyProfile $companyProfile, Community $community, MembersCommonity $memberCommunity, PerformaceController $performanceController, MasterReferences $references)
+    public function __construct(User $model, ApiResponse $api, Helper $helper, UserInterface $interface, MasterConfiguration $config, CompanyProfile $companyProfile, Community $community, MembersCommonity $memberCommunity, PerformaceController $performanceController, MasterReferences $references, MasterCity $city)
     {
         $this->model = $model;
         $this->api = $api;
@@ -56,6 +58,7 @@ class AuthController extends Controller
         $this->memberCommunity = $memberCommunity;
         $this->performanceController = $performanceController;
         $this->references = $references;
+        $this->city = $city;
     }
 
     //register
@@ -337,19 +340,23 @@ class AuthController extends Controller
             $datas = $this->helper->removeNullValues($datas);
             $dataUser = $this->model->find($id);
 
+            if(!empty($datas['t_city_id'])){
+                $datas = array_merge($request->all(), ['kota_kabupaten' => $dataUser->city->code]);
+            }
+            
             if(!$dataUser){
                 return  $this->api->error("Data User Not Found");
             }
             //save photo profile
-            $folder = "dgolf/user-profile";
+            $folder = "rump4t/user-profile";
             $column = "image";
             // $this->helper->compresedUploads($folder, $dataUser, $column);
             $this->helper->uploads($folder, $dataUser, $column);
-
+            // return response()->json($dataUser);
             $datas['image'] = $dataUser->image;
             $dataUser->update($datas);
             DB::commit();
-            return $this->api->success($dataUser, "Success Update Profile");
+            return $this->api->success($datas, "Success Update Profile");
         } catch(\Throwable $e) {
             DB::rollBack();
             if (config('envconfig.app_debug')) {
@@ -857,28 +864,46 @@ class AuthController extends Controller
                     "id" => $user->id,
                     "player_id" => $user->player_id,
                     "name" => $user->name,
-                    "nickname" => $user->nickname,
+                    // "nickname" => $user->nickname,
                     "email" => $user->email,
                     "phone" => $user->phone,
                     "gender" => $user->gender,
                     "birth_date" => $user->birth_date,
-                    "hcp_index" => $user->hcp_index,
-                    "faculty" => $user->faculty,
-                    "batch" => $user->batch,
-                    "office_name" => $user->office_name,
+                    // "hcp_index" => $user->hcp_index,
+                    // "faculty" => $user->faculty,
+                    // "batch" => $user->batch,
+                    // "office_name" => $user->office_name,
                     "address" => $user->address,
-                    "business_sector" => $user->business_sector,
+                    // "business_sector" => $user->business_sector,
                     "position" => $user->position,
                     "image" => $user->image,
-                    "fcm_token" => $user->fcm_token,
+                    // "fcm_token" => $user->fcm_token,
                     "t_city_id" => $user->city->id ?? null,
                     "city" => $user->city->name ?? null,
-                    "flag_community" => $user->flag_community,
+                    // "flag_community" => $user->flag_community,
                     "t_community_id" => $user->community->id ?? null,
                     "community" => $user->community->title ?? null,
-                    "member_since" => Carbon::parse($user->created_at)->format('d/m/Y'),//!empty($member) ? Carbon::parse($member->created_at)->format('d/m/Y') : null, //(!empty($user->membersCommonity) && isset($user->membersCommonity[0])) ? Carbon::parse($user->membersCommonity[0]->created_at)->format('d/m/Y') : null,
-                    "handicap_index" => $hcpIndex,
-                    "url_barcode" => url('/dgolf/profile-user/' . $this->helper->encryptDecrypt($id))
+                    "member_since" => Carbon::parse($user->created_at)->format('d/m/Y'),
+                    // "handicap_index" => $hcpIndex,
+                    "url_barcode" => url('/rump4t/profile-user/' . $this->helper->encryptDecrypt($id)),
+
+                    "birth_place" => $user->birth_place,
+                    "age" => $user->age,
+                    "desa_kelurahan" => $user->desa_kelurahan,
+                    "kecamatan" => $user->kecamatan,
+                    "kota_kabupaten" => $user->city->code,
+                    "postal_code" => $user->postal_code,
+                    "provinsi" => $user->provinsi,
+                    "year_of_entry" => $user->year_of_entry,
+                    "year_of_retirement" => $user->year_of_retirement,
+                    "retirement_type" => $user->retirement_type,
+                    "last_employee_status" => $user->last_employee_status,
+                    "last_division" => $user->last_division,
+                    "spouse_name" => $user->spouse_name,
+                    "shirt_size" => $user->shirt_size,
+                    "notes" => $user->notes,
+                    "ec_name" => $user->ec_name,
+                    "ec_kinship" => $user->kinship,
                 ],
                 'our_contact' => [
                     "id" => $dataCompany->id,
@@ -1240,6 +1265,7 @@ class AuthController extends Controller
                     "active" => $user->active ?? null,
                     "email" => $user->email ?? null,
                     "phone" => $user->phone ?? null,
+                    "region" => $user->region ?? null,
                     "remember_token" => $user->remember_token ?? null,
                 ]
             ];
@@ -1320,4 +1346,25 @@ class AuthController extends Controller
         }
     }
 
+    public function get_user_by_id($id)
+    {
+        $users = $this->model;
+        $user = $users->where('id',(int) $id)->first();
+        return response()->json($user);
+    }
+
+    public function logout()
+    {
+        if(Auth::check()){
+            $token = Auth::user()->token();
+            $token->revoke();
+            return $this->api->success(null, "Success Logout");
+        }
+    }
+
+    public function list_city()
+    {
+        $city = $this->city->all();
+        return $this->api->success($city, 'success');
+    }
 }
