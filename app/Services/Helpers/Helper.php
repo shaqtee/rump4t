@@ -82,7 +82,7 @@ class Helper
         }
     }
 
-    public static function compresedUploads($folder, $model, $key = 'files', $options = 's3')
+    public static function compresedUploads($folder, $model, $key = 'files', $options = 's3' , $percent = 0.5)
     {
         if (request()->hasFile($key)) {
             $manager = new ImageManager(new Driver());
@@ -90,7 +90,7 @@ class Helper
             $file = request()->file($key);
             $image = $manager->read($file->getPathname());
 
-            $percent = 0.5;
+            // $percent = 0.5;
             $width = $image->width();
             $height = $image->height();
             $newWidth = $width * $percent;

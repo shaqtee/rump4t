@@ -3,20 +3,41 @@
 namespace Modules\News\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Services\ApiResponse;
+use App\Services\Helpers\Helper;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\News\App\Models\Newsfeed;
 
 class NewsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-
+    protected $apiResponse;
+    protected $helper;
+    protected $newsfeed;
+    
      
-    public function index()
+    public function __construct(ApiResponse $apiResponse , Helper $helper , Newsfeed $newsfeed)
     {
-        return view('news::index');
+        $this->apiResponse = $apiResponse;
+        $this->helper = $helper;
+        $this->newsfeed = $newsfeed;
+
+    }
+    public function index() : JsonResponse
+    {
+        try {
+
+            $news = $this->newsfeed->getNews();
+            return $this->apiResponse->success($news);
+
+        }catch(\Exception $e){
+            return $this->apiResponse->error($e->getMessage());
+        }
     }
 
     /**
