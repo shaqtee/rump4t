@@ -205,6 +205,9 @@ Route::middleware(['auth'])->group(function(){
         Route::prefix('social-media')->group(function(){
             Route::resources(['informations' => InformationController::class]);
             Route::resources(['elections' => ElectionsController::class]);
+            Route::prefix("mods")->group(function(){
+
+            });
             Route::prefix('elections')->group(function(){
                 Route::get('{id}/results', [ElectionsController::class, 'resultsCandidate'])->name('socialmedia.elections.resultsCandidate');
                 Route::patch('{id}/update-candidate', [ElectionsController::class, 'updateCandidate'])->name('socialmedia.elections.updateCandidate');

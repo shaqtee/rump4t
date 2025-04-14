@@ -272,6 +272,25 @@ class SocialMediaController extends Controller
         }
     }
 
+    public function showChildDetail(int $commentID) {
+        try {
+            $show = $this->detailpost->with(['user:id,name,image'])->where('parent_id', $commentID)->get();
+
+            if ($show->isEmpty()) {
+                return $this->api->error("Comments not found for this post");
+            }
+
+            return  $this->api->success($show,  "Success to get data");
+        } catch(\Throwable $e) {
+            DB::rollBack();
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
+
     public function storedetail(Request $request, $id)
     {
         DB::beginTransaction();
@@ -281,6 +300,7 @@ class SocialMediaController extends Controller
 
             $storedetail = $this->detailpost->create([
                 'id_post' => $id,
+                'parent_id' => $request->parent_id,
                 'id_user' => $request->user_id,
                 'komentar' => $request->komentar
             ]);
