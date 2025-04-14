@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Community\App\Models\EventCommonity;
+use Modules\SocialMedia\App\Models\Likes;
 use Modules\SocialMedia\App\Models\Post;
 use Modules\SocialMedia\App\Models\DetailPost;
 use Modules\SocialMedia\App\Models\ReportPost;
@@ -92,6 +93,83 @@ class SocialMediaController extends Controller
                 return $this->api->error_code_log("Internal Server Error", $e->getMessage());
             };
         }
+    }
+
+    public function postLike($postId)
+    {
+        DB::beginTransaction();
+        try {
+            $post = $this->model->find($postId);
+            if (!$post) return $this->api->error('Post not found');
+
+        
+            // ckeck like avability 
+            $like = new Likes();
+
+            if($like->uniqueLike(auth()->id(), $postId) == false){
+                return $this->api->error('You have already liked this post');
+            }else{
+                $like->t_user_id = auth()->id();
+                $like->t_post_id = $postId;
+                $like->save();
+                // return $this->api->success($like, "Like Successfully");
+            }
+
+        
+        
+
+
+
+      
+        } catch(\Throwable $e) {
+            DB::rollback();
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+
+        DB::commit();
+        return $this->api->success($like, "Like Successfully");
+
+
+
+
+    }
+
+    public function postUnlike(Request $req){
+        DB::beginTransaction();
+        try {
+            $post = $this->model->find($req->postId);
+            if (!$post) return $this->api->error('Post not found');
+
+            $postlikeexist = (new Likes())->uniqueLike(auth()->id(), $req->postId);
+        
+            if (!$postlikeexist) {
+                 return $this->api->error('Like not found');
+                 }else{
+
+                $like = Likes::where('t_user_id', auth()->id())
+                ->where('t_post_id', $req->postId)
+                ->first();
+                
+
+            }
+
+            $like->delete();
+
+        } catch(\Throwable $e) {
+            DB::rollback();
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+
+        DB::commit();
+        return $this->api->success($like, "Unlike Successfully");
     }
 
     public function report_post(Request $request)
