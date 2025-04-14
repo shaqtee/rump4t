@@ -63,4 +63,15 @@ Route::prefix('auth')->middleware('auth:api')->group(function () {
     Route::get('list-region', [AuthController::class, 'list_region']); // new
     Route::get('list-city', [AuthController::class, 'list_city']); // new
     Route::post('logout', [AuthController::class, 'logout']); // new
+
+    Route::get('total-user', [AuthController::class, 'total_user']);
+    Route::get('total-member', [AuthController::class, 'total_member']);
+    Route::get('total-member-khusus', [AuthController::class, 'total_member_khusus']);
+
+    Route::get('search-by-name/{name}', [AuthController::class, 'search_by_name']);
+    Route::get('search-by-region/{region}', [AuthController::class, 'search_by_region']);
+    Route::get('selected-region/{id}', [AuthController::class, 'selected_region']);
+    Route::get('selected-area/{id}', [AuthController::class, 'selected_area']);
+    Route::get('search-by-city/{name}', [AuthController::class, 'search_by_city']);
+    Route::get('selected-city/{id}', [AuthController::class, 'selected_city']);
 });
