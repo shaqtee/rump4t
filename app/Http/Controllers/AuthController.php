@@ -1367,4 +1367,74 @@ class AuthController extends Controller
         $city = $this->city->all();
         return $this->api->success($city, 'success');
     }
+
+    public function total_user()
+    {
+        $count_user = count($this->model->all());
+        return $this->api->success($count_user, "success");
+    }
+
+    public function total_member()
+    {
+        $count_member = count($this->model->where('t_group_id', NULL)->get());
+        return $this->api->success($count_member, "success");
+    }
+
+    public function total_member_khusus()
+    {
+        $count_member_khusus = count($this->model->where('t_group_id', 1)->get());
+        return $this->api->success($count_member_khusus, "success");
+    }
+
+    public function search_by_name($name)
+    {
+        $users = $this->model->where('name', 'ILIKE', '%'.$name.'%')->get();
+        return $this->api->success($users, "success");
+    }
+
+    public function search_by_region($region)
+    {
+        $regions = $this->references
+            ->where('parameter', 'm_region')
+            ->where('value', 'ILIKE', '%'.$region.'%')
+            ->get();
+            
+        return $this->api->success($regions, "success");
+    }
+
+    public function selected_region($id)
+    {
+        $areas = $this->references
+            ->where('parameter', 'm_area')
+            ->where('parent_id', $id)
+            ->get();
+
+        if(count($areas) > 0){
+            return $this->api->success($areas, "success");
+        }
+
+        $users = $this->model->where('region', $id)->get();
+        return $this->api->success($users, "success");
+        
+    }
+
+    public function selected_area($id)
+    {
+        $users = $this->model->where('region', $id)->get();
+        return $this->api->success($users, "success");
+    }
+
+    public function search_by_city($name)
+    {
+        $cities = $this->city->where('name', 'ILIKE', '%'.$name.'%')->get();
+
+        return $this->api->success($cities, "success");
+    }
+
+    public function selected_city($id)
+    {
+        $users = $this->model->where('t_city_id', $id)->get();
+
+        return $this->api->success($users, "success");
+    }
 }
