@@ -43,9 +43,7 @@
 <body class="main-body bg-light">
 
     <!-- Loader -->
-    <div id="global-loader">
-        <img src="Valex/html/assets/img/loader.svg" class="loader-img" alt="Loader">
-    </div>
+
     <!-- /Loader -->
 
 <!-- Page -->

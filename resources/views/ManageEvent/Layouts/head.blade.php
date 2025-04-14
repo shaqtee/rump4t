@@ -75,9 +75,7 @@
 <body class="main-body app sidebar-mini">
 
     <!-- Loader -->
-    <div id="global-loader">
-        <img src="/Valex/html/assets/img/loader.svg" class="loader-img" alt="Loader">
-    </div>
+
     <!-- /Loader -->
 <!-- Page -->
 <div class="page">
