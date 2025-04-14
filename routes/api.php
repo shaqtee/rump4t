@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DimensionsController;
 use Illuminate\Support\Facades\Route;
+use Modules\News\App\Http\Controllers\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,10 @@ Route::prefix('sign-in')->group(function() {
     Route::post('verify-login', [AuthController::class, 'verify_login'])->name('login');
     Route::post('login-cepat', [AuthController::class, 'loginCepat'])->name('login');
     Route::post('resend-otp-login', [AuthController::class, 'resend_otp_login']);
+});
+
+route::prefix("news")->group(function(){
+    Route::get('', [NewsController::class, 'index']);
 });
 
 Route::get('list-region', [AuthController::class, 'list_region']); // new
