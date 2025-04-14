@@ -1,0 +1,11 @@
+{
+    "name": "NewsAdmin",
+    "alias": "newsadmin",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\NewsAdmin\\App\\Providers\\NewsAdminServiceProvider"
+    ],
+    "files": []
+}
