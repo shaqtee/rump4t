@@ -65,7 +65,7 @@ Route::middleware(['auth'])->group(function(){
             Route::get('tambah', [NewsAdminController::class, 'create'])->name('news-admin.tambah');
             Route::post('tambah', [NewsAdminController::class, 'store'])->name('news-admin.tambah');
             Route::get('{id}/ubah', [NewsAdminController::class, 'edit'])->name('news-admin.ubah');
-            Route::patch('{id}/ubah', [NewsAdminController::class, 'update'])->name('news-admin.ubah');
+            Route::put('{id}/ubah', [NewsAdminController::class, 'update'])->name('news-admin.ubah');
             Route::delete('{id}/hapus', [NewsAdminController::class, 'destroy'])->name('news-admin.hapus');
         });
 

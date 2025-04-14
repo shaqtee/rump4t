@@ -105,17 +105,17 @@ class NewsAdminController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        update news
+        // update news
         $news = NewsAdmin::findOrFail($id);
         $news->title = $request->input('title');
-        $news->content = $request->input('description');
+        $news->content = $request->input('content');
         $news->is_published = $request->input('is_published', true);
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('newsimage', 's3');
             $news->image = $path;
         } else {
             // dd('no image');
-            $news->image = null; // or set a default value if needed
+            // $news->image = null; // or set a default value if needed
         }
         $news->save();
         return redirect()->route('news-admin.index')->with('success', 'News updated successfully.');
