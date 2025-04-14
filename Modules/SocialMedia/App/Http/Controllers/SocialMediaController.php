@@ -138,6 +138,33 @@ class SocialMediaController extends Controller
 
     }
 
+    public function wasLiked() {
+
+        $postId = request()->input('post_id');
+        $userId = auth()->id();
+
+        $like = Likes::where('t_user_id', $userId)
+            ->where('t_post_id', $postId)
+            ->first();
+
+        if ($like) {
+            return response()->json(['liked' => true]);
+        } else {
+            return response()->json(['liked' => false]);
+        }
+
+    }
+
+    public function likeCount() {
+
+        $postId = request()->input('post_id');
+
+        $likeCount = Likes::where('t_post_id', $postId)->count();
+
+        return response()->json(['like_count' => $likeCount]);
+        
+    }
+
     public function postUnlike(Request $req){
         DB::beginTransaction();
         try {
@@ -153,7 +180,7 @@ class SocialMediaController extends Controller
                 $like = Likes::where('t_user_id', auth()->id())
                 ->where('t_post_id', $req->postId)
                 ->first();
-                
+
 
             }
 
