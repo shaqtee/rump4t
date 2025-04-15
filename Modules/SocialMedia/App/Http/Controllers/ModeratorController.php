@@ -138,7 +138,8 @@ class ModeratorController extends Controller
      */
     public function edit($id)
     {
-        return view('socialmedia.moderation::edit');
+        $post = Post::find($id);
+        return view('socialmedia.moderations::edit' , compact('post'));
     }
 
     /**
@@ -146,7 +147,30 @@ class ModeratorController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        //
+        try {
+            DB::beginTransaction();
+            $post = Post::find($id);
+            $post->title = $request->input('title');
+            $post->desc = $request->input('description');
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'socialmedia/' . $filename;
+                \Storage::disk('s3')->put($path, file_get_contents($file));
+                $post->url_cover_image = \Storage::disk('s3')->url($path);
+            } else {
+                // dd('no image');
+                $post->url_cover_image = null; // or set a default value if needed
+            }
+            $post->save();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to update post: ' . $e->getMessage());
+
+        }
+        DB::commit();
+        return redirect()->route('socialmedia.moderation.index')->with('success', 'Post updated successfully.');
     }
 
     /**

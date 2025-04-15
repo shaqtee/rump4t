@@ -211,7 +211,7 @@ Route::middleware(['auth'])->group(function(){
                 Route::get('tambah', [ModeratorController::class, 'create'])->name('socialmedia.moderation.tambah');
                 Route::post('tambah', [ModeratorController::class, 'store'])->name('socialmedia.moderation.tambah');
                 Route::get('{id}/ubah', [ModeratorController::class, 'edit'])->name('socialmedia.moderation.ubah');
-                Route::patch('{id}/ubah', [ModeratorController::class, 'update'])->name('socialmedia.moderation.ubah');
+                Route::put('{id}/ubah', [ModeratorController::class, 'update'])->name('socialmedia.moderation.ubah');
                 Route::delete('{id}/hapus', [ModeratorController::class, 'destroy'])->name('socialmedia.moderation.hapus');
                 // add mods route and coments route
                 Route::get("{id}/moderate" , [ModeratorController::class, 'moderate'])->name('socialmedia.moderation.moderate');
