@@ -24,6 +24,7 @@ class SocialMediaServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/migrations'));
+        $this->loadViewsFrom(module_path($this->moduleName , 'resources/views/moderations'), 'socialmedia.moderations');
     }
 
     /**

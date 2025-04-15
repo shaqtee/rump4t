@@ -33,6 +33,7 @@ use App\Http\Controllers\ManagePeople\Modules\Events\ManageAlbumEventController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageSponsorEventController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageWinnerCategoryController;
 use Modules\NewsAdmin\App\Http\Controllers\NewsAdminController;
+use Modules\SocialMedia\App\Http\Controllers\ModeratorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -206,6 +207,15 @@ Route::middleware(['auth'])->group(function(){
             Route::resources(['informations' => InformationController::class]);
             Route::resources(['elections' => ElectionsController::class]);
             Route::prefix("mods")->group(function(){
+                Route::get('', [ModeratorController::class, 'index'])->name('socialmedia.moderation.index');
+                Route::get('tambah', [ModeratorController::class, 'create'])->name('socialmedia.moderation.tambah');
+                Route::post('tambah', [ModeratorController::class, 'store'])->name('socialmedia.moderation.tambah');
+                Route::get('{id}/ubah', [ModeratorController::class, 'edit'])->name('socialmedia.moderation.ubah');
+                Route::patch('{id}/ubah', [ModeratorController::class, 'update'])->name('socialmedia.moderation.ubah');
+                Route::delete('{id}/hapus', [ModeratorController::class, 'destroy'])->name('socialmedia.moderation.hapus');
+                // add mods route and coments route
+                Route::get("{id}/moderate" , [ModeratorController::class, 'moderate'])->name('socialmedia.moderation.moderate');
+                Route::get('{id}/comments', [ModeratorController::class, 'comments'])->name('socialmedia.moderation.comments');
 
             });
             Route::prefix('elections')->group(function(){
