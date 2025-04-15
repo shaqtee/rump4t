@@ -20,13 +20,13 @@
 
                 <div class="form-group mt-3">
                     <label for="description">Description</label>
-                    <textarea name="description" id="description" class="form-control" rows="5" required>{{ $post->description }}</textarea>
+                    <textarea name="description" id="description" class="form-control" rows="5" required>{{ $post->desc }}</textarea>
                 </div>
 
                 <div class="form-group mt-3">
                     <label for="image">Existing Image</label>
                     <div class="mb-3">
-                        <img src{{  $post->image }}" alt="Existing Image" class="img-thumbnail" style="max-width: 200px;">
+                        <img src{{  $post->url_cover_image }}" alt="Existing Image" class="img-thumbnail" style="max-width: 200px;">
                     </div>
                     <label for="image">Upload New Image</label>
                     <input type="file" name="image" id="image" class="form-control">

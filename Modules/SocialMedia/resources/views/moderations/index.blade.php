@@ -25,7 +25,7 @@
 <div class="container mt-4">
     <div class="row">
         @foreach($posts as $post)
-            <div class="col-md-4 mb-4" style="height: 100%;">
+            <div class="col-md-4 mb-4" style="height: 100%; {{ $post->deleted_at !== null ? 'opacity: .4;' : '' }}">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ $post->title }}</h5>
@@ -38,6 +38,9 @@
                             <img src="{{ $post->url_cover_image }}" class="card-img-top" alt="Post Image" style="object-fit: cover; height: 200px; width: 100%;">
                             @endif
                         <p class="card-text">{{ Str::limit($post->desc, 400) }}</p>
+                        @if($post->moderation !== null)
+                            <p class="card-text text-danger">Dihapus karena: {{ $post->moderation->reason }}</p>
+                        @endif
                         <hr>
                         @if($post->user === null || $post->user->id !== auth()->id())
                             <a href="{{ route('socialmedia.moderation.moderate', $post->id) }}" class="btn btn-primary btn-sm">Moderate</a>

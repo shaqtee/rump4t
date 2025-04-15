@@ -215,6 +215,7 @@ Route::middleware(['auth'])->group(function(){
                 Route::delete('{id}/hapus', [ModeratorController::class, 'destroy'])->name('socialmedia.moderation.hapus');
                 // add mods route and coments route
                 Route::get("{id}/moderate" , [ModeratorController::class, 'moderate'])->name('socialmedia.moderation.moderate');
+                Route::put("{id}/moderate" , [ModeratorController::class, 'moderateStore'])->name('socialmedia.moderation.moderate');
                 Route::get('{id}/comments', [ModeratorController::class, 'comments'])->name('socialmedia.moderation.comments');
 
             });

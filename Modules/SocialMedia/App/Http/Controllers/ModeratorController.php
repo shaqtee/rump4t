@@ -17,15 +17,45 @@ class ModeratorController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy("created_at" , "desc")->paginate(6);
+        $posts = Post::orderBy("created_at" , "desc")->withTrashed() ->paginate(6);
         return view('socialmedia.moderations::index' , compact('posts'));
     }
 
     public function moderate($id)
     {
         $post = Post::find($id);
-        $socialmedia = SocialMedia::where('id_post', $id)->first();
-        return view('socialmedia.moderations::moderate' , compact('post', 'socialmedia'));
+        return view('socialmedia.moderations::moderate' , compact('post', 'post'));
+    }
+
+    public function moderateStore(Request $request, $id)
+    {
+        try{
+            DB::beginTransaction();
+        $post = Post::find($id);
+       (object) $moderation = [
+            "moderator" => auth()->user(),
+            "reason" => $request->input('comments'),
+        ];
+        $post->moderation = (object) $moderation;
+        $post->save();
+    }catch(\Exception $e) {
+        DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
+        }
+        DB::commit();
+        // return redirect()->route('socialmedia.moderation.index')->with('success', 'Post moderated successfully.');
+
+
+        try {
+        DB::beginTransaction();
+        $post = Post::find($id)->delete();
+
+        }catch(\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
+        }
+        DB::commit();
+        return redirect()->route('socialmedia.moderation.index')->with('success', 'Post moderated successfully.');
     }
 
     public function comment($id)
