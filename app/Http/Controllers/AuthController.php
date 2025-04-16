@@ -1238,10 +1238,19 @@ class AuthController extends Controller
     {
         $list_region = $this->references
             ->where('parameter', 'm_region')
-            ->orWhere('parameter', 'm_area')
             ->get();
 
         return $this->api->success($list_region, 'success');
+    }
+
+    public function list_area($region_id)
+    {
+        $list_area = $this->references
+            ->where('parameter', 'm_area')
+            ->where('parent_id', $region_id)
+            ->get();
+
+        return $this->api->success($list_area, 'success');
     }
 
     public function loginCepat(Request $request){

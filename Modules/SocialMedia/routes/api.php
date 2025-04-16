@@ -50,3 +50,8 @@ Route::prefix('form-group-discussion')->group(function() {
     Route::delete('delete-message/{id}', [FormGroupDiscussionController::class, 'deleteMessage']);
 });
 Route::apiResource('election', ElectionsController::class);
+
+// banner
+Route::post('banner-create', [SocialMediaController::class, 'banner_create']);
+Route::post('banner-update/{id}', [SocialMediaController::class, 'banner_update']);
+Route::post('banner-delete/{id}', [SocialMediaController::class, 'banner_delete']);
