@@ -225,6 +225,7 @@ Route::middleware(['auth'])->group(function(){
                 Route::delete('{id}/comments/{comment_id}/hapus', [ModeratorController::class, 'commentDestroy'])->name('socialmedia.moderation.comments.hapus');
                 // subcomments
                 Route::get('{id}/comments/{comment_id}/subcomments', [ModeratorController::class, 'subcomments'])->name('socialmedia.moderation.subcomments');
+                Route::get('{id}/comments/{comment_id}/subcomments/reply', [ModeratorController::class, 'subcommentReply'])->name('socialmedia.moderation.subcomments.reply');
             });
             Route::prefix('elections')->group(function(){
                 Route::get('{id}/results', [ElectionsController::class, 'resultsCandidate'])->name('socialmedia.elections.resultsCandidate');

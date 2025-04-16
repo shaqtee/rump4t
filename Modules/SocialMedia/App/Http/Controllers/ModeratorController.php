@@ -62,7 +62,7 @@ class ModeratorController extends Controller
     public function comments($id)
     {
         $post = Post::find($id);
-        $comments = DetailPost::where('id_post', $id)->get();
+        $comments = DetailPost::where('id_post', $id)->where("parent_id" , null)->get();
         return view('socialmedia.moderations::comment' , compact('post' , "comments"));
     }
 
@@ -128,15 +128,33 @@ class ModeratorController extends Controller
     public function subcomments($post_id , $comment_id)
     {
         $comment = DetailPost::where('id', $comment_id)->first();
+        $post = Post::find($post_id);
         $subcomments = DetailPost::where('parent_id', $comment_id)->get();
  
-        return view('socialmedia.moderations::subcomment' , compact('subcomments' , "comment"));
+        return view('socialmedia.moderations::subcomment' , compact("post" , 'subcomments' , "comment"));
     }
-    public function subcommentStore(Request $request, $comment_id)
+    public function subcommentReply(Request $request, $post_id  ,$comment_id)
     {
-        $post = Post::find($comment_id);
-        $socialmedia = SocialMedia::where('id_post', $comment_id)->first();
-        return view('socialmedia.moderations::subcomment' , compact('post', 'socialmedia'));
+        $comment = DetailPost::where('id', $comment_id)->first();
+        $post = Post::find($comment->id_post);   
+        return view('socialmedia.moderations::subcomment-reply' , compact('comment' , "post"));
+    }
+    public function subcommentStore(Request $request, $post_id , $comment_id)
+    {
+        try {
+            DB::beginTransaction();
+            $comment = new DetailPost();
+            $comment->id_post = $post_id;
+            $comment->id_user = auth()->user()->id;
+            $comment->komentar = $request->input('comment');
+            $comment->parent_id = $comment_id;
+            $comment->save();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to comment: ' . $e->getMessage());
+        }
+        DB::commit();
+        return redirect()->route('socialmedia.moderation.subcomments', [$request->input('id_post'), $request->input('parent_id')])->with('success', 'Comment created successfully.');
     }
     public function subcommentUpdate(Request $request, $comment_id)
     {
