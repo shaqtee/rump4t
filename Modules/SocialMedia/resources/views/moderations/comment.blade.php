@@ -6,7 +6,12 @@
     <div class="card mb-4">
         <div class="card-body">
             <h2 class="card-title">{{ $post->title }}</h2>
-            <p class="card-text">{{ $post->content }}</p>
+            {{-- show image  --}}
+            @if($post->url_cover_image)
+                <img src="{{ $post->url_cover_image }}" class=" card-img-top" alt="{{ $post->title }}">
+                @endif
+            <p class="card-text">{{ $post->desc }}</p>
+
         </div>
     </div>
 
@@ -16,7 +21,7 @@
             @foreach($comments as $comment)
                 <div class="card mb-3">
                     <div class="card-body">
-                        <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}</p>
+                        <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->komentar }}</p>
                         <small class="text-muted">Posted on {{ $comment->created_at->format('d M Y, H:i') }}</small>
                     </div>
                 </div>
