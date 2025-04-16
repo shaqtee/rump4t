@@ -227,6 +227,9 @@ Route::middleware(['auth'])->group(function(){
                 Route::get('{id}/comments/{comment_id}/subcomments', [ModeratorController::class, 'subcomments'])->name('socialmedia.moderation.subcomments');
                 Route::get('{id}/comments/{comment_id}/subcomments/reply', [ModeratorController::class, 'subcommentReply'])->name('socialmedia.moderation.subcomments.reply');
                 Route::post('{id}/comments/{comment_id}/subcomments/reply', [ModeratorController::class, 'subcommentStore'])->name('socialmedia.moderation.subcomments.reply');
+                Route::get('{id}/comments/{comment_id}/subcomments/edit/{subcomment_id}', [ModeratorController::class, 'subcommentEdit'])->name('socialmedia.moderation.subcomments.ubah');
+                Route::put('{id}/comments/{comment_id}/subcomments/edit/{subcomment_id}', [ModeratorController::class, 'subcommentUpdate'])->name('socialmedia.moderation.subcomments.ubah');
+                Route::delete('{id}/comments/{comment_id}/subcomments/edit/{subcomment_id}', [ModeratorController::class, 'subcommentDestroy'])->name('socialmedia.moderation.subcomments.hapus');
             });
             Route::prefix('elections')->group(function(){
                 Route::get('{id}/results', [ElectionsController::class, 'resultsCandidate'])->name('socialmedia.elections.resultsCandidate');

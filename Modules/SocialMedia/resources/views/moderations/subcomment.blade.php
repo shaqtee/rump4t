@@ -24,6 +24,14 @@
                                 <h5 class="card-title"><strong>{{ $subcomment->user->name }}</strong></h5>
                                 <p class="card-text">{{ $subcomment->komentar }}</p>
                                 <p class="text-muted small mb-0">Posted on {{ $subcomment->created_at->format('M d, Y H:i') }}</p>
+                                {{-- add edit and delete button --}}
+                                <div class="d-flex">
+                                    <a href="{{ route('socialmedia.moderation.subcomments.ubah', ["id" => $post->id , 'comment_id' => $comment->id , 'subcomment_id' => $subcomment->id]) }}" class="btn btn-primary btn-sm m-2">Edit</a>
+                                    <form action="{{ route('socialmedia.moderation.subcomments.hapus', ["id" => $post->id , 'comment_id' => $comment->id , 'subcomment_id' => $subcomment->id]) }}" method="POST" class="m-2">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
                             </div>
                         </div>
                     </div>

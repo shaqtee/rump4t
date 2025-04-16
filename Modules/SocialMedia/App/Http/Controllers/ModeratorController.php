@@ -156,11 +156,26 @@ class ModeratorController extends Controller
         DB::commit();
         return redirect()->route('socialmedia.moderation.subcomments', [$post_id, $comment_id])->with('success', 'Comment created successfully.');
     }
-    public function subcommentUpdate(Request $request, $comment_id)
+    public function subcommentEdit(Request $request, $post_id , $comment_id , $subcomment_id)
     {
-        $post = Post::find($comment_id);
-        $socialmedia = SocialMedia::where('id_post', $comment_id)->first();
-        return view('socialmedia.moderations::subcomment' , compact('post', 'socialmedia'));
+        $post = Post::find($post_id);
+        $comment = DetailPost::where('id', $comment_id)->first();
+        $subcomment = DetailPost::where('id', $subcomment_id)->first();
+        return view('socialmedia.moderations::subcomment-edit' , compact('comment' , 'post' , 'subcomment'));
+    }
+    public function subcommentUpdate(Request $request, $post_id  ,  $comment_id , $subcomment_id)
+    {
+        try {
+            DB::beginTransaction();
+            $subcomment = DetailPost::where('id', $subcomment_id)->first();
+            $subcomment->komentar = $request->input('content');
+            $subcomment->save();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to update comment: ' . $e->getMessage());
+        }
+        DB::commit();
+        return redirect()->route('socialmedia.moderation.subcomments', [$post_id, $comment_id])->with('success', 'Comment updated successfully.');   
     }
     public function subcommentDestroy($comment_id)
     {
