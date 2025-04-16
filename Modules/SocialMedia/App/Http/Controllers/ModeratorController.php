@@ -84,6 +84,15 @@ class ModeratorController extends Controller
         return redirect()->route('socialmedia.moderation.comments', $id)->with('success', 'Comment created successfully.');
     }
 
+    public function editComment(Request $request , $id , $comment_id)
+    {
+    
+        $comment = DetailPost::where('id', $comment_id)->first();
+        $post = Post::find($id);
+        return view('socialmedia.moderations::edit-comment' , compact('comment' , 'post'));
+
+    }
+
     public function commentUpdate(Request $request, $id)
     {
         $post = Post::find($id);

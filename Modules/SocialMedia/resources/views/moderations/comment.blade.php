@@ -23,7 +23,18 @@
                     <div class="card-body">
                         <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->komentar }}</p>
                         <small class="text-muted">Posted on {{ $comment->created_at->format('d M Y, H:i') }}</small>
+                        {{-- add delete and edit button --}}
+                        <div class="d-flex justify-content-end mt-2">
+                            <form action="{{ route('socialmedia.moderation.comments.hapus',  [$post->id , $comment->id]) }}" method="POST" class="mr-2">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                            @if(auth()->id() === $comment->id_user)
+                                <a href="{{ route('socialmedia.moderation.comments.edit', [$post->id , $comment->id]) }}" class="btn btn-warning btn-sm">Edit</a>
+                            @endif
                     </div>
+                </div>
                 </div>
             @endforeach
 

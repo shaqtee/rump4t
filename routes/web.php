@@ -218,6 +218,11 @@ Route::middleware(['auth'])->group(function(){
                 Route::put("{id}/moderate" , [ModeratorController::class, 'moderateStore'])->name('socialmedia.moderation.moderate');
                 Route::get('{id}/comments', [ModeratorController::class, 'comments'])->name('socialmedia.moderation.comments');
                 Route::post('{id}/comments', [ModeratorController::class, 'commentStore'])->name('socialmedia.moderation.comments');
+                //
+                // editing and deleting comments 
+                Route::get('{id}/comments/{comment_id}/edit', [ModeratorController::class, 'editComment'])->name('socialmedia.moderation.comments.edit');
+                Route::put('{id}/comments/{comment_id}/edit', [ModeratorController::class, 'commentUpdate'])->name('socialmedia.moderation.comments.edit');
+                Route::delete('{id}/comments/{comment_id}/hapus', [ModeratorController::class, 'commentDestroy'])->name('socialmedia.moderation.comments.hapus');
 
             });
             Route::prefix('elections')->group(function(){
