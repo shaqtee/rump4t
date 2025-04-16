@@ -93,11 +93,20 @@ class ModeratorController extends Controller
 
     }
 
-    public function commentUpdate(Request $request, $id)
+    public function commentUpdate(Request $request, $id , $comment_id)
     {
-        $post = Post::find($id);
-        $socialmedia = SocialMedia::where('id_post', $id)->first();
-        return view('socialmedia.moderations::comment' , compact('post', 'socialmedia'));
+        try {
+            DB::beginTransaction();
+            $comment = DetailPost::where('id', $comment_id)->first();
+            $comment->komentar = $request->input('comment');
+            $comment->save();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to update comment: ' . $e->getMessage());
+        }
+
+        DB::commit();
+        return redirect()->route('socialmedia.moderation.comments', $id)->with('success', 'Comment updated successfully.');
     }
 
     public function commentDestroy($id)

@@ -18,13 +18,13 @@
                 
                 <div class="form-group">
                     <label for="comment">Edit your comment:</label>
-                    <textarea id="comment" name="comment" class="form-control" rows="5">{{ old('comment', $comment->content) }}</textarea>
+                    <textarea id="comment" name="comment" class="form-control" rows="5">{{ old('comment', $comment->komentar) }}</textarea>
                 </div>
                 
                 <div class="form-group">
                     <label>Preview:</label>
                     <div id="comment-preview" class="border p-3" style="background-color: #f9f9f9;">
-                        {{ old('comment', $comment->content) }}
+                        {{ old('comment', $comment->komentar) }}
                     </div>
                 </div>
                 
