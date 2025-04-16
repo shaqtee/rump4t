@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Community\App\Models\SocialMedia;
+use Modules\SocialMedia\App\Models\DetailPost;
 use Modules\SocialMedia\App\Models\Post;
 
 class ModeratorController extends Controller
@@ -58,18 +59,29 @@ class ModeratorController extends Controller
         return redirect()->route('socialmedia.moderation.index')->with('success', 'Post moderated successfully.');
     }
 
-    public function comment($id)
+    public function comments($id)
     {
         $post = Post::find($id);
-        $socialmedia = SocialMedia::where('id_post', $id)->first();
-        return view('socialmedia.moderations::comment' , compact('post', 'socialmedia'));
+        $comments = DetailPost::where('id_post', $id)->get();
+        return view('socialmedia.moderations::comment' , compact('post' , "comments"));
     }
 
     public function commentStore(Request $request, $id)
     {
-        $post = Post::find($id);
-        $socialmedia = SocialMedia::where('id_post', $id)->first();
-        return view('socialmedia.moderations::comment' , compact('post', 'socialmedia'));
+        try {
+            DB::beginTransaction();
+            $post = Post::find($id);
+            $comment = new DetailPost();
+            $comment->id_post = $id;
+            $comment->id_user = auth()->user()->id;
+            $comment->komentar = $request->input('content');
+            $comment->save();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Fail to comment: ' . $e->getMessage());
+        }
+        DB::commit();
+        return redirect()->route('socialmedia.moderation.comments', $id)->with('success', 'Comment created successfully.');
     }
 
     public function commentUpdate(Request $request, $id)

@@ -217,6 +217,7 @@ Route::middleware(['auth'])->group(function(){
                 Route::get("{id}/moderate" , [ModeratorController::class, 'moderate'])->name('socialmedia.moderation.moderate');
                 Route::put("{id}/moderate" , [ModeratorController::class, 'moderateStore'])->name('socialmedia.moderation.moderate');
                 Route::get('{id}/comments', [ModeratorController::class, 'comments'])->name('socialmedia.moderation.comments');
+                Route::post('{id}/comments', [ModeratorController::class, 'commentStore'])->name('socialmedia.moderation.comments');
 
             });
             Route::prefix('elections')->group(function(){
