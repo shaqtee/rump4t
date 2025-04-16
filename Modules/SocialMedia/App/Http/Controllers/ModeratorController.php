@@ -177,11 +177,18 @@ class ModeratorController extends Controller
         DB::commit();
         return redirect()->route('socialmedia.moderation.subcomments', [$post_id, $comment_id])->with('success', 'Comment updated successfully.');   
     }
-    public function subcommentDestroy($comment_id)
+    public function subcommentDestroy($post_id , $comment_id , $subcomment_id)
     {
-        $post = Post::find($comment_id);
-        $socialmedia = SocialMedia::where('id_post', $comment_id)->first();
-        return view('socialmedia.moderations::subcomment' , compact('post', 'socialmedia'));
+        try {
+            DB::beginTransaction();
+            $subcomment = DetailPost::where('id', $subcomment_id)->first();
+            $subcomment->delete();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to delete comment: ' . $e->getMessage());
+        }
+        DB::commit();
+        return redirect()->route('socialmedia.moderation.subcomments', [$post_id, $comment_id])->with('success', 'Comment deleted successfully.');
     }
 
     /**
