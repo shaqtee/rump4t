@@ -223,7 +223,8 @@ Route::middleware(['auth'])->group(function(){
                 Route::get('{id}/comments/{comment_id}/edit', [ModeratorController::class, 'editComment'])->name('socialmedia.moderation.comments.edit');
                 Route::put('{id}/comments/{comment_id}/edit', [ModeratorController::class, 'commentUpdate'])->name('socialmedia.moderation.comments.edit');
                 Route::delete('{id}/comments/{comment_id}/hapus', [ModeratorController::class, 'commentDestroy'])->name('socialmedia.moderation.comments.hapus');
-
+                // subcomments
+                Route::get('{id}/comments/{comment_id}/subcomments', [ModeratorController::class, 'subcomments'])->name('socialmedia.moderation.subcomments');
             });
             Route::prefix('elections')->group(function(){
                 Route::get('{id}/results', [ElectionsController::class, 'resultsCandidate'])->name('socialmedia.elections.resultsCandidate');

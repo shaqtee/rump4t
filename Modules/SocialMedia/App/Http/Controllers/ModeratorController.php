@@ -125,11 +125,12 @@ class ModeratorController extends Controller
         return redirect()->route('socialmedia.moderation.comments', $id)->with('success', 'Comment deleted successfully.');
     }
 
-    public function subcomment($comment_id)
+    public function subcomments($post_id , $comment_id)
     {
-        $post = Post::find($comment_id);
-        $socialmedia = SocialMedia::where('id_post', $comment_id)->first();
-        return view('socialmedia.moderations::subcomment' , compact('post', 'socialmedia'));
+        $comment = DetailPost::where('id', $comment_id)->first();
+        $subcomments = DetailPost::where('parent_id', $comment_id)->get();
+ 
+        return view('socialmedia.moderations::subcomment' , compact('subcomments' , "comment"));
     }
     public function subcommentStore(Request $request, $comment_id)
     {

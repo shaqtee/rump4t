@@ -31,8 +31,10 @@
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                             @if(auth()->id() === $comment->id_user)
-                                <a href="{{ route('socialmedia.moderation.comments.edit', [$post->id , $comment->id]) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{{ route('socialmedia.moderation.comments.edit', [$post->id , $comment->id]) }}" class="btn btn-warning btn-sm mr-2">Edit</a>
                             @endif
+                            {{-- reply   --}}
+                            <a href="{{ route('socialmedia.moderation.subcomments', [$post->id, $comment->id]) }}" class="btn btn-secondary btn-sm">Balasan</a>
                     </div>
                 </div>
                 </div>
