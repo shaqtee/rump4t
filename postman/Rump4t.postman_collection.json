@@ -1,0 +1,921 @@
+{
+	"info": {
+		"_postman_id": "9e994699-7553-4862-8dff-bcccfcde2527",
+		"name": "Rump4t",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8468503"
+	},
+	"item": [
+		{
+			"name": "Autentikasi",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Dadang\",\r\n    \"phone\":\"08123123\",\r\n    \"email\":\"dadang@gmail.com\",\r\n    \"password\":\"123123\",\r\n    \"region\": 2 // id list region\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}sign-up/registrasi",
+							"host": [
+								"{{local}}sign-up"
+							],
+							"path": [
+								"registrasi"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Dadang\",\r\n    \"phone\":\"08123123\",\r\n    \"email\":\"dadang@gmail.com\",\r\n    \"password\":\"123123\",\r\n    \"region\": 2 // id list region\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}sign-up/registrasi",
+									"host": [
+										"{{local}}sign-up"
+									],
+									"path": [
+										"registrasi"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Apr 2025 18:43:16 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Successfully Registration\",\n    \"code\": 200,\n    \"data\": {\n        \"name\": \"Dadang\",\n        \"phone\": \"08123123\",\n        \"email\": \"dadang@gmail.com\",\n        \"region\": 2,\n        \"updated_at\": \"2025-04-10T18:43:16.000000Z\",\n        \"created_at\": \"2025-04-10T18:43:16.000000Z\",\n        \"id\": 4\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"adi.sakti@live.com\",\r\n    \"password\":\"123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}sign-in/login-cepat",
+							"host": [
+								"{{local}}sign-in"
+							],
+							"path": [
+								"login-cepat"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"adi.sakti@live.com\",\r\n    \"password\":\"123123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}sign-in/login-cepat",
+									"host": [
+										"{{local}}sign-in"
+									],
+									"path": [
+										"login-cepat"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Apr 2025 17:03:48 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"sukses login\",\n    \"code\": 200,\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjdmM2EyNTExNjMxYzQxODI0MWNjNGQ4NDU3N2RlMmU4M2YwMjU0MTUyYjY3MzIxZWMxMTY5NmU0MWUzMGY0MmQ3YjBhMzUxNzBjZDg0NjZlIiwiaWF0IjoxNzQ0MzA0NjI4LjQ0NjE1OCwibmJmIjoxNzQ0MzA0NjI4LjQ0NjE2MiwiZXhwIjoxNzc1ODQwNjI4LjIzMjEwOCwic3ViIjoiMyIsInNjb3BlcyI6W119.Bih8AFNPKA2HWTzjUHidiK-eX6Eer2TIsVHBCFBuE_WTwgYbFmSLJhQqopZt1SyT9GUly_hJkdhboEMkz4i5u1Xyrft3HQJiVouTji8qMgT4gXiBPXdVXeyZPlqghY-ORWpc5VrA2mpdmBFy4hYvl97buVJIP92TgciP9DM0AwuLuuIvSbhLiat2QHZ45WcKDyQmJhAAOSbVomyQXss8Jv4uhn12KvVFY8X5jFb05CB6Y4KhNBnUpTRjKNNHyvDhDzt6rccLerJO4e3try0hbVFccQCDUBlAU8K1u1Fnm8LzAkXM9lAae11uGCs4OWm6Qmq33os57q2_6B-QUkh8TJl7F3K7mMcIi_PmFOFynF6wvzUEiV78K6Vv7Wv6JXikXtDX_f_a4_lGo9Iw7Cuz-WKJBYff8RxVbtxoxvCDt6xoE5bfV5lfzUyiDhN6YEVsqhYqGmFW-Kc8GQFS5-zqxwPh4vzxpMm_-ma25eIVpf_ss2dl5FECFaRSBMJcfzgy7DQ7GsVwvaIi4ou02sKcIBMvMQHsYkhEpdMJN5TN7pHGnPURpb11oe5p_ZPrYxpD9cZi6iRZoF8Oe1vojDFWOL6YiIGqY7uWKF9ht8IzUL6D-rQ06aFfAKjsL4YrLTaHkvQ5aou0BED_icbPx08nMC4eaN2DyeCnQZowDV_kwlg\",\n        \"user\": {\n            \"id\": 3,\n            \"name\": \"Adi Sakti\",\n            \"active\": null,\n            \"email\": \"adi.sakti@live.com\",\n            \"phone\": \"081334090986\",\n            \"remember_token\": null\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "get auth",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjhjZmM3OWViMjJhZDIzMDBmN2JkOTVlNzJhZWMzMjYyOTdiYjk0YTc0OTUwOTU1NzI4NjI0OGM1NGJmMWE1OWM4YmM4OGMxNDA4NDhiYjQ0IiwiaWF0IjoxNzQ0MzA2Njc4LjU0MjU0NSwibmJmIjoxNzQ0MzA2Njc4LjU0MjU0OCwiZXhwIjoxNzc1ODQyNjc4LjA4MDcwNCwic3ViIjoiMyIsInNjb3BlcyI6W119.DOZbLEe71WPSFGsrGNxLI_2HM5tJE3clY0XtegQ_N_q_ZooWneYao8qEZxlN9iqYqkdvgjfKLfouvCFjrUfNQwKiePboIDm3XYtdRA0U6eO4YUu4EdZG3sOsR_JuY1k2i7DIkdvUyxarWrldw8SKDd_XlhF53cZQV5w9sogUf5kpXI1ziwkivth4HqNnT8kpzjysPiA7cUYHrqL5j8feQoQ3WpN_T4Hv5olhzrP0TG03uLz-yPqyZ_1dMdx_T0z-Q1aD7MFHp9S0xBkSZaUNHR5SvjmBognzIDVwYDlzMzMxomN1tBCYJRf8PHn77D8cVOE3wbMGBZMZGvKaBWtz6Bxg4quwzqxPAS7m7wujkwPVY-QO4LNbrFiuuvROH0DqUMF3wu4jeLXPYCCrpmw8XP0pF4vqDaul-HWsipg9Qb4jutME5sadTg_4DVRdH23NVrXG1IzWXSfoqZojz51iihj6S-J4U-EmaJInejiY5-PYh1QhcOu64fDK9q9LUUyyFZ_Yseg7nMwH69qPjzh5U52oqP9OTFkoanNxjAvqOZShcWm8xyEanzpfDVG7bjTMTIXqUmWRs71gi9a0KCzl88FzLb3ZEZljvPnROYvgJL5XW9WrRBP91RQ3yZNhpZHpw-ESrNWUN8zzCFJbgAHdKsCjZEBcINa31PJ4-ExeJCU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}auth/get-auth",
+							"host": [
+								"{{local}}auth"
+							],
+							"path": [
+								"get-auth"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}auth/get-auth",
+									"host": [
+										"{{local}}auth"
+									],
+									"path": [
+										"get-auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Apr 2025 19:39:57 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "58"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Hallo Adi Sakti\",\n    \"code\": 200,\n    \"data\": {\n        \"user\": {\n            \"id\": 3,\n            \"player_id\": null,\n            \"name\": \"Adi Sakti\",\n            \"email\": \"adi.sakti@live.com\",\n            \"phone\": \"081334090986\",\n            \"gender\": null,\n            \"birth_date\": null,\n            \"address\": null,\n            \"position\": null,\n            \"image\": \"https://sgp1.digitaloceanspaces.com/aksiteknologi/rump4t/user-profile/S1ZehQVpEiFNMxRI29HgyxVQFtRVEYlzSbOQdJsE.png\",\n            \"t_city_id\": 3,\n            \"city\": \"MAKASAR\",\n            \"t_community_id\": null,\n            \"community\": null,\n            \"member_since\": \"27/03/2025\",\n            \"url_barcode\": \"https://rump4t.test/rump4t/profile-user/UWpzWGRzZUdUeGI1T29GYzV2UnNDdz09Ojo9f/6oPAy+VJQoD9n6dCmA\",\n            \"birth_place\": null,\n            \"age\": 30,\n            \"desa_kelurahan\": null,\n            \"kecamatan\": null,\n            \"kota_kabupaten\": \"BDG\",\n            \"postal_code\": null,\n            \"provinsi\": null,\n            \"year_of_entry\": null,\n            \"year_of_retirement\": null,\n            \"retirement_type\": null,\n            \"last_employee_status\": null,\n            \"last_division\": null,\n            \"spouse_name\": null,\n            \"shirt_size\": null,\n            \"notes\": null,\n            \"ec_name\": null,\n            \"ec_kinship\": null\n        },\n        \"our_contact\": {\n            \"id\": 1,\n            \"name\": \"RUMP4T\",\n            \"address\": \"Graha Pulo Building, 3rd Floor Suite 301\\nJl. Buncit Raya No. 89, Kalibata, Pancoran,\\nJakarta Selatan - 12740\",\n            \"email\": \"customer@aksiteknologi.com\",\n            \"phone\": \"081210295485\",\n            \"whatsapp\": \"\",\n            \"website\": \"https://www.aksiteknologi.com/\",\n            \"instagram\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"facebook\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"twitter\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"youtube\": \"https://www.youtube.com/@rump4t\"\n        },\n        \"term_condition\": \"https://rump4t.aksiteknologi.com/term-condition\",\n        \"privacy_policy\": \"https://rump4t.aksiteknologi.com/privacy-and-policy\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "auth check",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjhjZmM3OWViMjJhZDIzMDBmN2JkOTVlNzJhZWMzMjYyOTdiYjk0YTc0OTUwOTU1NzI4NjI0OGM1NGJmMWE1OWM4YmM4OGMxNDA4NDhiYjQ0IiwiaWF0IjoxNzQ0MzA2Njc4LjU0MjU0NSwibmJmIjoxNzQ0MzA2Njc4LjU0MjU0OCwiZXhwIjoxNzc1ODQyNjc4LjA4MDcwNCwic3ViIjoiMyIsInNjb3BlcyI6W119.DOZbLEe71WPSFGsrGNxLI_2HM5tJE3clY0XtegQ_N_q_ZooWneYao8qEZxlN9iqYqkdvgjfKLfouvCFjrUfNQwKiePboIDm3XYtdRA0U6eO4YUu4EdZG3sOsR_JuY1k2i7DIkdvUyxarWrldw8SKDd_XlhF53cZQV5w9sogUf5kpXI1ziwkivth4HqNnT8kpzjysPiA7cUYHrqL5j8feQoQ3WpN_T4Hv5olhzrP0TG03uLz-yPqyZ_1dMdx_T0z-Q1aD7MFHp9S0xBkSZaUNHR5SvjmBognzIDVwYDlzMzMxomN1tBCYJRf8PHn77D8cVOE3wbMGBZMZGvKaBWtz6Bxg4quwzqxPAS7m7wujkwPVY-QO4LNbrFiuuvROH0DqUMF3wu4jeLXPYCCrpmw8XP0pF4vqDaul-HWsipg9Qb4jutME5sadTg_4DVRdH23NVrXG1IzWXSfoqZojz51iihj6S-J4U-EmaJInejiY5-PYh1QhcOu64fDK9q9LUUyyFZ_Yseg7nMwH69qPjzh5U52oqP9OTFkoanNxjAvqOZShcWm8xyEanzpfDVG7bjTMTIXqUmWRs71gi9a0KCzl88FzLb3ZEZljvPnROYvgJL5XW9WrRBP91RQ3yZNhpZHpw-ESrNWUN8zzCFJbgAHdKsCjZEBcINa31PJ4-ExeJCU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{local}}auth/check-login",
+							"host": [
+								"{{local}}auth"
+							],
+							"path": [
+								"check-login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}auth/check-login",
+									"host": [
+										"{{local}}auth"
+									],
+									"path": [
+										"check-login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Apr 2025 17:04:34 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "anda sudah login"
+						}
+					]
+				},
+				{
+					"name": "list region",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjhjZmM3OWViMjJhZDIzMDBmN2JkOTVlNzJhZWMzMjYyOTdiYjk0YTc0OTUwOTU1NzI4NjI0OGM1NGJmMWE1OWM4YmM4OGMxNDA4NDhiYjQ0IiwiaWF0IjoxNzQ0MzA2Njc4LjU0MjU0NSwibmJmIjoxNzQ0MzA2Njc4LjU0MjU0OCwiZXhwIjoxNzc1ODQyNjc4LjA4MDcwNCwic3ViIjoiMyIsInNjb3BlcyI6W119.DOZbLEe71WPSFGsrGNxLI_2HM5tJE3clY0XtegQ_N_q_ZooWneYao8qEZxlN9iqYqkdvgjfKLfouvCFjrUfNQwKiePboIDm3XYtdRA0U6eO4YUu4EdZG3sOsR_JuY1k2i7DIkdvUyxarWrldw8SKDd_XlhF53cZQV5w9sogUf5kpXI1ziwkivth4HqNnT8kpzjysPiA7cUYHrqL5j8feQoQ3WpN_T4Hv5olhzrP0TG03uLz-yPqyZ_1dMdx_T0z-Q1aD7MFHp9S0xBkSZaUNHR5SvjmBognzIDVwYDlzMzMxomN1tBCYJRf8PHn77D8cVOE3wbMGBZMZGvKaBWtz6Bxg4quwzqxPAS7m7wujkwPVY-QO4LNbrFiuuvROH0DqUMF3wu4jeLXPYCCrpmw8XP0pF4vqDaul-HWsipg9Qb4jutME5sadTg_4DVRdH23NVrXG1IzWXSfoqZojz51iihj6S-J4U-EmaJInejiY5-PYh1QhcOu64fDK9q9LUUyyFZ_Yseg7nMwH69qPjzh5U52oqP9OTFkoanNxjAvqOZShcWm8xyEanzpfDVG7bjTMTIXqUmWRs71gi9a0KCzl88FzLb3ZEZljvPnROYvgJL5XW9WrRBP91RQ3yZNhpZHpw-ESrNWUN8zzCFJbgAHdKsCjZEBcINa31PJ4-ExeJCU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}auth/list-region",
+							"host": [
+								"{{local}}auth"
+							],
+							"path": [
+								"list-region"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}auth/list-region",
+									"host": [
+										"{{local}}auth"
+									],
+									"path": [
+										"list-region"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Apr 2025 17:52:27 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"code\": 200,\n    \"data\": [\n        {\n            \"id\": 2,\n            \"parameter\": \"m_region\",\n            \"code\": null,\n            \"value\": \"Jakarta\",\n            \"description\": null,\n            \"start_date\": null,\n            \"end_date\": null,\n            \"start\": null,\n            \"end\": null,\n            \"sort\": null,\n            \"created_by\": null,\n            \"updated_by\": null,\n            \"is_active\": 1,\n            \"parent_id\": null,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 3,\n            \"parameter\": \"m_region\",\n            \"code\": null,\n            \"value\": \"Semarang\",\n            \"description\": null,\n            \"start_date\": null,\n            \"end_date\": null,\n            \"start\": null,\n            \"end\": null,\n            \"sort\": null,\n            \"created_by\": null,\n            \"updated_by\": null,\n            \"is_active\": 1,\n            \"parent_id\": null,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 4,\n            \"parameter\": \"m_area\",\n            \"code\": null,\n            \"value\": \"Ambarawa\",\n            \"description\": null,\n            \"start_date\": null,\n            \"end_date\": null,\n            \"start\": null,\n            \"end\": null,\n            \"sort\": null,\n            \"created_by\": null,\n            \"updated_by\": null,\n            \"is_active\": 1,\n            \"parent_id\": 3,\n            \"created_at\": null,\n            \"updated_at\": null\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjdmM2EyNTExNjMxYzQxODI0MWNjNGQ4NDU3N2RlMmU4M2YwMjU0MTUyYjY3MzIxZWMxMTY5NmU0MWUzMGY0MmQ3YjBhMzUxNzBjZDg0NjZlIiwiaWF0IjoxNzQ0MzA0NjI4LjQ0NjE1OCwibmJmIjoxNzQ0MzA0NjI4LjQ0NjE2MiwiZXhwIjoxNzc1ODQwNjI4LjIzMjEwOCwic3ViIjoiMyIsInNjb3BlcyI6W119.Bih8AFNPKA2HWTzjUHidiK-eX6Eer2TIsVHBCFBuE_WTwgYbFmSLJhQqopZt1SyT9GUly_hJkdhboEMkz4i5u1Xyrft3HQJiVouTji8qMgT4gXiBPXdVXeyZPlqghY-ORWpc5VrA2mpdmBFy4hYvl97buVJIP92TgciP9DM0AwuLuuIvSbhLiat2QHZ45WcKDyQmJhAAOSbVomyQXss8Jv4uhn12KvVFY8X5jFb05CB6Y4KhNBnUpTRjKNNHyvDhDzt6rccLerJO4e3try0hbVFccQCDUBlAU8K1u1Fnm8LzAkXM9lAae11uGCs4OWm6Qmq33os57q2_6B-QUkh8TJl7F3K7mMcIi_PmFOFynF6wvzUEiV78K6Vv7Wv6JXikXtDX_f_a4_lGo9Iw7Cuz-WKJBYff8RxVbtxoxvCDt6xoE5bfV5lfzUyiDhN6YEVsqhYqGmFW-Kc8GQFS5-zqxwPh4vzxpMm_-ma25eIVpf_ss2dl5FECFaRSBMJcfzgy7DQ7GsVwvaIi4ou02sKcIBMvMQHsYkhEpdMJN5TN7pHGnPURpb11oe5p_ZPrYxpD9cZi6iRZoF8Oe1vojDFWOL6YiIGqY7uWKF9ht8IzUL6D-rQ06aFfAKjsL4YrLTaHkvQ5aou0BED_icbPx08nMC4eaN2DyeCnQZowDV_kwlg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{local}}auth/logout",
+							"host": [
+								"{{local}}auth"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "logout",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{local}}auth/logout",
+									"host": [
+										"{{local}}auth"
+									],
+									"path": [
+										"logout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Apr 2025 17:07:01 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success Logout\",\n    \"code\": 200,\n    \"data\": null\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "view (get-auth)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjhjZmM3OWViMjJhZDIzMDBmN2JkOTVlNzJhZWMzMjYyOTdiYjk0YTc0OTUwOTU1NzI4NjI0OGM1NGJmMWE1OWM4YmM4OGMxNDA4NDhiYjQ0IiwiaWF0IjoxNzQ0MzA2Njc4LjU0MjU0NSwibmJmIjoxNzQ0MzA2Njc4LjU0MjU0OCwiZXhwIjoxNzc1ODQyNjc4LjA4MDcwNCwic3ViIjoiMyIsInNjb3BlcyI6W119.DOZbLEe71WPSFGsrGNxLI_2HM5tJE3clY0XtegQ_N_q_ZooWneYao8qEZxlN9iqYqkdvgjfKLfouvCFjrUfNQwKiePboIDm3XYtdRA0U6eO4YUu4EdZG3sOsR_JuY1k2i7DIkdvUyxarWrldw8SKDd_XlhF53cZQV5w9sogUf5kpXI1ziwkivth4HqNnT8kpzjysPiA7cUYHrqL5j8feQoQ3WpN_T4Hv5olhzrP0TG03uLz-yPqyZ_1dMdx_T0z-Q1aD7MFHp9S0xBkSZaUNHR5SvjmBognzIDVwYDlzMzMxomN1tBCYJRf8PHn77D8cVOE3wbMGBZMZGvKaBWtz6Bxg4quwzqxPAS7m7wujkwPVY-QO4LNbrFiuuvROH0DqUMF3wu4jeLXPYCCrpmw8XP0pF4vqDaul-HWsipg9Qb4jutME5sadTg_4DVRdH23NVrXG1IzWXSfoqZojz51iihj6S-J4U-EmaJInejiY5-PYh1QhcOu64fDK9q9LUUyyFZ_Yseg7nMwH69qPjzh5U52oqP9OTFkoanNxjAvqOZShcWm8xyEanzpfDVG7bjTMTIXqUmWRs71gi9a0KCzl88FzLb3ZEZljvPnROYvgJL5XW9WrRBP91RQ3yZNhpZHpw-ESrNWUN8zzCFJbgAHdKsCjZEBcINa31PJ4-ExeJCU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}auth/get-auth",
+							"host": [
+								"{{local}}auth"
+							],
+							"path": [
+								"get-auth"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}auth/get-auth",
+									"host": [
+										"{{local}}auth"
+									],
+									"path": [
+										"get-auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Apr 2025 20:00:10 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Hallo Adi Sakti\",\n    \"code\": 200,\n    \"data\": {\n        \"user\": {\n            \"id\": 3,\n            \"player_id\": null,\n            \"name\": \"Adi Sakti\",\n            \"email\": \"adi.sakti@live.com\",\n            \"phone\": \"081334090986\",\n            \"gender\": null,\n            \"birth_date\": null,\n            \"address\": null,\n            \"position\": null,\n            \"image\": \"https://sgp1.digitaloceanspaces.com/aksiteknologi/rump4t/user-profile/S1ZehQVpEiFNMxRI29HgyxVQFtRVEYlzSbOQdJsE.png\",\n            \"t_city_id\": 4,\n            \"city\": \"BANDUNG\",\n            \"t_community_id\": null,\n            \"community\": null,\n            \"member_since\": \"27/03/2025\",\n            \"url_barcode\": \"https://rump4t.test/rump4t/profile-user/NTRYSzJqc0NLODcyd0FXSCtQZ1pmdz09OjoCAvYfMy5vdlIG3OTOCZpO\",\n            \"birth_place\": null,\n            \"age\": 30,\n            \"desa_kelurahan\": null,\n            \"kecamatan\": null,\n            \"kota_kabupaten\": \"BDG\",\n            \"postal_code\": null,\n            \"provinsi\": null,\n            \"year_of_entry\": null,\n            \"year_of_retirement\": null,\n            \"retirement_type\": null,\n            \"last_employee_status\": null,\n            \"last_division\": null,\n            \"spouse_name\": null,\n            \"shirt_size\": null,\n            \"notes\": null,\n            \"ec_name\": null,\n            \"ec_kinship\": null\n        },\n        \"our_contact\": {\n            \"id\": 1,\n            \"name\": \"RUMP4T\",\n            \"address\": \"Graha Pulo Building, 3rd Floor Suite 301\\nJl. Buncit Raya No. 89, Kalibata, Pancoran,\\nJakarta Selatan - 12740\",\n            \"email\": \"customer@aksiteknologi.com\",\n            \"phone\": \"081210295485\",\n            \"whatsapp\": \"\",\n            \"website\": \"https://www.aksiteknologi.com/\",\n            \"instagram\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"facebook\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"twitter\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"youtube\": \"https://www.youtube.com/@rump4t\"\n        },\n        \"term_condition\": \"https://rump4t.aksiteknologi.com/term-condition\",\n        \"privacy_policy\": \"https://rump4t.aksiteknologi.com/privacy-and-policy\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjhjZmM3OWViMjJhZDIzMDBmN2JkOTVlNzJhZWMzMjYyOTdiYjk0YTc0OTUwOTU1NzI4NjI0OGM1NGJmMWE1OWM4YmM4OGMxNDA4NDhiYjQ0IiwiaWF0IjoxNzQ0MzA2Njc4LjU0MjU0NSwibmJmIjoxNzQ0MzA2Njc4LjU0MjU0OCwiZXhwIjoxNzc1ODQyNjc4LjA4MDcwNCwic3ViIjoiMyIsInNjb3BlcyI6W119.DOZbLEe71WPSFGsrGNxLI_2HM5tJE3clY0XtegQ_N_q_ZooWneYao8qEZxlN9iqYqkdvgjfKLfouvCFjrUfNQwKiePboIDm3XYtdRA0U6eO4YUu4EdZG3sOsR_JuY1k2i7DIkdvUyxarWrldw8SKDd_XlhF53cZQV5w9sogUf5kpXI1ziwkivth4HqNnT8kpzjysPiA7cUYHrqL5j8feQoQ3WpN_T4Hv5olhzrP0TG03uLz-yPqyZ_1dMdx_T0z-Q1aD7MFHp9S0xBkSZaUNHR5SvjmBognzIDVwYDlzMzMxomN1tBCYJRf8PHn77D8cVOE3wbMGBZMZGvKaBWtz6Bxg4quwzqxPAS7m7wujkwPVY-QO4LNbrFiuuvROH0DqUMF3wu4jeLXPYCCrpmw8XP0pF4vqDaul-HWsipg9Qb4jutME5sadTg_4DVRdH23NVrXG1IzWXSfoqZojz51iihj6S-J4U-EmaJInejiY5-PYh1QhcOu64fDK9q9LUUyyFZ_Yseg7nMwH69qPjzh5U52oqP9OTFkoanNxjAvqOZShcWm8xyEanzpfDVG7bjTMTIXqUmWRs71gi9a0KCzl88FzLb3ZEZljvPnROYvgJL5XW9WrRBP91RQ3yZNhpZHpw-ESrNWUN8zzCFJbgAHdKsCjZEBcINa31PJ4-ExeJCU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "t_city_id",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local}}auth/update-profile/3",
+							"host": [
+								"{{local}}auth"
+							],
+							"path": [
+								"update-profile",
+								"3"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "t_city_id",
+											"value": "4",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{local}}auth/update-profile/3",
+									"host": [
+										"{{local}}auth"
+									],
+									"path": [
+										"update-profile",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Apr 2025 19:58:35 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success Update Profile\",\n    \"code\": 200,\n    \"data\": {\n        \"t_city_id\": \"4\",\n        \"kota_kabupaten\": \"BDG\",\n        \"image\": \"https://sgp1.digitaloceanspaces.com/aksiteknologi/rump4t/user-profile/S1ZehQVpEiFNMxRI29HgyxVQFtRVEYlzSbOQdJsE.png\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "city list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6ImQ2OTE5YjljOTU5NGZlODFlODVkNzU5ZTVhOTA3OTg2YjJmYzc1NTc2YTBhMDFiNThhOWUwOTcxYzYwMjlkYWQ3ZmE5NDVlMzA4NTAwMWI0IiwiaWF0IjoxNzQ0MzA1NzQwLjk5NjQ3NiwibmJmIjoxNzQ0MzA1NzQwLjk5NjQ3OSwiZXhwIjoxNzc1ODQxNzQwLjk3MTg2OCwic3ViIjoiMyIsInNjb3BlcyI6W119.hR8UTMtv2sKuQ0lcnftAQXOXMDoeoCwckOgaXLJ01S5vLTw_qi8PM1vMlHmDiRX8z4Hlvlk-Z9j-5s9hxEslqksPkoBGFw64BLzevM1wPo8SQsUMbwUcP6q24wdEspufJbc77ILweUZJYS5xqQGlgp7p86wGr1jQCGF6pxiqGheu-PHTfTXNkMfXav81DmwhLWdiaTyoHbISsh7OanVFPLi7A-P-h_U3FnW45G55FfjoHTMxn-Tkm7fVfMQHSHT2TxKpeEDPxxVA5MpI5KlgoHnOI631YeL3VnEY3W-OmCx720VGkuphwb-SSmiPEB59f50p1j59jfRF8nwzwncbkHdt_d9D1m0KNbFwW9uVhxh1B6kE_fLjXz1f72B6AewEArBFUOyk7qvBkVMSrH5TqMp9E0rEKFS2BmkQQ4c9QcRB07g-Z8P3o5F_eL39bHGXaaVDFwRyuu6XLEJeCAUksLEZ5BVtllVX1XFunCAzL5KuSBPcYWU8FbTgO3wKpl1BvtCvrEBmxTg6KtT4exTtoC5GU1nrv58k9bA1bJeF8DcPsbR7mft0LJN_15tEOqacz7Qj9L4WhuycfJjjFIfRcWAs5phiYq4UYW1NmycpnjWA96akq_UJaN83To9k74EbB-t253Gk9UgAyqCvKfBo9Lf9d3Sa7p-EweTaXmUtAM8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}auth/list-city",
+							"host": [
+								"{{local}}auth"
+							],
+							"path": [
+								"list-city"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}auth/list-city",
+									"host": [
+										"{{local}}auth"
+									],
+									"path": [
+										"list-city"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Apr 2025 17:28:13 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"code\": 200,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"code\": \"JKT\",\n            \"name\": \"JAKARTA\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 2,\n            \"code\": \"BJM\",\n            \"name\": \"BANJARMASIN\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 3,\n            \"code\": \"MKS\",\n            \"name\": \"MAKASAR\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 4,\n            \"code\": \"BDG\",\n            \"name\": \"BANDUNG\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 5,\n            \"code\": \"PDG\",\n            \"name\": \"PADANG\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 6,\n            \"code\": \"PPA\",\n            \"name\": \"PAPUA\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 11,\n            \"code\": \"TGR\",\n            \"name\": \"TANGGERANG\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 12,\n            \"code\": \"BGR\",\n            \"name\": \"BOGOR\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 13,\n            \"code\": \"BKS\",\n            \"name\": \"BEKASI\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 14,\n            \"code\": \"DPK\",\n            \"name\": \"DEPOK\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "local",
+			"value": "https://rump4t.test/api/",
+			"type": "default"
+		}
+	]
+}

@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/newsadmin",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\NewsAdmin\\": "",
+            "Modules\\NewsAdmin\\App\\": "app/",
+            "Modules\\NewsAdmin\\Database\\Factories\\": "database/factories/",
+            "Modules\\NewsAdmin\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\NewsAdmin\\Tests\\": "tests/"
+        }
+    }
+}

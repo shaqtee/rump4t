@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DimensionsController;
 use Illuminate\Support\Facades\Route;
+use Modules\News\App\Http\Controllers\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,14 +45,18 @@ Route::prefix('sign-in')->group(function() {
     Route::post('resend-otp-login', [AuthController::class, 'resend_otp_login']);
 });
 
+route::prefix("news")->group(function(){
+    Route::get('', [NewsController::class, 'index']);
+});
+
 Route::get('list-region', [AuthController::class, 'list_region']); // new
 
 Route::prefix('auth')->middleware('auth:api')->group(function () {
     Route::get('check-login', function(){
-        echo 'anda sudah login';
+        echo 'logged_in';
     });
     Route::get('get-auth', [AuthController::class, 'getAuth']);
-    Route::post('update-profile/{id}', [AuthController::class, 'update_profile']);
+    Route::post('update-profile/{id}', [AuthController::class, 'update_profile']); // new sync
     Route::patch('update-email-phone', [AuthController::class, 'update_email_phone']);
     Route::post('verify-update-email-phone', [AuthController::class, 'verify_update_email_phone']);
     Route::post('update-cross', [AuthController::class, 'update_cross']);
@@ -61,4 +66,19 @@ Route::prefix('auth')->middleware('auth:api')->group(function () {
     Route::post('push-notification', [AuthController::class, 'push_notification']);
     Route::get('delete-account', [AuthController::class, 'delete_account']);
     Route::post('aggree-eula', [AuthController::class, 'aggree_with_eula']);
+
+    Route::get('list-region', [AuthController::class, 'list_region']); // new
+    Route::get('list-city', [AuthController::class, 'list_city']); // new
+    Route::post('logout', [AuthController::class, 'logout']); // new
+
+    Route::get('total-user', [AuthController::class, 'total_user']);
+    Route::get('total-member', [AuthController::class, 'total_member']);
+    Route::get('total-member-khusus', [AuthController::class, 'total_member_khusus']);
+
+    Route::get('search-by-name/{name}', [AuthController::class, 'search_by_name']);
+    Route::get('search-by-region/{region}', [AuthController::class, 'search_by_region']);
+    Route::get('selected-region/{id}', [AuthController::class, 'selected_region']);
+    Route::get('selected-area/{id}', [AuthController::class, 'selected_area']);
+    Route::get('search-by-city/{name}', [AuthController::class, 'search_by_city']);
+    Route::get('selected-city/{id}', [AuthController::class, 'selected_city']);
 });

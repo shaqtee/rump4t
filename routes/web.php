@@ -32,6 +32,7 @@ use App\Http\Controllers\ManagePeople\Modules\ManageSponsorCommunityController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageAlbumEventController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageSponsorEventController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageWinnerCategoryController;
+use Modules\NewsAdmin\App\Http\Controllers\NewsAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +50,7 @@ use App\Http\Controllers\ManagePeople\Modules\Events\ManageWinnerCategoryControl
 // });
 
 Route::redirect('', 'login-web');
-Route::get('dgolf/profile-user/{id}', [AuthWebController::class, 'webViewProfile'])->name('dgolf.profile-user');
+Route::get('rump4t/profile-user/{id}', [AuthWebController::class, 'webViewProfile'])->name('rump4t.profile-user');
 Route::middleware(['guest'])->group(function(){
     Route::get('login-web', [AuthWebController::class, 'view_login'])->name('login');
     Route::post('login-web', [AuthWebController::class, 'login'])->name('login-web');
@@ -58,6 +59,15 @@ Route::get('logout', [AuthWebController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function(){
     Route::prefix('admin')->middleware('userAkses:1')->group(function() {
         Route::get('home', [AuthWebController::class, 'home'])->name('admin.home');
+
+        Route::prefix("news-admin")->group(function(){
+            Route::get('', [NewsAdminController::class, 'index'])->name('news-admin.index');
+            Route::get('tambah', [NewsAdminController::class, 'create'])->name('news-admin.tambah');
+            Route::post('tambah', [NewsAdminController::class, 'store'])->name('news-admin.tambah');
+            Route::get('{id}/ubah', [NewsAdminController::class, 'edit'])->name('news-admin.ubah');
+            Route::put('{id}/ubah', [NewsAdminController::class, 'update'])->name('news-admin.ubah');
+            Route::delete('{id}/hapus', [NewsAdminController::class, 'destroy'])->name('news-admin.hapus');
+        });
 
         Route::prefix('users')->group(function(){
             Route::get('index', [UserManageController::class, 'index'])->name('users.semua');
