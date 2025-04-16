@@ -5,7 +5,7 @@
 <div class="container mt-4">
     <h1>Balasan</h1>
     <div class="row">
-        <div class="mb-4">
+        <div class="col-12 mb-4">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title"><strong>{{ $comment->user->name }}</strong></h5>
@@ -18,11 +18,11 @@
                     @if(count($subcomments) !== 0)
 
                     @foreach($subcomments as $subcomment)
-                    <div class="col-md-6 mb-4">
+                    <div class="col-12 mb-4">
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title"><strong>{{ $subcomment->user->name }}</strong></h5>
-                                <p class="card-text">{{ $subcomment->content }}</p>
+                                <p class="card-text">{{ $subcomment->komentar }}</p>
                                 <p class="text-muted small mb-0">Posted on {{ $subcomment->created_at->format('M d, Y H:i') }}</p>
                             </div>
                         </div>

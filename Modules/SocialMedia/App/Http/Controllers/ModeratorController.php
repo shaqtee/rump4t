@@ -154,7 +154,7 @@ class ModeratorController extends Controller
             return redirect()->back()->with('error', 'Failed to comment: ' . $e->getMessage());
         }
         DB::commit();
-        return redirect()->route('socialmedia.moderation.subcomments', [$request->input('id_post'), $request->input('parent_id')])->with('success', 'Comment created successfully.');
+        return redirect()->route('socialmedia.moderation.subcomments', [$post_id, $comment_id])->with('success', 'Comment created successfully.');
     }
     public function subcommentUpdate(Request $request, $comment_id)
     {
