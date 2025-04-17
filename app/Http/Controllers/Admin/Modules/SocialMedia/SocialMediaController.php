@@ -28,7 +28,7 @@ class SocialMediaController extends Controller
             $maxReport = 10;
             $postingan = $this->model->leftJoin('t_report_post as trp', 't_post.id', '=', 'trp.t_post_id')
                 ->select('t_post.*', DB::raw('COUNT(trp.id) as reports_count'))
-                ->groupBy('t_post.id', 't_post.title', 't_post.description', 't_post.url_cover_image', 't_post.id_event', 't_post.id_user', 't_post.created_at', 't_post.updated_at')
+                ->groupBy('t_post.id', 't_post.title' , "t_post.desc", 't_post.description', 't_post.url_cover_image', 't_post.id_event', 't_post.id_user', 't_post.created_at', 't_post.updated_at')
                 ->havingRaw('COUNT(trp.id) >= ' . $maxReport)
                 ->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all());
 

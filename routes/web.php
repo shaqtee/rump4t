@@ -33,6 +33,7 @@ use App\Http\Controllers\ManagePeople\Modules\Events\ManageAlbumEventController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageSponsorEventController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageWinnerCategoryController;
 use Modules\NewsAdmin\App\Http\Controllers\NewsAdminController;
+use Modules\SocialMedia\App\Http\Controllers\ModeratorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -205,6 +206,31 @@ Route::middleware(['auth'])->group(function(){
         Route::prefix('social-media')->group(function(){
             Route::resources(['informations' => InformationController::class]);
             Route::resources(['elections' => ElectionsController::class]);
+            Route::prefix("mods")->group(function(){
+                Route::get('', [ModeratorController::class, 'index'])->name('socialmedia.moderation.index');
+                Route::get('tambah', [ModeratorController::class, 'create'])->name('socialmedia.moderation.tambah');
+                Route::post('tambah', [ModeratorController::class, 'store'])->name('socialmedia.moderation.tambah');
+                Route::get('{id}/ubah', [ModeratorController::class, 'edit'])->name('socialmedia.moderation.ubah');
+                Route::put('{id}/ubah', [ModeratorController::class, 'update'])->name('socialmedia.moderation.ubah');
+                Route::delete('{id}/hapus', [ModeratorController::class, 'destroy'])->name('socialmedia.moderation.hapus');
+                // add mods route and coments route
+                Route::get("{id}/moderate" , [ModeratorController::class, 'moderate'])->name('socialmedia.moderation.moderate');
+                Route::put("{id}/moderate" , [ModeratorController::class, 'moderateStore'])->name('socialmedia.moderation.moderate');
+                Route::get('{id}/comments', [ModeratorController::class, 'comments'])->name('socialmedia.moderation.comments');
+                Route::post('{id}/comments', [ModeratorController::class, 'commentStore'])->name('socialmedia.moderation.comments');
+                //
+                // editing and deleting comments 
+                Route::get('{id}/comments/{comment_id}/edit', [ModeratorController::class, 'editComment'])->name('socialmedia.moderation.comments.edit');
+                Route::put('{id}/comments/{comment_id}/edit', [ModeratorController::class, 'commentUpdate'])->name('socialmedia.moderation.comments.edit');
+                Route::delete('{id}/comments/{comment_id}/hapus', [ModeratorController::class, 'commentDestroy'])->name('socialmedia.moderation.comments.hapus');
+                // subcomments
+                Route::get('{id}/comments/{comment_id}/subcomments', [ModeratorController::class, 'subcomments'])->name('socialmedia.moderation.subcomments');
+                Route::get('{id}/comments/{comment_id}/subcomments/reply', [ModeratorController::class, 'subcommentReply'])->name('socialmedia.moderation.subcomments.reply');
+                Route::post('{id}/comments/{comment_id}/subcomments/reply', [ModeratorController::class, 'subcommentStore'])->name('socialmedia.moderation.subcomments.reply');
+                Route::get('{id}/comments/{comment_id}/subcomments/edit/{subcomment_id}', [ModeratorController::class, 'subcommentEdit'])->name('socialmedia.moderation.subcomments.ubah');
+                Route::put('{id}/comments/{comment_id}/subcomments/edit/{subcomment_id}', [ModeratorController::class, 'subcommentUpdate'])->name('socialmedia.moderation.subcomments.ubah');
+                Route::delete('{id}/comments/{comment_id}/subcomments/edit/{subcomment_id}', [ModeratorController::class, 'subcommentDestroy'])->name('socialmedia.moderation.subcomments.hapus');
+            });
             Route::prefix('elections')->group(function(){
                 Route::get('{id}/results', [ElectionsController::class, 'resultsCandidate'])->name('socialmedia.elections.resultsCandidate');
                 Route::patch('{id}/update-candidate', [ElectionsController::class, 'updateCandidate'])->name('socialmedia.elections.updateCandidate');

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Community\App\Models\EventCommonity;
+use Modules\SocialMedia\App\Models\Likes;
 use Modules\SocialMedia\App\Models\Post;
 use Modules\SocialMedia\App\Models\DetailPost;
 use Modules\SocialMedia\App\Models\ReportPost;
@@ -95,6 +96,110 @@ class SocialMediaController extends Controller
         }
     }
 
+    public function postLike($postId)
+    {
+        DB::beginTransaction();
+        try {
+            $post = $this->model->find($postId);
+            if (!$post) return $this->api->error('Post not found');
+
+        
+            // ckeck like avability 
+            $like = new Likes();
+
+            if($like->uniqueLike(auth()->id(), $postId) == false){
+                return $this->api->error('You have already liked this post');
+            }else{
+                $like->t_user_id = auth()->id();
+                $like->t_post_id = $postId;
+                $like->save();
+                // return $this->api->success($like, "Like Successfully");
+            }
+
+        
+        
+
+
+
+      
+        } catch(\Throwable $e) {
+            DB::rollback();
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+
+        DB::commit();
+        return $this->api->success($like, "Like Successfully");
+
+
+
+
+    }
+
+    public function wasLiked() {
+
+        $postId = request()->input('post_id');
+        $userId = auth()->id();
+
+        $like = Likes::where('t_user_id', $userId)
+            ->where('t_post_id', $postId)
+            ->first();
+
+        if ($like) {
+            return response()->json(['liked' => true]);
+        } else {
+            return response()->json(['liked' => false]);
+        }
+
+    }
+
+    public function likeCount() {
+
+        $postId = request()->input('post_id');
+
+        $likeCount = Likes::where('t_post_id', $postId)->count();
+
+        return response()->json(['like_count' => $likeCount]);
+        
+    }
+
+    public function postUnlike(Request $req){
+        DB::beginTransaction();
+        try {
+            $post = $this->model->find($req->postId);
+            if (!$post) return $this->api->error('Post not found');
+
+            $postlikeexist = (new Likes())->uniqueLike(auth()->id(), $req->postId);
+        
+            if (!$postlikeexist) {
+                 return $this->api->error('Like not found');
+                 }else{
+
+                $like = Likes::where('t_user_id', auth()->id())
+                ->where('t_post_id', $req->postId)
+                ->first();
+
+
+            }
+
+            $like->delete();
+
+        } catch(\Throwable $e) {
+            DB::rollback();
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+
+        DB::commit();
+        return $this->api->success($like, "Unlike Successfully");
+    }
+
     public function report_post(Request $request)
     {
         DB::beginTransaction();
@@ -168,6 +273,25 @@ class SocialMediaController extends Controller
         }
     }
 
+    public function showChildDetail(int $commentID) {
+        try {
+            $show = $this->detailpost->with(['user:id,name,image'])->where('parent_id', $commentID)->get();
+
+            if ($show->isEmpty()) {
+                return $this->api->error("Comments not found for this post");
+            }
+
+            return  $this->api->success($show,  "Success to get data");
+        } catch(\Throwable $e) {
+            DB::rollBack();
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
+
     public function storedetail(Request $request, $id)
     {
         DB::beginTransaction();
@@ -177,6 +301,7 @@ class SocialMediaController extends Controller
 
             $storedetail = $this->detailpost->create([
                 'id_post' => $id,
+                'parent_id' => $request->parent_id,
                 'id_user' => $request->user_id,
                 'komentar' => $request->komentar
             ]);

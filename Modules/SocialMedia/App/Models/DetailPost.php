@@ -4,11 +4,11 @@ namespace Modules\SocialMedia\App\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{Model , SoftDeletes};
 
 class DetailPost extends Model
 {
-    use HasFactory;
+    use HasFactory , SoftDeletes;
 
     protected $guarded = ['id'];
     protected $table = 't_post_detail'; 

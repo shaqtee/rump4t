@@ -5,12 +5,15 @@ namespace Modules\SocialMedia\App\Models;
 use App\Models\User;
 use App\Services\Helpers\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{Model , SoftDeletes};
 use Modules\SocialMedia\App\Models\DetailPost;
+
+
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
+
 
     protected $guarded = ['id'];
     protected $table = 't_post';
@@ -60,6 +63,10 @@ class Post extends Model
 
         return $query;
     }
+
+    protected $casts = [
+        'moderation' => 'object',
+    ];
 
     public static function columns()
     {
