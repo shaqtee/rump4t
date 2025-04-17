@@ -891,7 +891,7 @@ class AuthController extends Controller
                     "age" => $user->age,
                     "desa_kelurahan" => $user->desa_kelurahan,
                     "kecamatan" => $user->kecamatan,
-                    "kota_kabupaten" => $user->city->code,
+                    "kota_kabupaten" => $user->city->code ?? null,
                     "postal_code" => $user->postal_code,
                     "provinsi" => $user->provinsi,
                     "year_of_entry" => $user->year_of_entry,
