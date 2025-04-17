@@ -343,6 +343,16 @@ class AuthController extends Controller
             if(!empty($datas['t_city_id'])){
                 $datas = array_merge($request->all(), ['kota_kabupaten' => $dataUser->city->code]);
             }
+
+            if(!empty($datas['birth_date'])){
+                $birthDate = explode("-", $datas['birth_date']);
+                
+                $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[2], $birthDate[1], $birthDate[0]))) > date("md")
+                    ? ((date("Y") - $birthDate[0]) - 1)
+                    : (date("Y") - $birthDate[0]));
+                    
+                $datas = array_merge($request->all(), ['age' => $age]);
+            }
             
             if(!$dataUser){
                 return  $this->api->error("Data User Not Found");
@@ -854,6 +864,11 @@ class AuthController extends Controller
             $id = Auth::id();
             $user = User::with(['community', 'membersCommonity', 'city'])->find($id);
             $member = MembersCommonity::where('t_user_id', $user->id)->first();
+            $region = $this->references
+                ->where('parameter', 'm_area')
+                ->orWhere('parameter', 'm_region')
+                ->where('id', $user->region)
+                ->get();
 
             $performa = $this->performanceController->box()->getData();
             $hcpIndex = $performa->data->handicapIndex;
@@ -904,6 +919,7 @@ class AuthController extends Controller
                     "notes" => $user->notes,
                     "ec_name" => $user->ec_name,
                     "ec_kinship" => $user->kinship,
+                    "region" => $region,
                 ],
                 'our_contact' => [
                     "id" => $dataCompany->id,
