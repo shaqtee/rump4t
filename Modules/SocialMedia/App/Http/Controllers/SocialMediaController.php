@@ -174,7 +174,7 @@ class SocialMediaController extends Controller
 
             $postlikeexist = (new Likes())->uniqueLike(auth()->id(), $req->postId);
         
-            if (!$postlikeexist) {
+            if ($postlikeexist) {
                  return $this->api->error('Like not found');
                  }else{
 
