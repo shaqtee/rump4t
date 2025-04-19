@@ -39,6 +39,10 @@ Route::post('posts/{id}/store-detail', [SocialMediaController::class, 'storedeta
 Route::get('posts/{id}/show-detail', [SocialMediaController::class, 'showdetail']);
 Route::post('block-user', [SocialMediaController::class, 'blockuser']);
 Route::post('unblock-user', [SocialMediaController::class, 'unblockuser']);
+Route::post('/like/{postId}', [SocialMediaController::class, 'postLike']);
+Route::post('/unlike', [SocialMediaController::class, 'postUnlike']);
+Route::get('/like/was-liked', [SocialMediaController::class, 'wasLiked']);
+Route::get('/like/count', [SocialMediaController::class, 'likeCount']);
 Route::apiResource('sm', SocialMediaController::class);
 
 Route::apiResource('information', InformationController::class);
