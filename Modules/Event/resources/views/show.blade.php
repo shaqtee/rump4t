@@ -14,6 +14,8 @@
             <p><strong>Tanggal Event:</strong> {{ \Carbon\Carbon::parse($event->play_date_start)->translatedFormat('d F Y') }}</p>
             <p><strong>Lokasi:</strong> {{ $event->location }}</p>
             <p><strong>Deskripsi:</strong> {{ $event->description }}</p>
+            <!-- // biaya -->
+            <p><strong>Biaya:</strong> {{ 'Rp ' . number_format($event->price, 0, ',', '.') }}</p>
             <img src="{{ $event->image }}" alt="">
         </div>
     </div>

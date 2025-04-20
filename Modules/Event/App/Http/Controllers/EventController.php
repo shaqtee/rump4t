@@ -52,7 +52,8 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-        return view('event::edit');
+        $event = \Modules\Event\App\Models\Events::find($id);
+        return view('event::edit' , compact('event'));
     }
 
     /**
@@ -60,7 +61,12 @@ class EventController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        //
+        $event = \Modules\Event\App\Models\Events::find($id);
+        if (!$event) {
+            return redirect()->route('event.index')->with('error', 'Event not found');
+        }
+        $event->update($request->all());
+        return redirect()->route('event.index')->with('success', 'Event updated successfully');
     }
 
     /**

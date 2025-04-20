@@ -8,6 +8,9 @@
             <h3>Events</h3>
         </div>
         <div class="card-body">
+            <a href="{{ route('events.tambah') }}" class="btn btn-primary mb-3">Tambah Acara</a>
+        </div>
+        <div class="card-body">
             <table id="eventsTable" class="table table-striped table-bordered">
                 <thead>
                     <tr>
