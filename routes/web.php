@@ -34,6 +34,7 @@ use App\Http\Controllers\ManagePeople\Modules\Events\ManageSponsorEventControlle
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageWinnerCategoryController;
 use Modules\Event\App\Http\Controllers\EventController;
 use Modules\NewsAdmin\App\Http\Controllers\NewsAdminController;
+use Modules\Regions\App\Http\Controllers\RegionsController;
 use Modules\SocialMedia\App\Http\Controllers\ModeratorController;
 
 /*
@@ -60,6 +61,9 @@ Route::middleware(['guest'])->group(function () {
 Route::get('logout', [AuthWebController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->middleware('userAkses:1')->group(function () {
+        Route::prefix("regions")->group(function () {
+            Route::get('' , [RegionsController::class , 'index'])->name('regions.index');
+        });
         Route::prefix('events')->group(function () {
 
             Route::get('', [EventController::class, 'index'])->name('events.index');

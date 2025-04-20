@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/regions",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Regions\\": "",
+            "Modules\\Regions\\App\\": "app/",
+            "Modules\\Regions\\Database\\Factories\\": "database/factories/",
+            "Modules\\Regions\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Regions\\Tests\\": "tests/"
+        }
+    }
+}

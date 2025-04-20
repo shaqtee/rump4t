@@ -7,5 +7,6 @@
     "SocialMedia": true,
     "News": true,
     "NewsAdmin": true,
-    "Event": true
+    "Event": true,
+    "Regions": true
 }
