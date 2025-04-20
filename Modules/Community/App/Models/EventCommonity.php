@@ -38,6 +38,10 @@ class EventCommonity extends Model
     //     'type_scoring',
     // ];
 
+    protected $casts = [
+        'data_input' => 'array',
+    ];
+    
     public function eventCommonity(){
         return $this->belongsTo(Community::class, 't_community_id');
     }
