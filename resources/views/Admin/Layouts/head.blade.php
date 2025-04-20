@@ -118,6 +118,12 @@
     input:checked + .custom-switch-slider:before {
         transform: translateX(22px);
     }
+
+    .form-preview {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-top: 20px;
+    }
 </style>
 </head>
 

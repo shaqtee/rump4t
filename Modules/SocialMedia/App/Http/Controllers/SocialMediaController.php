@@ -57,7 +57,7 @@ class SocialMediaController extends Controller
             $authUserId = auth()->user()->id;
             $blockedUsers = $this->userblock->where('t_user_blocker_id', $authUserId)->get()->pluck('t_user_blocked_id')->unique()->values();
             $reportPost = $this->reportpost->where('t_user_id', $authUserId)->get()->pluck('t_post_id')->unique()->values();
-            $index = $this->model->with(['user:id,name,image'])->withCount('comment')->whereNotIn('id', $reportPost)->whereNotIn('id_user', $blockedUsers)->filter($request)->orderByDesc('id')->paginate($page);
+            $index = $this->model->with(['user:id,name,image'])->withCount('comment','like')->whereNotIn('id', $reportPost)->whereNotIn('id_user', $blockedUsers)->filter($request)->orderByDesc('id')->paginate($page);
 
             return $this->api->list($index, $this->model);
         } catch(\Throwable $e) {

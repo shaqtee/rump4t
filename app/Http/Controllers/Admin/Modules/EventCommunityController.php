@@ -156,6 +156,8 @@ class EventCommunityController extends Controller
     {
         DB::beginTransaction();
         try{
+            $selectedFields = $request->input('fields'); 
+
             if($request->auto_scoring !== 'on')
             {
                 $request['type_scoring'] = $request->type_scoring_show;
@@ -190,6 +192,8 @@ class EventCommunityController extends Controller
             $datas['period'] = 1;
 
             $datas['auto_scoring'] = isset($request->auto_scoring) && $request->auto_scoring == 'on' ? true : false;
+
+            $datas['selected_fields'] = $selectedFields;
 
             //convert location to longitude & latitude
             // $latlng = $this->helper->gMaps($datas['location']);
@@ -233,6 +237,7 @@ class EventCommunityController extends Controller
             return $this->web->store('event.semua');
         } catch (\Throwable $e) {
             DB::rollBack();
+            dd($e->getMessage(), $e->getFile(), $e->getLine()); 
             if($e instanceof ValidationException){
                 return $this->web->error_validation($e);
             }
@@ -283,6 +288,8 @@ class EventCommunityController extends Controller
         DB::beginTransaction();
         try{
 
+            $selectedFields = $request->input('fields'); 
+
             if($request->auto_scoring !== 'on')
             {
                 $request['type_scoring'] = $request->type_scoring_show;
@@ -316,6 +323,8 @@ class EventCommunityController extends Controller
             ]);
 
             $datas['auto_scoring'] = isset($request->auto_scoring) && $request->auto_scoring == 'on' ? true : false;
+
+            $datas['selected_fields'] = json_encode($selectedFields);
 
             //convert location to longitude & latitude
             // $latlng = $this->helper->gMaps($datas['location']);
