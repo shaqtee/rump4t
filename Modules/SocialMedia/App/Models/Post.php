@@ -41,6 +41,11 @@ class Post extends Model
         return $this->hasMany(ReportPost::class, 't_post_id');
     }
 
+    public function likedBy($userId)
+    {
+        return $this->like()->where('t_user_id', $userId)->exists();
+    }
+
     public function scopeFilter($query, $request)
     {
         $validColumns = \Schema::getColumnListing($this->getTable());
