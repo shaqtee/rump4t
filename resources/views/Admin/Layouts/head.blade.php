@@ -13,6 +13,7 @@
 <title>RUMP4T</title>
 <link rel="icon" href="/images/logo-dgolf4.png" type="image/x-icon">
 <link href="/Valex/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 <link href="/Valex/assets/plugins/iconfonts/icons.css" rel="stylesheet" />
 <!--- Internal Fontawesome css-->

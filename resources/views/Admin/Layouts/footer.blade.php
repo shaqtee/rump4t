@@ -112,7 +112,41 @@
 <!-- Internal Modal js-->
 <script src="/Valex/html/assets/js/modal.js"></script>
 
+<script src="/Valex/html/assets/plugins/owl-carousel/owl-main.js"></script>
+<script src="/Valex/html/assets/plugins/owl-carousel/owl.carousel.js"></script>
+
 <script>
+    $(document).ready(function() {
+        var owl = $("#owl-demo");
+        owl.owlCarousel({
+            navigation : false, // Show next and prev buttons
+        
+            slideSpeed : 300,
+            paginationSpeed : 400,
+        
+            items : 1, 
+            itemsDesktop : false,
+            itemsDesktopSmall : false,
+            itemsTablet: false,
+            itemsMobile : false
+        
+        });
+        owl.trigger('owl.play',3000);
+
+        $(".next").click(function(){
+            owl.trigger('owl.next');
+        })
+        $(".prev").click(function(){
+            owl.trigger('owl.prev');
+        })
+        $(".play").click(function(){
+            owl.trigger('owl.play',3000);
+        })
+        $(".stop").click(function(){
+            owl.trigger('owl.stop');
+        })
+    });
+
 	function previewImage() {
 		const image = document.querySelector('#image');
 		const imgPreview = document.querySelector('.image-preview');
