@@ -1153,6 +1153,176 @@
 							"body": "{\n    \"message\": \"success\",\n    \"code\": 200,\n    \"data\": {\n        \"current_page\": 1,\n        \"data\": [\n            {\n                \"id\": 6,\n                \"parameter\": \"m_retirement_type\",\n                \"code\": null,\n                \"value\": \"Penugasan ke perusahaan lain\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            }\n        ],\n        \"first_page_url\": \"https://rump4t.test/api/masters/reference/m_retirement_type?page=1\",\n        \"from\": 1,\n        \"last_page\": 1,\n        \"last_page_url\": \"https://rump4t.test/api/masters/reference/m_retirement_type?page=1\",\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/reference/m_retirement_type?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"next_page_url\": null,\n        \"path\": \"https://rump4t.test/api/masters/reference/m_retirement_type\",\n        \"per_page\": 10,\n        \"prev_page_url\": null,\n        \"to\": 1,\n        \"total\": 1\n    },\n    \"columns\": [\n        {\n            \"m_retirement_type\": {\n                \"Label\": \"m_retirement_type\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"code\": {\n                \"Label\": \"Code\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"value\": {\n                \"Label\": \"Value\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"description\": {\n                \"Label\": \"Description\",\n                \"type\": \"string\"\n            }\n        }\n    ]\n}"
 						}
 					]
+				},
+				{
+					"name": "list shirt size",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjViZTU3ODE3MDI5NTJmYjZlNTcwYTVlZDhkYWQzNzZhMDNlNmM0ZjgwOTFmZDUwZWExYTYwODBjZGQwNDQ2NTFjYzI1YzViYjI4NTllODIzIiwiaWF0IjoxNzQ0ODY4MDI3Ljc1NDk0NiwibmJmIjoxNzQ0ODY4MDI3Ljc1NDk0OSwiZXhwIjoxNzc2NDA0MDI3LjY4NzAzMywic3ViIjoiMTAiLCJzY29wZXMiOltdfQ.IF7-OrO75s5ewf6666dTHaMCniYgUTjqsN5zyja5tSDYxBV3fgFFqwqzhONVt6CcJ37dK1Ka3n-xd4FF-Up-1Crp-nwRu_NG7iAY8CTMSy46FGd379ZtG-PZ5XmbMVqblTHlJ-4hFQEdO7H78JP8jMfDTdxytk_mVj5v_X-mBHUVrulvj3q2MbkfXxqUjJpyEj5-3ptMrrGBVysjBbYV9Y604x6_5bToH_Ihy38tJ9yePESLyMz-33svKtBLYLhBpYlkDZxc8la4uotGnjySESWIbfuYzX-CyM4rqtwXcXncJc6NMjecqlgPTsdeiqz6jEtlMYITljad18sTJSpEo99yFfbHw4kdhQzEn7lPZ3n_VbglzTc73LQMBAH8a_uVQ3uq_txon7YTkIP646oTobBaFr-McAtlnIldCQ9ojRqn0BYa_XhJdm0AFmXrSY5jAejaRuKcQCLSDMQpzPV8oX9ZZXuIPAQqQtAVpTonvO8JgnZpZrrvRieJwHv-VTAz8jEuPrCrl_nSoRInhffcDcjG84U8Z_cDrNu8jxor2FNXUexpaHjJITzKliLgIZ6XZkNLSLY5IGOgEtHyuDoBF8lSkiea6ZmIXI9-HQ8bewvX4ZOeHuAXa3Zm0T3OnX0QTSHIc_3FlOsf4nZVNyhWiiUPzAVa_nX9NQ3Ms2cHaI4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}masters/reference/m_shirt_size",
+							"host": [
+								"{{local}}masters"
+							],
+							"path": [
+								"reference",
+								"m_shirt_size"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}masters/reference/m_shirt_size",
+									"host": [
+										"{{local}}masters"
+									],
+									"path": [
+										"reference",
+										"m_shirt_size"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 20 Apr 2025 19:21:54 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"code\": 200,\n    \"data\": {\n        \"current_page\": 1,\n        \"data\": [\n            {\n                \"id\": 21,\n                \"parameter\": \"m_shirt_size\",\n                \"code\": null,\n                \"value\": \"XXXXL\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            },\n            {\n                \"id\": 20,\n                \"parameter\": \"m_shirt_size\",\n                \"code\": null,\n                \"value\": \"XXXL\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            },\n            {\n                \"id\": 19,\n                \"parameter\": \"m_shirt_size\",\n                \"code\": null,\n                \"value\": \"XXL\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            },\n            {\n                \"id\": 18,\n                \"parameter\": \"m_shirt_size\",\n                \"code\": null,\n                \"value\": \"XL\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            },\n            {\n                \"id\": 17,\n                \"parameter\": \"m_shirt_size\",\n                \"code\": null,\n                \"value\": \"L\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            },\n            {\n                \"id\": 16,\n                \"parameter\": \"m_shirt_size\",\n                \"code\": null,\n                \"value\": \"M\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            },\n            {\n                \"id\": 15,\n                \"parameter\": \"m_shirt_size\",\n                \"code\": null,\n                \"value\": \"S\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            }\n        ],\n        \"first_page_url\": \"https://rump4t.test/api/masters/reference/m_shirt_size?page=1\",\n        \"from\": 1,\n        \"last_page\": 1,\n        \"last_page_url\": \"https://rump4t.test/api/masters/reference/m_shirt_size?page=1\",\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/reference/m_shirt_size?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"next_page_url\": null,\n        \"path\": \"https://rump4t.test/api/masters/reference/m_shirt_size\",\n        \"per_page\": 10,\n        \"prev_page_url\": null,\n        \"to\": 7,\n        \"total\": 7\n    },\n    \"columns\": [\n        {\n            \"m_shirt_size\": {\n                \"Label\": \"m_shirt_size\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"code\": {\n                \"Label\": \"Code\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"value\": {\n                \"Label\": \"Value\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"description\": {\n                \"Label\": \"Description\",\n                \"type\": \"string\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "list last employee status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjViZTU3ODE3MDI5NTJmYjZlNTcwYTVlZDhkYWQzNzZhMDNlNmM0ZjgwOTFmZDUwZWExYTYwODBjZGQwNDQ2NTFjYzI1YzViYjI4NTllODIzIiwiaWF0IjoxNzQ0ODY4MDI3Ljc1NDk0NiwibmJmIjoxNzQ0ODY4MDI3Ljc1NDk0OSwiZXhwIjoxNzc2NDA0MDI3LjY4NzAzMywic3ViIjoiMTAiLCJzY29wZXMiOltdfQ.IF7-OrO75s5ewf6666dTHaMCniYgUTjqsN5zyja5tSDYxBV3fgFFqwqzhONVt6CcJ37dK1Ka3n-xd4FF-Up-1Crp-nwRu_NG7iAY8CTMSy46FGd379ZtG-PZ5XmbMVqblTHlJ-4hFQEdO7H78JP8jMfDTdxytk_mVj5v_X-mBHUVrulvj3q2MbkfXxqUjJpyEj5-3ptMrrGBVysjBbYV9Y604x6_5bToH_Ihy38tJ9yePESLyMz-33svKtBLYLhBpYlkDZxc8la4uotGnjySESWIbfuYzX-CyM4rqtwXcXncJc6NMjecqlgPTsdeiqz6jEtlMYITljad18sTJSpEo99yFfbHw4kdhQzEn7lPZ3n_VbglzTc73LQMBAH8a_uVQ3uq_txon7YTkIP646oTobBaFr-McAtlnIldCQ9ojRqn0BYa_XhJdm0AFmXrSY5jAejaRuKcQCLSDMQpzPV8oX9ZZXuIPAQqQtAVpTonvO8JgnZpZrrvRieJwHv-VTAz8jEuPrCrl_nSoRInhffcDcjG84U8Z_cDrNu8jxor2FNXUexpaHjJITzKliLgIZ6XZkNLSLY5IGOgEtHyuDoBF8lSkiea6ZmIXI9-HQ8bewvX4ZOeHuAXa3Zm0T3OnX0QTSHIc_3FlOsf4nZVNyhWiiUPzAVa_nX9NQ3Ms2cHaI4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}masters/reference/m_last_employee_status",
+							"host": [
+								"{{local}}masters"
+							],
+							"path": [
+								"reference",
+								"m_last_employee_status"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}masters/reference/m_last_employee_status",
+									"host": [
+										"{{local}}masters"
+									],
+									"path": [
+										"reference",
+										"m_last_employee_status"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 20 Apr 2025 19:23:51 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"code\": 200,\n    \"data\": {\n        \"current_page\": 1,\n        \"data\": [\n            {\n                \"id\": 14,\n                \"parameter\": \"m_last_employee_status\",\n                \"code\": null,\n                \"value\": \"KKWT / Kontrak\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            },\n            {\n                \"id\": 13,\n                \"parameter\": \"m_last_employee_status\",\n                \"code\": null,\n                \"value\": \"PBKL\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            },\n            {\n                \"id\": 12,\n                \"parameter\": \"m_last_employee_status\",\n                \"code\": null,\n                \"value\": \"PBT\",\n                \"description\": null,\n                \"start_date\": null,\n                \"end_date\": null,\n                \"start\": null,\n                \"end\": null,\n                \"sort\": null,\n                \"created_by\": null,\n                \"updated_by\": null,\n                \"is_active\": 1,\n                \"parent_id\": null,\n                \"created_at\": null,\n                \"updated_at\": null,\n                \"parent\": null\n            }\n        ],\n        \"first_page_url\": \"https://rump4t.test/api/masters/reference/m_last_employee_status?page=1\",\n        \"from\": 1,\n        \"last_page\": 1,\n        \"last_page_url\": \"https://rump4t.test/api/masters/reference/m_last_employee_status?page=1\",\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/reference/m_last_employee_status?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"next_page_url\": null,\n        \"path\": \"https://rump4t.test/api/masters/reference/m_last_employee_status\",\n        \"per_page\": 10,\n        \"prev_page_url\": null,\n        \"to\": 3,\n        \"total\": 3\n    },\n    \"columns\": [\n        {\n            \"m_last_employee_status\": {\n                \"Label\": \"m_last_employee_status\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"code\": {\n                \"Label\": \"Code\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"value\": {\n                \"Label\": \"Value\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"description\": {\n                \"Label\": \"Description\",\n                \"type\": \"string\"\n            }\n        }\n    ]\n}"
+						}
+					]
 				}
 			]
 		},
