@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Regions\App\Models\Region;
 
 class RegionsController extends Controller
 {
@@ -14,7 +15,8 @@ class RegionsController extends Controller
      */
     public function index()
     {
-        return view('regions::index');
+        $regions = Region::paginate(10);   
+        return view('regions::index' , compact('regions'));  
     }
 
     /**
