@@ -60,7 +60,9 @@ class EventsMemberController extends Controller
                 "voucher" => $data["voucher"],
                 "payment_date" => $data["payment_date"],
                 "flag_cancel" => $data["flag_cancel"], // 0 or 1
-                "image" => $data["image"]
+                "image" => $data["image"],
+                "nominal_pembayaran" => $data["nominal_pembayaran"], 
+                "data_input" => isset($data["custom_fields"]) ? json_encode($data["custom_fields"]) : null
             ]);
 
             return $this->api->success($member_event,'success');
