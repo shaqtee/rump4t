@@ -32,7 +32,15 @@ class RegionsController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        try {
+            $region = new Region();
+            $region->name = $request->name;
+            $region->save();
+
+            return redirect()->route('regions.index')->with('success', 'Region created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to create region: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -48,7 +56,12 @@ class RegionsController extends Controller
      */
     public function edit($id)
     {
-        return view('regions::edit');
+        $region = Region::findOrFail($id);
+        if (!$region) {
+            return redirect()->route('regions.index')->with('error', 'Region not found.');
+        }
+        return view('regions::edit', compact('region'));
+
     }
 
     /**
@@ -56,7 +69,18 @@ class RegionsController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        //
+        try {
+            $region = Region::findOrFail($id);
+            if (!$region) {
+                return redirect()->route('regions.index')->with('error', 'Region not found.');
+            }
+            $region->name = $request->name;
+            $region->save();
+
+            return redirect()->route('regions.index')->with('success', 'Region updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update region: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -64,6 +88,17 @@ class RegionsController extends Controller
      */
     public function destroy($id)
     {
+        try {
+            $region = Region::findOrFail($id);
+            if (!$region) {
+                return redirect()->route('regions.index')->with('error', 'Region not found.');
+            }
+            $region->delete();
+
+            return redirect()->route('regions.index')->with('success', 'Region deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete region: ' . $e->getMessage());
+        }
         //
     }
 }

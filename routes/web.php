@@ -66,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('tambah' , [RegionsController::class , 'create'])->name('regions.tambah');
             Route::post('tambah' , [RegionsController::class , 'store'])->name('regions.tambah');
             Route::get('{id}/ubah' , [RegionsController::class , 'edit'])->name('regions.ubah');
-            Route::patch('{id}/ubah' , [RegionsController::class , 'update'])->name('regions.ubah');
+            Route::put('{id}/ubah' , [RegionsController::class , 'update'])->name('regions.ubah');
             Route::delete('{id}/hapus' , [RegionsController::class , 'destroy'])->name('regions.hapus');
         });
         Route::prefix('events')->group(function () {
