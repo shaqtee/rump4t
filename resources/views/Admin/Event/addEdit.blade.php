@@ -373,6 +373,9 @@
                                 </div>
                                 <div class="col">
                                     <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="nominal_pembayaran"> Nominal Pembayaran</label>
+                                    </div>
+                                    <div class="row">
                                         <label><input type="checkbox" name="fields[]" value="dengan_pendamping"> Dengan Pendamping</label>
                                     </div>
                                     <div class="row">
@@ -463,7 +466,8 @@
       nik: `<div class="form-group"><label style="margin-right: 12px;">NIK</label><input type="text" maxlength="16"></div>`,
       photo_nik: `<div class="form-group"><label style="margin-right: 12px;">Upload Photo NIK</label><input type="file"></div>`,
       nik_pendamping: `<div class="form-group"><label style="margin-right: 12px;">NIK Pendamping</label><input type="text" maxlength="16"></div>`,
-      photo_nik_pendamping: `<div class="form-group"><label style="margin-right: 12px;">Upload Photo NIK Pendamping</label><input type="file"></div>`
+      photo_nik_pendamping: `<div class="form-group"><label style="margin-right: 12px;">Upload Photo NIK Pendamping</label><input type="file"></div>`,
+      nominal_pembayaran: `<div class="form-group"><label style="margin-right: 12px;">Nominal Pembayaran</label><input type="text"></div>`
     };
 
     $('input[type="checkbox"]').on('change', function () {
