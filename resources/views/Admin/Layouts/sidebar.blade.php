@@ -149,6 +149,9 @@
                         <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('rules-score.index') }}"><span class="sub-side-menu__label">Rules Score</span></a>
                         </li>
+                        <li class="sub-slide">
+                            <a class="sub-side-menu__item" href="{{ route('regions.index') }}"><span class="sub-side-menu__label">Regions</span></a>
+                        </li>
                     </ul>
                 </li>
                 <li class="slide">
