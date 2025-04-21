@@ -32,8 +32,14 @@ class NewsController extends Controller
     {
         try {
           
-            $news = $this->newsfeed->getNews();
-            return $this->apiResponse->success($news);
+            $news = $this->newsfeed ; 
+            if($request->has('region')) {
+                $news = $news->where('region_id', user()->region);
+            }
+            
+            $news = $news->getNews();
+             return $this->apiResponse->success($news);
+
 
         }catch(\Exception $e){
             return $this->apiResponse->error($e->getMessage());
