@@ -11,10 +11,16 @@
             <form action="{{ route('regions.ubah', $region->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
+                <div class="form-group">
+                    <label for="type">Region Type</label>
+                    <select name="parameter" id="type" class="form-control" required>
+                        <option value="m_area" {{ old('parameter', $region->parameter) == 'm_area' ? 'selected' : '' }}>Area</option>
+                        <option value="m_region" {{ old('parameter', $region->parameter) == 'm_region' ? 'selected' : '' }}>Region</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="name">Region Name</label>
-                    <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $region->name) }}" required>
+                    <input type="text" name="value" id="name" class="form-control" value="{{ old('value', $region->value) }}" required>
                 </div>
             
                 <button type="submit" class="btn btn-primary mt-3">Update</button>

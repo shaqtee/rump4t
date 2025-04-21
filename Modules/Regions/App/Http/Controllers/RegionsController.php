@@ -15,7 +15,7 @@ class RegionsController extends Controller
      */
     public function index()
     {
-        $regions = Region::paginate(10);   
+        $regions = Region::where("parameter" , "m_region")->orWhere("parameter" ,"m_area")->paginate(10);   
         return view('regions::index' , compact('regions'));  
     }
 
@@ -34,7 +34,9 @@ class RegionsController extends Controller
     {
         try {
             $region = new Region();
-            $region->name = $request->name;
+            $region->value = $request->value;
+            $region->parameter = $request->parameter;
+            $region->is_active = true;
             $region->save();
 
             return redirect()->route('regions.index')->with('success', 'Region created successfully.');
@@ -74,7 +76,9 @@ class RegionsController extends Controller
             if (!$region) {
                 return redirect()->route('regions.index')->with('error', 'Region not found.');
             }
-            $region->name = $request->name;
+            $region->parameter = $request->parameter;
+            $region->value = $request->value;
+            $region->is_active = true ; 
             $region->save();
 
             return redirect()->route('regions.index')->with('success', 'Region updated successfully.');

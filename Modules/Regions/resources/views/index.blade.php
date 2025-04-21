@@ -16,6 +16,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Nama Region</th>
+                        <th>Region Type</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -23,7 +24,8 @@
                     @foreach($regions as $region)
                         <tr>
                             <td>{{ $region->id }}</td>
-                            <td>{{ $region->name }}</td>
+                            <td>{{ $region->value }}</td>
+                            <td>{{ $region->parameter }}</td>
                             <td>
                                 <a href="{{ route('regions.ubah', $region->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                 <form action="{{ route('regions.hapus', $region->id) }}" method="POST" style="display:inline;">

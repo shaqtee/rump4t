@@ -28,10 +28,10 @@ class NewsController extends Controller
         $this->newsfeed = $newsfeed;
 
     }
-    public function index() : JsonResponse
+    public function index(Request$request) : JsonResponse
     {
         try {
-
+          
             $news = $this->newsfeed->getNews();
             return $this->apiResponse->success($news);
 

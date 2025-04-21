@@ -10,29 +10,16 @@ use Modules\Regions\Database\factories\RegionFactory;
 
 class Region extends Model
 {
-    use HasFactory , Timestamp , SoftDeletes;
+
 
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
-    protected $keyType = 'string';
-    public $incrementing = false;
+    // protected $fillable = [];
+    protected $keyType = 'integer';
+    public $incrementing = true;
 
-    protected $table = 't_regions';
+    protected $table = 'm_references';
 
-    // ulid generate
-    public static function boot()
-    {
-        parent::boot();
 
-        static::creating(function ($model) {
-            $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::ulid();
-        });
-    }
-    
-    protected static function newFactory(): RegionFactory
-    {
-        //return RegionFactory::new();
-    }
 }
