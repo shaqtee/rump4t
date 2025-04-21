@@ -19,6 +19,18 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="region">Region</label>
+                    <select name="region_id" id="region" class="form-control" required>
+                        <option value="">Global</option>
+                        @foreach ($regions as $region)
+                            <option value="{{ $region->id }}" {{ old('region_id', $news->region_id) == $region->id ? 'selected' : '' }}>
+                                {{ $region->value }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="content">Content</label>
                     <textarea name="content" id="content" class="form-control" rows="5" required>{{ old('content', $news->content) }}</textarea>
                 </div>
