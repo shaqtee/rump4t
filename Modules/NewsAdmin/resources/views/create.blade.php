@@ -18,6 +18,15 @@
                     <label for="content" class="form-label">Content</label>
                     <textarea id="content" name="description" rows="5" class="form-control" required></textarea>
                 </div>
+                {{-- region --}}
+                <div class="mb-3">
+                    <label for="region" class="form-label">Region</label>
+                    <select id="region" name="region_id" class="form-control">
+                        <option value="">Global</option>
+                        @foreach ($regions as $region)
+                            <option value="{{ $region->id }}">{{ $region->value }}</option>
+                        @endforeach
+                    </select>
                 {{-- image --}}
                 <div class="mb-3">
                     <label for="image" class="form-label">Image</label>

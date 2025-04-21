@@ -28,12 +28,18 @@ class NewsController extends Controller
         $this->newsfeed = $newsfeed;
 
     }
-    public function index() : JsonResponse
+    public function index(Request$request) : JsonResponse
     {
         try {
+          
+            $news = $this->newsfeed ; 
+            if($request->has('region')) {
+                $news = $news->where('region_id', user()->region);
+            }
+            
+            $news = $news->getNews();
+             return $this->apiResponse->success($news);
 
-            $news = $this->newsfeed->getNews();
-            return $this->apiResponse->success($news);
 
         }catch(\Exception $e){
             return $this->apiResponse->error($e->getMessage());

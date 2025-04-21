@@ -41,6 +41,7 @@
                             <th>ID</th>
                             <th>Title</th>
                             <th>Author</th>
+                            <th>Region</th>
                             <th>Created At</th>
                             <th>Actions</th>
                         </tr>
@@ -51,6 +52,11 @@
                                 <td>{{ $item->short_id }}</td>
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->author_name }} <img style=" margin 20px ; border-radius: 25%; width: 50px ; height: 50px;" src="{{ $item->author_image }}" alt=""></td>
+                                @if($item->region == null)
+                                    <td>Global</td>
+                                @else
+                                <td>{{ $item->region->value }}</td>
+                                @endif
                                 <td>{{ $item->created_at }}</td>
                                 <td>
                                     <a href="{{ route('news-admin.ubah', $item->id) }}" class="btn btn-primary btn-sm">Edit</a>
