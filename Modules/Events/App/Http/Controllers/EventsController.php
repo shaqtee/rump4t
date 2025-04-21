@@ -36,7 +36,15 @@ class EventsController extends Controller
      */
     public function index()
     {
+        $userId = auth()->id();
+
         $event = $this->event->with('membersEvent')->get();
+
+        $event->transform(function ($event) use ($userId) {
+            $event->is_join = $event->joinBy($userId);
+            return $event;
+        });
+
         return $this->api->success($event, "success");
     }
 
