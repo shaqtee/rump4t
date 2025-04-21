@@ -341,6 +341,69 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <br>
+                            <h5>Pilih Field untuk Ditampilkan</h5>
+                              <div class="row p-3">
+                                <div class="col">
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="nomor_anggota"> Nomor Anggota</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="nama"> Nama</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="no_hp"> Nomor HP / WA</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="hadir"> Akan Hadir?</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="pembayaran"> Telah Melakukan Pembayaran</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="bukti_transfer"> Upload Bukti Transfer</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="ukuran_kaos"> Ukuran Kaos Anggota</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="type_lengan"> Type Lengan</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="dengan_pendamping"> Dengan Pendamping</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="nama_pendamping"> Nama Pendamping</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="ukuran_kaos_pendamping"> Ukuran Kaos Pendamping</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="type_lengan_pendamping"> Type Lengan Pendamping</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="nik"> NIK</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="photo_nik"> Upload Photo NIK</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="nik_pendamping"> NIK Pendamping</label>
+                                    </div>
+                                    <div class="row">
+                                        <label><input type="checkbox" name="fields[]" value="photo_nik_pendamping"> Upload Photo NIK Pendamping</label>
+                                    </div>
+                                </div>
+                              </div>
+                            <div class="form-preview" id="formPreview">
+                              <h5>Preview Form</h5>
+                              <br>
+                              <div id="previewContent">Checklist field di atas untuk melihat preview form.</div>
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-success mt-3 mb-0">Submit</button>
                     </div>
                 </form>
@@ -383,3 +446,43 @@
     chekTypeScoring();
     document.addEventListener('DOMContentLoaded', toggleTypeScoring);
 </script>
+<script>
+    const fieldTemplates = {
+      nomor_anggota: `<div class="form-group"><label style="margin-right: 12px;">Nomor Anggota</label><input type="text" readonly value="123-45-6"></div>`,
+      nama: `<div class="form-group"><label style="margin-right: 12px;">Nama</label><input type="text" readonly></div>`,
+      no_hp: `<div class="form-group"><label style="margin-right: 12px;">No HP / WA</label><input type="text" readonly></div>`,
+      hadir: `<div class="form-group"><label style="margin-right: 12px;">Akan Hadir?</label><select><option>Hadir</option><option>Tidak Hadir</option><option>Tentative</option></select></div>`,
+      pembayaran: `<div class="form-group"><label style="margin-right: 12px;">Telah Melakukan Pembayaran</label><select><option>Sudah Membayar</option><option>Belum Membayar</option></select></div>`,
+      bukti_transfer: `<div class="form-group"><label style="margin-right: 12px;">Upload Bukti Transfer</label><input type="file"></div>`,
+      ukuran_kaos: `<div class="form-group"><label style="margin-right: 12px;">Ukuran Kaos</label><select><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>`,
+      type_lengan: `<div class="form-group"><label style="margin-right: 12px;">Type Lengan</label><select><option>Pendek</option><option>Panjang</option></select></div>`,
+      dengan_pendamping: `<div class="form-group"><label style="margin-right: 12px;">Dengan Pendamping?</label><input type="text" placeholder="Ya / Tidak"></div>`,
+      nama_pendamping: `<div class="form-group"><label style="margin-right: 12px;">Nama Pendamping</label><input type="text"></div>`,
+      ukuran_kaos_pendamping: `<div class="form-group"><label style="margin-right: 12px;">Ukuran Kaos Pendamping</label><select><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>`,
+      type_lengan_pendamping: `<div class="form-group"><label style="margin-right: 12px;">Type Lengan Pendamping</label><select><option>Pendek</option><option>Panjang</option></select></div>`,
+      nik: `<div class="form-group"><label style="margin-right: 12px;">NIK</label><input type="text" maxlength="16"></div>`,
+      photo_nik: `<div class="form-group"><label style="margin-right: 12px;">Upload Photo NIK</label><input type="file"></div>`,
+      nik_pendamping: `<div class="form-group"><label style="margin-right: 12px;">NIK Pendamping</label><input type="text" maxlength="16"></div>`,
+      photo_nik_pendamping: `<div class="form-group"><label style="margin-right: 12px;">Upload Photo NIK Pendamping</label><input type="file"></div>`
+    };
+
+    $('input[type="checkbox"]').on('change', function () {
+      const selected = $('input[type="checkbox"]:checked').map(function () {
+        return $(this).val();
+      }).get();
+
+      if (selected.length === 0) {
+        $('#previewContent').html('Checklist field di atas untuk melihat preview form.');
+        return;
+      }
+
+      let previewHTML = '';
+      selected.forEach(field => {
+        if (fieldTemplates[field]) {
+          previewHTML += fieldTemplates[field];
+        }
+      });
+
+      $('#previewContent').html(previewHTML);
+    });
+  </script>

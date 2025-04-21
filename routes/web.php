@@ -53,8 +53,8 @@ use Modules\SocialMedia\App\Http\Controllers\ModeratorController;
 // });
 
 Route::redirect('', 'login-web');
-Route::get('dgolf/profile-user/{id}', [AuthWebController::class, 'webViewProfile'])->name('dgolf.profile-user');
-Route::middleware(['guest'])->group(function () {
+Route::get('rump4t/profile-user/{id}', [AuthWebController::class, 'webViewProfile'])->name('rump4t.profile-user');
+Route::middleware(['guest'])->group(function(){
     Route::get('login-web', [AuthWebController::class, 'view_login'])->name('login');
     Route::post('login-web', [AuthWebController::class, 'login'])->name('login-web');
 });

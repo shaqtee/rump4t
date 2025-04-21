@@ -8,5 +8,6 @@
     "News": true,
     "NewsAdmin": true,
     "Event": true,
-    "Regions": true
+    "Regions": true,
+    "Events": true
 }

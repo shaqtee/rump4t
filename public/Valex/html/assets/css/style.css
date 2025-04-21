@@ -7907,6 +7907,7 @@ textarea.form-control.is-invalid, textarea.form-control.parsley-error {
     right: 4px; }
 
 .avatar-xl {
+  object-fit: cover;
   width: 72px !important;
   height: 72px !important;
   font-size: 36px !important; }
