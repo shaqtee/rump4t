@@ -51,8 +51,11 @@ class EventsMemberController extends Controller
 
         try {
             $data = $request->all();
-            DB::commit();
             
+            $image_bukti = $request->file('image_bukti');
+            $image_nik = $request->file('image_nik');
+            $image_pendamping_nik = $request->file('image_pendamping_nik');
+
             $member_event = $this->member_event->create([
                 "t_user_id" => $data["t_user_id"],
                 "t_event_id" => $data["t_event_id"],
@@ -60,10 +63,25 @@ class EventsMemberController extends Controller
                 "voucher" => $data["voucher"],
                 "payment_date" => $data["payment_date"],
                 "flag_cancel" => $data["flag_cancel"], // 0 or 1
-                "image" => $data["image"],
+                "image_bukti" => $image_bukti,
+                "image_nik" => $image_nik,
+                "image_pendamping_nik" => $image_pendamping_nik,
                 "nominal_pembayaran" => $data["nominal_pembayaran"], 
                 "data_input" => isset($data["custom_fields"]) ? json_encode($data["custom_fields"]) : null
             ]);
+
+            // Upload masing-masing gambar
+            if ($image_bukti) {
+                $this->helper->uploads('rump4t/image_bukti', $member_event, 'image_bukti');
+            }
+            if ($image_nik) {
+                $this->helper->uploads('rump4t/image_nik', $member_event, 'image_nik');
+            }
+            if ($image_pendamping_nik) {
+                $this->helper->uploads('rump4t/image_pendamping_nik', $member_event, 'image_pendamping_nik');
+            }
+
+            DB::commit();
 
             return $this->api->success($member_event,'success');
         } catch (\Throwable $e) {
