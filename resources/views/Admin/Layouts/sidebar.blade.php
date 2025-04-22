@@ -2,8 +2,14 @@
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar sidebar-scroll">
         <div class="main-sidebar-header active">
-            <a class="desktop-logo logo-light active" href="{{ route('admin.home') }}"><img src="/images/logo-dgolf3.png" class="main-logo" alt="logo"></a>
-            <a class="logo-icon mobile-logo icon-light active" href="{{ route('admin.home') }}"><img src="/images/logo-dgolf3.png" class="logo-icon" alt="logo"></a>
+            <a class="desktop-logo logo-light active" href="{{ route('admin.home') }}">
+                {{-- <img src="/images/logo-dgolf3.png" class="main-logo" alt="logo"> --}}
+                <div class="h2">RUMP4T</div>
+            </a>
+            <a class="logo-icon mobile-logo icon-light active" href="{{ route('admin.home') }}">
+                {{-- <img src="/images/logo-dgolf3.png" class="logo-icon" alt="logo"> --}}
+                <div class="h1">R4</div>
+            </a>
         </div>
         <div class="main-sidemenu">
             <div class="app-sidebar__user clearfix">
