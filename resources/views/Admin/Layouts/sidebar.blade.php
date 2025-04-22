@@ -129,6 +129,9 @@
                             <a class="sub-side-menu__item" href="{{ route('news-admin.index') }}"><span class="sub-side-menu__label">Berita</span></a>
                         </li>
                         <li class="sub-slide">
+                            <a class="sub-side-menu__item" href="{{ route('events.admin.index') }}"><span class="sub-side-menu__label">acara</span></a>
+                        </li>
+                        <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('socialmedia.moderation.index') }}"><span class="sub-side-menu__label">Moderasi Posting</span></a>
                         </li>
 
