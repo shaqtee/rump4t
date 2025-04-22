@@ -1403,13 +1403,13 @@ class AuthController extends Controller
 
     public function total_member()
     {
-        $count_member = count($this->model->where('t_group_id', NULL)->get());
+        $count_member = count($this->model->where("status_anggota" , 1)->get());
         return $this->api->success($count_member, "success");
     }
 
     public function total_member_khusus()
     {
-        $count_member_khusus = count($this->model->where('t_group_id', 1)->get());
+        $count_member_khusus = count($this->model->where('status_anggota',2)->get());
         return $this->api->success($count_member_khusus, "success");
     }
 
