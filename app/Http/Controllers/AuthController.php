@@ -867,11 +867,10 @@ class AuthController extends Controller
             $user = User::with(['community', 'membersCommonity', 'city'])->find($id);
             $member = MembersCommonity::where('t_user_id', $user->id)->first();
             $region = $this->references
-                ->where('parameter', 'm_area')
-                ->orWhere('parameter', 'm_region')
+                ->where('parameter', 'm_region')
                 ->where('id', $user->region)
                 ->get();
-
+            
             $performa = $this->performanceController->box()->getData();
             $hcpIndex = $performa->data->handicapIndex;
             $dataCompany = $this->companyProfile->first();
