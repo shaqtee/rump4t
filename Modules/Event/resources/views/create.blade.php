@@ -46,6 +46,30 @@
                 </div>
                 <!-- // add image form -->
                 <div class="form-group">
+                    <label for="selected_fields">Pilih Field Tambahan:</label>
+                    <div>
+                        <label><input type="checkbox" name="selected_fields[]" value="nomor_anggota"> Nomor Anggota</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="nama"> Nama</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="no_hp"> No HP / WA</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="hadir"> Akan Hadir?</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="pembayaran"> Telah Melakukan Pembayaran</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="bukti_transfer"> Upload Bukti Transfer</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="ukuran_kaos"> Ukuran Kaos</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="type_lengan"> Type Lengan</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="dengan_pendamping"> Dengan Pendamping?</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="nama_pendamping"> Nama Pendamping</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="ukuran_kaos_pendamping"> Ukuran Kaos Pendamping</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="type_lengan_pendamping"> Type Lengan Pendamping</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="nik"> NIK</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="photo_nik"> Upload Photo NIK</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="nik_pendamping"> NIK Pendamping</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="photo_nik_pendamping"> Upload Photo NIK Pendamping</label>
+                        <label><input type="checkbox" name="selected_fields[]" value="nominal_pembayaran"> Nominal Pembayaran</label>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
                     <label for="image">Banner:</label>
                     <input type="file" class="form-control" id="image" name="image" accept="image/*">
                 </div>
