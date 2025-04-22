@@ -36,9 +36,19 @@ class NewsController extends Controller
             if(isset($request->region ) && $request->region != null){ 
                 $regionId = Auth::user()->region ;
                 $news = $news->where('region_id', $regionId)->orderBy('created_at', 'desc');
+
             }
-            
             $news = $news->get();
+
+            $news->map(function($item){
+                if ($item->image) {
+                    $item->image = \Storage::disk('s3')->url($item->image);
+                } else {
+                    $item->image = null;
+                }
+            
+            });
+            
              return $this->apiResponse->success($news);
 
 
