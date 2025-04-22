@@ -8,7 +8,7 @@
             <h3>Events</h3>
         </div>
         <div class="card-body">
-            <a href="{{ route('events.tambah') }}" class="btn btn-primary mb-3">Tambah Acara</a>
+            <a href="{{ route('events.admin.tambah') }}" class="btn btn-primary mb-3">Tambah Acara</a>
         </div>
         <div class="card-body">
             <table id="eventsTable" class="table table-striped table-bordered">
@@ -30,14 +30,14 @@
                             <td>{{ $event->location }}</td>
                             <td>
                             
-                                <a href="{{ route('events.ubah', $event->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form action="{{ route('events.hapus', $event->id) }}" method="POST" style="display:inline;">
+                                <a href="{{ route('events.admin.ubah', $event->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('events.admin.hapus', $event->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin?' , 'yakin, dong!')">Delete</button>
                                 </form>
-                                <a href="{{ route('events.detail', $event->id) }}" class="btn btn-info btn-sm">Details</a>
-                                <a href="{{ route('events.bukutamu', $event->id) }}" class="btn btn-primary btn-sm">Attendees</a>
+                                <a href="{{ route('events.admin.detail', $event->id) }}" class="btn btn-info btn-sm">Details</a>
+                                <a href="{{ route('events.admin.bukutamu', $event->id) }}" class="btn btn-primary btn-sm">Attendees</a>
                             </td>
                         </tr>
                     @endforeach

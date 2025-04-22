@@ -73,15 +73,15 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::prefix('events')->group(function () {
 
-            Route::get('', [EventController::class, 'index'])->name('events.index');
-            Route::get('tambah', [EventController::class, 'create'])->name('events.tambah');
-            Route::post('tambah', [EventController::class, 'store'])->name('events.tambah');
-            Route::get('{id}/ubah', [EventController::class, 'edit'])->name('events.ubah');
-            Route::patch('{id}/ubah', [EventController::class, 'update'])->name('events.ubah');  
-            Route::delete('{id}/hapus', [EventController::class, 'destroy'])->name('events.hapus');
-            Route::get('{id}/lihat', [EventController::class, 'show'])->name('events.detail');
+            Route::get('', [EventController::class, 'index'])->name('events.admin.index');
+            Route::get('tambah', [EventController::class, 'create'])->name('events.admin.tambah');
+            Route::post('tambah', [EventController::class, 'store'])->name('events.admin.tambah');
+            Route::get('{id}/ubah', [EventController::class, 'edit'])->name('events.admin.ubah');
+            Route::patch('{id}/ubah', [EventController::class, 'update'])->name('events.admin.ubah');  
+            Route::delete('{id}/hapus', [EventController::class, 'destroy'])->name('events.admin.hapus');
+            Route::get('{id}/lihat', [EventController::class, 'show'])->name('events.admin.detail');
             //bukutamu
-            Route::get('{id}/bukutamu', [EventController::class, 'bukutamu'])->name('events.bukutamu');
+            Route::get('{id}/bukutamu', [EventController::class, 'bukutamu'])->name('events.admin.bukutamu');
         });
         Route::get('home', [AuthWebController::class, 'home'])->name('admin.home');
 
