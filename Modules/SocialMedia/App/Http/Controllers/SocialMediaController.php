@@ -237,9 +237,13 @@ class SocialMediaController extends Controller
     {
         DB::beginTransaction();
         try {
+            
             $delete = $this->model->findOrFail($id);
+            if($delete->id_user != auth()->user()->id) {
+                return $this->api->error('Woy, Hitam! ngapain ngapus postingan orang!?', 403);
+            }
             $delete->delete();
-
+            
             DB::commit();
             return  $this->api->delete($delete,  "Delete Successfully");
         } catch(\Throwable $e) {
@@ -251,6 +255,8 @@ class SocialMediaController extends Controller
             };
         }
     }
+
+    
 
     public function showdetail($id)
     {
@@ -271,6 +277,33 @@ class SocialMediaController extends Controller
             };
         }
     }
+
+    public function deleteDetail($id) {
+
+    try {
+        $detail = $this->detailpost->find($id);
+        if (!$detail) {
+            return $this->api->error('Comment not found', 404);
+        }
+
+        if ($detail->id_user != auth()->user()->id) {
+            return $this->api->error('You are not authorized to delete this comment', 403);
+        }
+
+        $detail->delete();
+
+        return $this->api->success($detail, 'Comment deleted successfully');
+    } catch (\Throwable $e) {
+        DB::rollBack();
+        if (config('envconfig.app_debug')) {
+            return $this->api->error_code($e->getMessage(), $e->getCode());
+        } else {
+            return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+        };
+
+    }
+
+}
 
     public function showChildDetail(int $commentID) {
         try {
