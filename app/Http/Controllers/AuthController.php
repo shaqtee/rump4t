@@ -95,6 +95,7 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
             $datas = $request->validated();
+
             
             $userCheck = $this->model->where('phone', $request->phone)->first();
 
@@ -104,6 +105,11 @@ class AuthController extends Controller
             
             if($userCheck && $userCheck->flag_done_profile == '1'){
                 return  $this->api->error("Phone Number Has Already Been Registered");
+            }
+
+            // if numbers starts with 0. change to 62
+            if(substr($request->phone, 0, 1) == '0'){
+                $datas['phone'] = '62'.substr($request->phone, 1);
             }
 
             // return response()->json($datas);
