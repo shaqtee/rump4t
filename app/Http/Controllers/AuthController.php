@@ -341,8 +341,10 @@ class AuthController extends Controller
             $dataUser = $this->model->find($id);
 
             if(!empty($datas['t_city_id'])){
-                $datas = array_merge($request->all(), ['kota_kabupaten' => $dataUser->city->code]);
+                $city_code = ($this->city->where('id', $id)->first())->code;
+                $datas = array_merge($request->all(), ['kota_kabupaten' => $city_code]);
             }
+            // return $this->api->success($datas, "Success Update Profile");
 
             if(!empty($datas['birth_date'])){
                 $birthDate = explode("-", $datas['birth_date']);
