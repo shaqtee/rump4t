@@ -35,7 +35,7 @@ class NewsController extends Controller
             $news = Newsfeed::query(); ; 
             if(isset($request->region ) && $request->region != null){ 
                 $regionId = Auth::user()->region ;
-                $news = $news->where('region_id', $regionId);
+                $news = $news->where('region_id', $regionId)->orderBy('created_at', 'desc');
             }
             
             $news = $news->get();
