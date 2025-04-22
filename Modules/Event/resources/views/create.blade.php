@@ -6,15 +6,30 @@
     <h2>Create Event</h2>
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('event.store') }}" method="POST">
+            <form action="{{ route('event.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="name">Nama Event : </label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+                    <input type="text" class="form-control" id="name" name="title" required>
                 </div>
                 <div class="form-group">
                     <label for="date">Tanggal Event:</label>
-                    <input type="date" class="form-control" id="date" name="date" required>
+                    <input type="date" class="form-control" id="date" name="play_date_start" required>
+                </div>
+                {{-- close_registration_date date --}}
+                <div class="form-group">
+                    <label for="close_registration_date">Tanggal Penutupan Pendaftaran:</label>
+                    <input type="date" class="form-control" id="close_registration_date" name="close_registration" required>
+                </div>
+                {{-- region --}}
+                <div class="form-group">
+                    <label for="region">Region:</label>
+                    <select class="form-control" id="region" name="region" required>
+                        <option value="">Pilih Region</option>
+                        @foreach ($regions as $region)
+                            <option value="{{ $region->id }}">{{ $region->value }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="location">Lokasi:</label>

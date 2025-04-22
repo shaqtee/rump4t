@@ -45,9 +45,7 @@ Route::prefix('sign-in')->group(function() {
     Route::post('resend-otp-login', [AuthController::class, 'resend_otp_login']);
 });
 
-route::prefix("news")->group(function(){
-    Route::get('', [NewsController::class, 'index']);
-});
+
 
 Route::get('list-region', [AuthController::class, 'list_region']); // new
 

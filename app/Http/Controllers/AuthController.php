@@ -1241,6 +1241,7 @@ class AuthController extends Controller
                     "email" => $user->email ?? null,
                     "phone" => $user->phone ?? null,
                     "remember_token" => $user->remember_token ?? null,
+                    "image" => $user->image ?? null,
                 ]
             ];
 

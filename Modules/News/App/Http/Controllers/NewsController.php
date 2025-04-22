@@ -5,6 +5,7 @@ namespace Modules\News\App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\ApiResponse;
 use App\Services\Helpers\Helper;
+use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,16 +29,16 @@ class NewsController extends Controller
         $this->newsfeed = $newsfeed;
 
     }
-    public function index(Request$request) : JsonResponse
+    public function index(Request $request) : JsonResponse
     {
         try {
-          
-            $news = $this->newsfeed ; 
-            if($request->has('region')) {
-                $news = $news->where('region_id', user()->region);
+            $news = Newsfeed::query(); ; 
+            if(isset($request->region ) && $request->region != null){ 
+                $regionId = Auth::user()->region ;
+                $news = $news->where('region_id', $regionId);
             }
             
-            $news = $news->getNews();
+            $news = $news->get();
              return $this->apiResponse->success($news);
 
 
