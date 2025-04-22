@@ -13,13 +13,25 @@ class Events extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    // protected $fillable = [];
+    protected $guarded = ["id"];
 
     protected $table = 't_event';
+
+    protected $cast = [
+        "play_date_start" => "datetime",
+        "close_registration" => "date",
+    ];
 
     protected $primaryKey = 'id';
 
     // incrementing
     public $incrementing = true;
+
+    // belongs to region 
+    public function region()
+    {
+        return $this->belongsTo(\Modules\Regions\App\Models\Region::class, 'region_id', 'id');
+    }
     
 }

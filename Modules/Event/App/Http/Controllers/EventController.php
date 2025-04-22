@@ -24,7 +24,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('event::create');
+        $regions = \Modules\Regions\App\Models\Region::where('parameter' , 'm_region')->orWhere("parameter" , "m_area")->get();
+        return view('event::create' , compact('regions'));
     }
 
     /**
@@ -32,7 +33,25 @@ class EventController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        try {
+            $event = new \Modules\Event\App\Models\Events();
+            // $request->selected_fields = ["nomor_anggota","nama","no_hp","hadir","pembayaran","bukti_transfer","ukuran_kaos","type_lengan","ukuran_kaos_pendamping","type_lengan_pendamping","nik"];
+           $store =  $request->all();
+        //    remove $store->_token ; 
+              unset($store['_token']);
+
+            $event->fill($store);
+            //if image exist, process to s3 and store the url
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $path = $file->store('events', 's3');
+                $event->image = \Storage::disk('s3')->url($path);
+            }
+            $event->save();
+            return redirect()->route('event.index')->with('success', 'Event created successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to create event: ' . $e->getMessage());
+        }
     }
 
     /**

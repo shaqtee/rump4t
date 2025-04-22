@@ -1292,6 +1292,7 @@ class AuthController extends Controller
                     "phone" => $user->phone ?? null,
                     "region" => $user->region ?? null,
                     "remember_token" => $user->remember_token ?? null,
+                    "image" => $user->image ?? null,
                 ]
             ];
 
