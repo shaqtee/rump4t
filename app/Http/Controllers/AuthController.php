@@ -340,6 +340,14 @@ class AuthController extends Controller
             $datas = $this->helper->removeNullValues($datas);
             $dataUser = $this->model->find($id);
 
+            if(!empty($datas['year_of_entry'])){
+                $datas['year_of_entry'] = (int) $datas['year_of_entry'];
+            }
+
+            if(!empty($datas['year_of_retirement'])){
+                $datas['year_of_retirement'] = (int) $datas['year_of_retirement'];
+            }
+
             if(!empty($datas['t_city_id'])){
                 $city_code = ($this->city->where('id', $datas['t_city_id'])->first())->code;
                 $datas = array_merge($request->all(), ['kota_kabupaten' => $city_code]);
@@ -918,7 +926,7 @@ class AuthController extends Controller
                     "shirt_size" => $user->shirt_size,
                     "notes" => $user->notes,
                     "ec_name" => $user->ec_name,
-                    "ec_kinship" => $user->kinship,
+                    "ec_kinship" => $user->ec_kinship,
                     "region" => $region,
                 ],
                 'our_contact' => [
