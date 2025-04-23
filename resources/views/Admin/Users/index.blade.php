@@ -74,13 +74,13 @@
                                 {{-- <td>
                                     <a class="btn btn-info" href="{{ route('users.hcpindex', ['id' => $usr->id]) }}">Handicap</a>
                                 </td> --}}
-                                {{-- <td>
+                                <td>
                                     <form action="{{ route('users.hapus', ['id' => $usr->id]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">DELETE</button>
                                     </form>
-                                </td> --}}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
