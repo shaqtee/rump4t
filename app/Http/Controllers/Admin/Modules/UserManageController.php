@@ -130,12 +130,12 @@ class UserManageController extends Controller
                 'email' => [
                     'required',
                     'email',
-                    Rule::unique('users')->ignore($request->user()->id),
+                    Rule::unique('users'),
                 ],
                 'phone' => [
                     'required',
                     'string',
-                    Rule::unique('users')->ignore($request->user()->id),
+                    Rule::unique('users'),
                 ],
                 'gender' => 'required|in:L,P',
                 'birth_place' => 'required|string',
@@ -144,6 +144,7 @@ class UserManageController extends Controller
                 'address' => 'required|string',
                 't_city_id' => 'nullable',
                 'desa_kelurahan' => 'nullable|numeric',
+                'kecamatan' => 'required|numeric',
                 'provinsi' => 'required|numeric',
                 'region' => 'required|numeric',
                 'postal_code' => 'required|numeric',
@@ -188,7 +189,7 @@ class UserManageController extends Controller
                 'flag_community' => 'JOINED',
                 'nomor_anggota' => $nomor_anggota,
             ];
-            
+
             $model->update($updateUser);
             $this->memberComm->create($createMember);
 
@@ -269,23 +270,24 @@ class UserManageController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
         DB::beginTransaction();
         try{
+            $model = $this->model->findOrfail($id);
+            
             $datas = $request->validate([
                 'name' => 'required|string',
                 'nickname' => 'required|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg',
-                // 'email' => [
-                //     'required',
-                //     'email',
-                //     Rule::unique('users')->ignore($request->user()->id),
-                // ],
-                // 'phone' => [
-                //     'required',
-                //     'string',
-                //     Rule::unique('users')->ignore($request->user()->id),
-                // ],
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('users')->ignore($model->id),
+                ],
+                'phone' => [
+                    'required',
+                    'string',
+                    Rule::unique('users')->ignore($model->id),
+                ],
                 'gender' => 'required|in:L,P',
                 'birth_place' => 'required|string',
                 'birth_date' => 'required',
@@ -293,6 +295,7 @@ class UserManageController extends Controller
                 'address' => 'required|string',
                 't_city_id' => 'nullable',
                 'desa_kelurahan' => 'nullable|numeric',
+                'kecamatan' => 'required|numeric',
                 'provinsi' => 'required|numeric',
                 'region' => 'required|numeric',
                 'postal_code' => 'required|numeric',
@@ -312,9 +315,9 @@ class UserManageController extends Controller
                 'active' => 'nullable|in:1,0',
             ]);
             
-            $folder = "dgolf/user-profile";
+            $folder = "rump4t/user-profile";
             $column = "image";
-            $model = $this->model->findOrfail($id);
+            
             if (!empty($model->t_community_id) && !empty($datas['t_community_id'])) {
                 $modelMember = $this->memberComm->where('t_user_id', $model->id)->where('t_community_id', $model->t_community_id)->first();
                 
@@ -336,6 +339,8 @@ class UserManageController extends Controller
                 $modelMember = $this->memberComm->create($createMember);
             }
 
+            $nomor_anggota = $model->id.$datas['region'].$datas['status_anggota'];
+            $datas['nomor_anggota'] = $nomor_anggota;
             $model->update($datas);
 
             $this->helper->uploads($folder, $model, $column);
