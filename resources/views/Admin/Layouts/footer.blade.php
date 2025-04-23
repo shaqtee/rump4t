@@ -116,7 +116,48 @@
 <script src="/Valex/html/assets/plugins/owl-carousel/owl.carousel.js"></script>
 
 <script>
+    $(function() {
+        var $radios = $('input:radio[name=status_anggota]');
+        if($radios.is(':checked') === false) {
+            $radios.filter('[value=1]').prop('checked', true);
+        }
+    });
+
     $(document).ready(function() {
+
+        $('#datetimepicker').on('change', function() {
+            console.log('bith date',this.value);
+            let getBirthDate = this.value.split(' ')[0];
+
+            const birthDate = new Date(getBirthDate);
+            const today = new Date();
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            const dayDiff = today.getDate() - birthDate.getDate();
+
+            // Adjust if birthday hasn't occurred yet this year
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+
+            $('#age').val(age);
+        })
+
+        $('.yearPicker').datepicker({
+            yearRange: '1945:2050',
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy',
+            onClose: function(dateText, inst) {
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, 0, 1));
+            },
+            beforeShow: function(input, inst) {
+            $(input).datepicker("widget").addClass("hide-calendar");
+            }
+        });
+
         var owl = $("#owl-demo");
         owl.owlCarousel({
             navigation : false, // Show next and prev buttons

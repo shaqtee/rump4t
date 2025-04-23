@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Modules\Masters\App\Models\MasterCity;
+use Modules\Masters\App\Models\MasterVillage;
+use Modules\Masters\App\Models\MasterDistrict;
+use Modules\Masters\App\Models\MasterProvince;
+use Modules\Masters\App\Models\MasterReferences;
 use Illuminate\Validation\ValidationException;
 use Modules\Community\App\Models\Community;
 use Modules\Community\App\Models\MembersCommonity;
@@ -28,11 +32,15 @@ class UserManageController extends Controller
     protected $web;
     protected $config;
     protected $city;
+    protected $village;
+    protected $district;
+    protected $province;
+    protected $references;
     protected $sh;
     protected $community;
     protected $memberComm;
 
-    public function __construct(User $model, Helper $helper, Handler $handler, WebRedirect $web, MasterConfiguration $config, MasterCity $city, ScoreHandicap $sh, Community $community, MembersCommonity $memberComm)
+    public function __construct(User $model, Helper $helper, Handler $handler, WebRedirect $web, MasterConfiguration $config, MasterCity $city, MasterVillage $village, MasterDistrict $district, MasterProvince $province, MasterReferences $references, ScoreHandicap $sh, Community $community, MembersCommonity $memberComm)
     {
         $this->model = $model;
         $this->helper = $helper;
@@ -40,6 +48,10 @@ class UserManageController extends Controller
         $this->web = $web;
         $this->config = $config;
         $this->city = $city;
+        $this->village = $village;
+        $this->district = $district;
+        $this->province = $province;
+        $this->references = $references;
         $this->sh = $sh;
         $this->community = $community;
         $this->memberComm = $memberComm;
@@ -70,6 +82,7 @@ class UserManageController extends Controller
      */
     public function create(Request $request)
     {
+        // dd($this->references->where('parameter', 'm_region')->get());
         try{
             $now = Carbon::now()->year;
             $yearAgo = 100;
@@ -87,6 +100,13 @@ class UserManageController extends Controller
                 'faculty' => $this->config->where('parameter', 'm_faculty')->get(),
                 'years' => $dataYears,
                 'city' => $this->city->get(),
+                'villages' => $this->village->get(),
+                'districts' => $this->district->get(),
+                'provinces' => $this->province->get(),
+                'regions' => $this->references->where('parameter', 'm_region')->get(),
+                'retirement_type' => $this->references->where('parameter', 'm_retirement_type')->get(),
+                'last_employee_status' => $this->references->where('parameter', 'm_last_employee_status')->get(),
+                'shirt_size' => $this->references->where('parameter', 'm_shirt_size')->get(),
             ];
 
             return view('Admin.Layouts.wrapper', $data);
@@ -118,33 +138,61 @@ class UserManageController extends Controller
                     Rule::unique('users')->ignore($request->user()->id),
                 ],
                 'gender' => 'required|in:L,P',
+                'birth_place' => 'required|string',
                 'birth_date' => 'required',
-                // 'hcp_index' => 'required|numeric',
-                'faculty' => 'required|string',
-                'batch' => 'required',
-                'office_name' => 'required|string',
+                'age' => 'required|numeric',
                 'address' => 'required|string',
-                't_city_id' => 'required',
-                'business_sector' => 'required|string',
+                't_city_id' => 'nullable',
+                'desa_kelurahan' => 'nullable|numeric',
+                'provinsi' => 'required|numeric',
+                'region' => 'required|numeric',
+                'postal_code' => 'required|numeric',
+                'year_of_entry' => 'required|numeric',
+                'year_of_retirement' => 'required|numeric',
+                'retirement_type' => 'required|numeric',
+                'last_employee_status' => 'required|numeric',
                 'position' => 'required|string',
+                'last_division' => 'required|string',
+                'spouse_name' => 'required|string',
+                'shirt_size' => 'required|numeric',
+                'notes' => 'required|string',
+                'ec_name' => 'required|string',
+                'ec_kinship' => 'required|string',
+                't_community_id' => 'required',
+                'status_anggota' => 'nullable',
                 'active' => 'required|in:1,0',
             ]);
 
-            $folder = "dgolf/user-profile";
+            $folder = "rump4t/user-profile";
             $column = "image";
 
+            $datas['status_anggota'] = empty($datas['status_anggota']) ? 1 : 2;
             $datas['flag_done_profile'] = '1';
             $datas['email_verified_at'] = now();
             $datas['phone_verified_at'] = now();
             $datas['password'] = bcrypt(123123);
-
+            
             $model = $this->model->create($datas);
 
             $this->helper->uploads($folder, $model, $column);
 
+            /* create memberComm */
+            $createMember = [
+                't_user_id' => $model->id,
+                't_community_id' => $datas['t_community_id'],
+                'active' => 1,
+            ];
+
+            $updateUser = [
+                'flag_community' => 'JOINED',
+            ];
+            $model->update($updateUser);
+            $this->memberComm->create($createMember);
+
             DB::commit();
             return $this->web->store('users.semua');
         } catch (\Throwable $e) {
+            report($e);
             DB::rollBack();
             if($e instanceof ValidationException){
                 return $this->web->error_validation($e);
@@ -159,10 +207,15 @@ class UserManageController extends Controller
     public function show(string $id)
     {
         try{
+            $users = $this->model->with(['city:id,name'])->findOrfail($id);
             $data = [
                 'content' => 'Admin/Users/show',
-                'title' => 'Update Data User',
-                'users' => $this->model->with(['city:id,name'])->findOrfail($id),
+                'title' => 'Show Data User',
+                'users' => $users,
+                'region' => $this->references->where('id', $users->region)->first(),
+                'retirement_type' => $this->references->where('id', $users->retirement_type)->first(),
+                'last_employee_status' => $this->references->where('id', $users->last_employee_status)->first(),
+                'shirt_size' => $this->references->where('id', $users->shirt_size)->first()
             ];
 
             return view('Admin.Layouts.wrapper', $data);
@@ -193,6 +246,13 @@ class UserManageController extends Controller
                 'faculty' => $this->config->where('parameter', 'm_faculty')->get(),
                 'years' => $dataYears,
                 'city' => $this->city->get(),
+                'villages' => $this->village->get(),
+                'districts' => $this->district->get(),
+                'provinces' => $this->province->get(),
+                'regions' => $this->references->where('parameter', 'm_region')->get(),
+                'retirement_type' => $this->references->where('parameter', 'm_retirement_type')->get(),
+                'last_employee_status' => $this->references->where('parameter', 'm_last_employee_status')->get(),
+                'shirt_size' => $this->references->where('parameter', 'm_shirt_size')->get(),
             ];
 
             return view('Admin.Layouts.wrapper', $data);
@@ -206,6 +266,7 @@ class UserManageController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        
         DB::beginTransaction();
         try{
             $datas = $request->validate([
@@ -222,27 +283,38 @@ class UserManageController extends Controller
                 //     'string',
                 //     Rule::unique('users')->ignore($request->user()->id),
                 // ],
-                'gender' => 'nullable|in:L,P',
+                'gender' => 'required|in:L,P',
+                'birth_place' => 'required|string',
                 'birth_date' => 'required',
-                // 'hcp_index' => 'required|numeric',
-                'faculty' => 'nullable|string',
-                'batch' => 'nullable',
-                'office_name' => 'required|string',
+                'age' => 'required|numeric',
                 'address' => 'required|string',
                 't_city_id' => 'nullable',
-                'business_sector' => 'required|string',
+                'desa_kelurahan' => 'nullable|numeric',
+                'provinsi' => 'required|numeric',
+                'region' => 'required|numeric',
+                'postal_code' => 'required|numeric',
+                'year_of_entry' => 'required|numeric',
+                'year_of_retirement' => 'required|numeric',
+                'retirement_type' => 'required|numeric',
+                'last_employee_status' => 'required|numeric',
                 'position' => 'required|string',
+                'last_division' => 'required|string',
+                'spouse_name' => 'required|string',
+                'shirt_size' => 'required|numeric',
+                'notes' => 'required|string',
+                'ec_name' => 'required|string',
+                'ec_kinship' => 'required|string',
                 't_community_id' => 'nullable',
+                'status_anggota' => 'required|in:1,2',
                 'active' => 'nullable|in:1,0',
             ]);
             
             $folder = "dgolf/user-profile";
             $column = "image";
-
             $model = $this->model->findOrfail($id);
             if (!empty($model->t_community_id) && !empty($datas['t_community_id'])) {
                 $modelMember = $this->memberComm->where('t_user_id', $model->id)->where('t_community_id', $model->t_community_id)->first();
-    
+                
                 $modelMember->update([
                     't_community_id' => $datas['t_community_id'],
                 ]);
