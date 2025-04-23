@@ -33,47 +33,47 @@
                         </li>
                     </ul> --}}
                 {{-- </li> --}}
-                <li class="slide">
-                    <a class="side-menu__item" data-toggle="slide" href="#"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24" ><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 9h14V5H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5S7.83 8.5 7 8.5 5.5 7.83 5.5 7 6.17 5.5 7 5.5zM5 19h14v-4H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z" opacity=".3"/><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zm-1 6H5v-4h14v4zm-12-.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zm-1 6H5V5h14v4zM7 8.5c.83 0 1.5-.67 1.5-1.5S7.83 5.5 7 5.5 5.5 6.17 5.5 7 6.17 8.5 7 8.5z"/></svg><span class="side-menu__label">Commuity</span><i class="angle fe fe-chevron-down"></i></a>
-                    <ul class="slide-menu">
-                        <li class="sub-slide">
-                            <a class="sub-side-menu__item" href="{{ route('community.semua') }}"><span class="sub-side-menu__label">List Community</span></a>
-                        </li>
+                {{-- <li class="slide"> --}}
+                    {{-- <a class="side-menu__item" data-toggle="slide" href="#"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24" ><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 9h14V5H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5S7.83 8.5 7 8.5 5.5 7.83 5.5 7 6.17 5.5 7 5.5zM5 19h14v-4H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z" opacity=".3"/><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zm-1 6H5v-4h14v4zm-12-.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zm-1 6H5V5h14v4zM7 8.5c.83 0 1.5-.67 1.5-1.5S7.83 5.5 7 5.5 5.5 6.17 5.5 7 6.17 8.5 7 8.5z"/></svg><span class="side-menu__label">Commuity</span><i class="angle fe fe-chevron-down"></i></a> --}}
+                    {{-- <ul class="slide-menu"> --}}
+                        {{-- <li class="sub-slide"> --}}
+                            {{-- <a class="sub-side-menu__item" href="{{ route('community.semua') }}"><span class="sub-side-menu__label">List Community</span></a> --}}
+                        {{-- </li> --}}
                         {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('community.event.semua') }}"><span class="sub-side-menu__label">Event</span></a>
                         </li> --}}
-                        <li class="sub-slide">
-                            <a class="sub-side-menu__item" href="{{ route('community.posting.semua') }}"><span class="sub-side-menu__label">Posting</span></a>
+                        {{-- <li class="sub-slide"> --}}
+                            {{-- <a class="sub-side-menu__item" href="{{ route('community.posting.semua') }}"><span class="sub-side-menu__label">Posting</span></a> --}}
                             {{-- <ul class="sub-slide-menu">
                                 <li><a class="sub-slide-item" href="{{ route('community.posting.semua') }}">Maintenance</a></li>
                             </ul> --}}
-                        </li>
-                        <li class="sub-slide">
-                            <a class="sub-side-menu__item" href="{{ route('community.album.semua') }}"><span class="sub-side-menu__label">Album</span></a>
+                        {{-- </li> --}}
+                        {{-- <li class="sub-slide"> --}}
+                            {{-- <a class="sub-side-menu__item" href="{{ route('community.album.semua') }}"><span class="sub-side-menu__label">Album</span></a> --}}
                             {{-- <ul class="sub-slide-menu">
                                 <li><a class="sub-slide-item" href="{{ route('community.album.semua') }}">Maintenance</a></li>
                             </ul> --}}
-                        </li>
-                        <li class="sub-slide">
-                            <a class="sub-side-menu__item" href="{{ route('community.sponsor.semua') }}"><span class="sub-side-menu__label">Supporting Partner</span></a>
+                        {{-- </li> --}}
+                        {{-- <li class="sub-slide"> --}}
+                            {{-- <a class="sub-side-menu__item" href="{{ route('community.sponsor.semua') }}"><span class="sub-side-menu__label">Supporting Partner</span></a> --}}
                             {{-- <ul class="sub-slide-menu">
                                 <li><a class="sub-slide-item" href="{{ route('community.sponsor.semua') }}">Maintenance</a></li>
                             </ul> --}}
-                        </li>
-                    </ul>
-                </li>
+                        {{-- </li> --}}
+                    {{-- </ul> --}}
+                {{-- </li> --}}
                 <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="#"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24" ><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 9h14V5H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5S7.83 8.5 7 8.5 5.5 7.83 5.5 7 6.17 5.5 7 5.5zM5 19h14v-4H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z" opacity=".3"/><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zm-1 6H5v-4h14v4zm-12-.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zm-1 6H5V5h14v4zM7 8.5c.83 0 1.5-.67 1.5-1.5S7.83 5.5 7 5.5 5.5 6.17 5.5 7 6.17 8.5 7 8.5z"/></svg><span class="side-menu__label">Event</span><i class="angle fe fe-chevron-down"></i></a>
                     <ul class="slide-menu">
-                        <li class="sub-slide">
+                        {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('event.semua') }}"><span class="sub-side-menu__label">List Events</span></a>
-                        </li>
+                        </li> --}}
                         {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('event.registrant.semua') }}"><span class="sub-side-menu__label">Registrant</span></a>
                         </li> --}}
-                        <li class="sub-slide">
+                        {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('event.sponsor.semua') }}"><span class="sub-side-menu__label">Sponsor</span></a>
-                        </li>
+                        </li> --}}
                         {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('event.winners.semua') }}"><span class="sub-side-menu__label">Winner Category</span></a>
                         </li> --}}
@@ -105,18 +105,18 @@
                 <li class="slide">
                     <a class="side-menu__item" href="{{ route('users.admin.semua') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24" ><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 9h14V5H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5S7.83 8.5 7 8.5 5.5 7.83 5.5 7 6.17 5.5 7 5.5zM5 19h14v-4H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z" opacity=".3"/><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zm-1 6H5v-4h14v4zm-12-.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zm-1 6H5V5h14v4zM7 8.5c.83 0 1.5-.67 1.5-1.5S7.83 5.5 7 5.5 5.5 6.17 5.5 7 6.17 8.5 7 8.5z"/></svg><span class="side-menu__label">User management</span></a>
                 </li>
-                <li class="slide">
-                    <a class="side-menu__item" href="{{ route('letsplay.semua') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24" ><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 9h14V5H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5S7.83 8.5 7 8.5 5.5 7.83 5.5 7 6.17 5.5 7 5.5zM5 19h14v-4H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z" opacity=".3"/><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zm-1 6H5v-4h14v4zm-12-.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zm-1 6H5V5h14v4zM7 8.5c.83 0 1.5-.67 1.5-1.5S7.83 5.5 7 5.5 5.5 6.17 5.5 7 6.17 8.5 7 8.5z"/></svg><span class="side-menu__label">Let's Play management</span></a>
+                {{-- <li class="slide"> --}}
+                    {{-- <a class="side-menu__item" href="{{ route('letsplay.semua') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24" ><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 9h14V5H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5S7.83 8.5 7 8.5 5.5 7.83 5.5 7 6.17 5.5 7 5.5zM5 19h14v-4H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z" opacity=".3"/><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zm-1 6H5v-4h14v4zm-12-.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zm-1 6H5V5h14v4zM7 8.5c.83 0 1.5-.67 1.5-1.5S7.83 5.5 7 5.5 5.5 6.17 5.5 7 6.17 8.5 7 8.5z"/></svg><span class="side-menu__label">Let's Play management</span></a> --}}
                     {{-- <ul class="slide-menu">
                         <li class="sub-slide">
                             <a class="sub-side-menu__item" href="#"><span class="sub-side-menu__label">Maintenance</span></a>
                         </li>
                     </ul> --}}
-                </li>
+                {{-- </li> --}}
                 <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="#"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24" ><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 9h14V5H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5S7.83 8.5 7 8.5 5.5 7.83 5.5 7 6.17 5.5 7 5.5zM5 19h14v-4H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z" opacity=".3"/><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zm-1 6H5v-4h14v4zm-12-.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zm-1 6H5V5h14v4zM7 8.5c.83 0 1.5-.67 1.5-1.5S7.83 5.5 7 5.5 5.5 6.17 5.5 7 6.17 8.5 7 8.5z"/></svg><span class="side-menu__label">Social Media</span><i class="angle fe fe-chevron-down"></i></a>
                     <ul class="slide-menu">
-                        <li class="sub-slide">
+                        {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('informations.index') }}"><span class="sub-side-menu__label">Information</span></a>
                         </li>
                         <li class="sub-slide">
@@ -124,7 +124,7 @@
                         </li>
                         <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('postingans.index') }}"><span class="sub-side-menu__label">Posting</span></a>
-                        </li>
+                        </li> --}}
                         <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('news-admin.index') }}"><span class="sub-side-menu__label">Berita</span></a>
                         </li>
@@ -140,18 +140,18 @@
                 <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="#"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24" ><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 9h14V5H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5S7.83 8.5 7 8.5 5.5 7.83 5.5 7 6.17 5.5 7 5.5zM5 19h14v-4H5v4zm2-3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z" opacity=".3"/><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zm-1 6H5v-4h14v4zm-12-.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zm-1 6H5V5h14v4zM7 8.5c.83 0 1.5-.67 1.5-1.5S7.83 5.5 7 5.5 5.5 6.17 5.5 7 6.17 8.5 7 8.5z"/></svg><span class="side-menu__label">Master's</span><i class="angle fe fe-chevron-down"></i></a>
                     <ul class="slide-menu">
-                        <li class="sub-slide">
+                        {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('golf-course.index') }}"><span class="sub-side-menu__label">Golf Course</span></a>
-                        </li>
+                        </li> --}}
                         <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('banner-slide.index') }}"><span class="sub-side-menu__label">Banner Slide</span></a>
                         </li>
-                        <li class="sub-slide">
+                        {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('winner-category.index') }}"><span class="sub-side-menu__label">Winner Category</span></a>
-                        </li>
-                        <li class="sub-slide">
+                        </li> --}}
+                        {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('rules-score.index') }}"><span class="sub-side-menu__label">Rules Score</span></a>
-                        </li>
+                        </li> --}}
                         <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('regions.index') }}"><span class="sub-side-menu__label">Regions</span></a>
                         </li>

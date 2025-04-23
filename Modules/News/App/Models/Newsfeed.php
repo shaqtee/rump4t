@@ -18,6 +18,9 @@ class Newsfeed extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     
+    protected $casts = [
+        'is_published' => 'boolean',
+    ];
 
     protected $table = "t_news";
     

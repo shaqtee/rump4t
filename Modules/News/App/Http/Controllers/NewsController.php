@@ -38,6 +38,9 @@ class NewsController extends Controller
                 $news = $news->where('region_id', $regionId)->orderBy('created_at', 'desc');
 
             }
+            if($request->has('featured') && $request->featured == true){
+                $news = $news->where('featured', true);
+            }
             $news = $news->get();
 
             $news->map(function($item){

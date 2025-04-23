@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Otp;
 use App\Models\User;
 use App\Mail\LoginMail;
+use Hash;
 use Twilio\Rest\Client;
 use App\Mail\GreetingMail;
 use App\Mail\ResendOtpMail;
@@ -95,6 +96,7 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
             $datas = $request->validated();
+
             
             $userCheck = $this->model->where('phone', $request->phone)->first();
 
@@ -104,6 +106,11 @@ class AuthController extends Controller
             
             if($userCheck && $userCheck->flag_done_profile == '1'){
                 return  $this->api->error("Phone Number Has Already Been Registered");
+            }
+
+            // if numbers starts with 0. change to 62
+            if(substr($request->phone, 0, 1) == '0'){
+                $datas['phone'] = '62'.substr($request->phone, 1);
             }
 
             // return response()->json($datas);
@@ -1226,6 +1233,7 @@ class AuthController extends Controller
 
             DB::commit();
             return $this->api->success($user, "Successfully Allow Notified!");
+    
         } catch(\Throwable $e){
             DB::rollBack();
             if (config('envconfig.app_debug')) {
@@ -1258,6 +1266,7 @@ class AuthController extends Controller
         }
     }
 
+
     public function list_region()
     {
         $list_region = $this->references
@@ -1282,11 +1291,27 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
 
-            $credentials = $request->only('email', 'password');
+         
             
-            if (!Auth::attempt($credentials)) {
-                return response()->json(['message' => 'Unauthorized'], 401);
+            $request->validate([
+                'identifier' => 'required|string', // bisa phone atau nomor_anggota
+                'password' => 'required|string',
+            ]);
+        
+            // Cari user berdasarkan nomor_anggota atau phone
+            $user = User::where('nomor_anggota', $request->identifier)
+                        ->orWhere('phone', $request->identifier)
+                        ->first();
+        
+            if ($user && Hash::check($request->password, $user->password)) {
+                Auth::login($user);
+            }else{
+                return $this->api->error('Invalid credentials');
             }
+
+
+
+
             
             $user = Auth::user();
 

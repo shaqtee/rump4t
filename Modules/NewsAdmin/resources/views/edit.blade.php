@@ -42,6 +42,14 @@
                         <option value="published" {{ old('status', $news->status) == 'published' ? 'selected' : '' }}>Published</option>
                     </select>
                 </div> --}}
+                   {{-- dropdown featured true or false  --}}
+                <div class="form-group">
+                    <label for="featured">Featured</label>
+                    <select name="featured" id="featured" class="form-control">
+                        <option value="0" {{ old('featured', $news->featured) == 0 ? 'selected' : '' }}>No</option>
+                        <option value="1" {{ old('featured', $news->featured) == 1 ? 'selected' : '' }}>Yes</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label for="image">Unggah File yang ingin diubah (Jika ada)</label>

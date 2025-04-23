@@ -27,6 +27,13 @@
                             <option value="{{ $region->id }}">{{ $region->value }}</option>
                         @endforeach
                     </select>
+                    {{-- dropdown featured true or false  --}}
+                    <div class="mb-3">
+                        <label for="featured" class="form-label">Featured</label>
+                        <select id="featured" name="featured" class="form-control">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
                 {{-- image --}}
                 <div class="mb-3">
                     <label for="image" class="form-label">Image</label>

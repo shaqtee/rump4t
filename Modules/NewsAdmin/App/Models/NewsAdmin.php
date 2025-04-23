@@ -23,6 +23,10 @@ class NewsAdmin extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    protected $casts = [
+        'featured' => 'boolean',
+    ];
+
     protected static function boot()
     {
         parent::boot();
