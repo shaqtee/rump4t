@@ -8,6 +8,11 @@
                 @csrf
                 <div class="">
                     <div class="form-group">
+                        <label for="community">Community</label>
+                        <input readonly type="text" class="form-control @error('community') is-invalid @enderror"
+                            value="{{ $users->community->title ?? 'Empty' }}" name="community" id="community" autofocus>
+                    </div>
+                    <div class="form-group">
                         <label for="name">Name</label>
                         @error('name')
                             <small style="color: red">{{ $message }}</small>
@@ -63,6 +68,13 @@
                             value="{{ old('phone', isset($users) ? ($users->gender == 'L' ? 'Laki-Laki' : 'Perempuan') : '') }}"
                             name="phone" id="phone" placeholder="Phone" required autofocus>
                     </div>
+
+                    <div class="form-group">
+                        <label for="birth_place">Birth Place</label>
+                        <input readonly type="text" class="form-control @error('birth_place') is-invalid @enderror"
+                            value="{{ $users->birth_place ?? 'Empty' }}" name="birth_place" id="birth_place" autofocus>
+                    </div>
+
                     <div class="form-group">
                         <label for="birth_date">Birth Date</label>
                         @error('birth_date')
@@ -77,42 +89,13 @@
                                 placeholder="Birth Date" required autofocus>
                         </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="hcp_index">HCP Index</label>
-                        @error('hcp_index')
-                            <small style="color: red">{{ $message }}</small>
-                        @enderror
-                        <input readonly type="text" class="form-control @error('hcp_index') is-invalid @enderror"
-                            value="{{ old('hcp_index', isset($users) ? $users->hcp_index : '') }}" name="hcp_index"
-                            id="hcp_index" placeholder="HCP Index" required autofocus>
+                        <label for="age">Age</label>
+                        <input readonly type="text" class="form-control @error('age') is-invalid @enderror"
+                            value="{{ $users->age ?? 'Empty' }}" name="age" id="age" autofocus>
                     </div>
-                    <div class="form-group">
-                        <label for="faculty">Faculty</label>
-                        @error('faculty')
-                            <small style="color: red">{{ $message }}</small>
-                        @enderror
-                        <input readonly type="text" class="form-control @error('faculty') is-invalid @enderror"
-                            value="{{ old('faculty', isset($users) ? $users->faculty : '') }}" name="faculty"
-                            id="faculty" placeholder="faculty" required autofocus>
-                    </div>
-                    <div class="form-group">
-                        <label for="batch">Batch</label>
-                        @error('batch')
-                            <small style="color: red">{{ $message }}</small>
-                        @enderror
-                        <input readonly type="text" class="form-control @error('batch') is-invalid @enderror"
-                            value="{{ old('batch', isset($users) ? $users->batch : '') }}" name="batch"
-                            id="batch" placeholder="batch" required autofocus>
-                    </div>
-                    <div class="form-group">
-                        <label for="office_name">Office Name</label>
-                        @error('office_name')
-                            <small style="color: red">{{ $message }}</small>
-                        @enderror
-                        <input readonly type="text" class="form-control @error('office_name') is-invalid @enderror"
-                            value="{{ old('office_name', isset($users) ? $users->office_name : '') }}"
-                            name="office_name" id="office_name" placeholder="Office Name" required autofocus>
-                    </div>
+
                     <div class="form-group">
                         <label for="address">Address</label>
                         @error('address')
@@ -131,19 +114,63 @@
                             value="{{ old('address', isset($users) && isset($users->city) ? $users->city->name : '') }}" name="address"
                             id="address" placeholder="Address" required autofocus>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="business_sector">Bussiness Sector</label>
-                        @error('business_sector')
-                            <small style="color: red">{{ $message }}</small>
-                        @enderror
-                        <input readonly type="text"
-                            class="form-control @error('business_sector') is-invalid @enderror"
-                            value="{{ old('business_sector', isset($users) ? $users->business_sector : '') }}"
-                            name="business_sector" id="business_sector" placeholder="Bussiness Sector" required
-                            autofocus>
+                        <label for="village">Village</label>
+                        <input readonly type="text" class="form-control @error('village') is-invalid @enderror"
+                            value="{{ $users->village->name ?? 'Empty' }}" name="village" id="village" autofocus>
                     </div>
+
                     <div class="form-group">
-                        <label for="position">Position</label>
+                        <label for="district">District</label>
+                        <input readonly type="text" class="form-control @error('district') is-invalid @enderror"
+                            value="{{ $users->district->name ?? 'Empty' }}" name="district" id="district" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="province">Province</label>
+                        <input readonly type="text" class="form-control @error('province') is-invalid @enderror"
+                            value="{{ $users->province->name ?? 'Empty' }}" name="province" id="province" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="region">Region</label>
+                        <input readonly type="text" class="form-control @error('region') is-invalid @enderror"
+                            value="{{ $region->value ?? 'Empty' }}" name="region" id="region" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postal_code">Postal Code</label>
+                        <input readonly type="text" class="form-control @error('postal_code') is-invalid @enderror"
+                            value="{{ $users->postal_code ?? 'Empty' }}" name="postal_code" id="postal_code" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="year_of_entry">Year of Entry</label>
+                        <input readonly type="text" class="form-control @error('year_of_entry') is-invalid @enderror"
+                            value="{{ $users->year_of_entry ?? 'Empty' }}" name="year_of_entry" id="year_of_entry" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="year_of_retirement">Year of Retirement</label>
+                        <input readonly type="text" class="form-control @error('year_of_retirement') is-invalid @enderror"
+                            value="{{ $users->year_of_retirement ?? 'Empty' }}" name="year_of_retirement" id="year_of_retirement" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="retirement_type">Retirement Type</label>
+                        <input readonly type="text" class="form-control @error('retirement_type') is-invalid @enderror"
+                            value="{{ $retirement_type->value ?? 'Empty' }}" name="retirement_type" id="retirement_type" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last_employee_status">Last Employee Status</label>
+                        <input readonly type="text" class="form-control @error('last_employee_status') is-invalid @enderror"
+                            value="{{ $last_employee_status->value ?? 'Empty' }}" name="last_employee_status" id="last_employee_status" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="position">Last Position</label>
                         @error('position')
                             <small style="color: red">{{ $message }}</small>
                         @enderror
@@ -151,6 +178,53 @@
                             value="{{ old('position', isset($users) ? $users->position : '') }}" name="position"
                             id="position" placeholder="Position" required autofocus>
                     </div>
+
+                    <div class="form-group">
+                        <label for="last_division">Last Division</label>
+                        <input readonly type="text" class="form-control @error('last_division') is-invalid @enderror"
+                            value="{{ $users->last_division ?? 'Empty' }}" name="last_division" id="last_division" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="spouse_name">Spouse Name</label>
+                        <input readonly type="text" class="form-control @error('spouse_name') is-invalid @enderror"
+                            value="{{ $users->spouse_name ?? 'Empty' }}" name="spouse_name" id="spouse_name" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shirt_size">T-Shirt Size</label>
+                        <input readonly type="text" class="form-control @error('shirt_size') is-invalid @enderror"
+                            value="{{ $shirt_size->value ?? 'Empty' }}" name="shirt_size" id="shirt_size" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <input readonly type="text" class="form-control @error('notes') is-invalid @enderror"
+                            value="{{ $users->notes ?? 'Empty' }}" name="notes" id="notes" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ec_name">Emergency Contact Name</label>
+                        <input readonly type="text" class="form-control @error('ec_name') is-invalid @enderror"
+                            value="{{ $users->ec_name ?? 'Empty' }}" name="ec_name" id="ec_name" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ec_kinship">Emergency Contact Kinship</label>
+                        <input readonly type="text" class="form-control @error('ec_kinship') is-invalid @enderror"
+                            value="{{ $users->ec_kinship ?? 'Empty' }}" name="ec_kinship" id="ec_kinship" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status_anggota">Member Status</label>
+                        @error('status_anggota')
+                            <small style="color: red">{{ $message }}</small>
+                        @enderror
+                        <input readonly class="form-control @error('position') is-invalid @enderror"
+                            value="{{ old('status_anggota', isset($users) && $users->status_anggota == '1')  ? 'Regular' : 'Privilege' }}"
+                            name="status_anggota" type="text" required autofocus>
+                    </div>
+
                     <div class="form-group">
                         <label for="active">Active</label>
                         @error('active')
