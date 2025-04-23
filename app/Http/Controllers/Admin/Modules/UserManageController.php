@@ -159,7 +159,7 @@ class UserManageController extends Controller
                 'ec_name' => 'required|string',
                 'ec_kinship' => 'required|string',
                 't_community_id' => 'required',
-                'status_anggota' => 'nullable',
+                'status_anggota' => 'required|in:1,2',
                 'active' => 'required|in:1,0',
             ]);
 
@@ -183,9 +183,12 @@ class UserManageController extends Controller
                 'active' => 1,
             ];
 
+            $nomor_anggota = $model->id.$model->region.$model->status_anggota;
             $updateUser = [
                 'flag_community' => 'JOINED',
+                'nomor_anggota' => $nomor_anggota,
             ];
+            
             $model->update($updateUser);
             $this->memberComm->create($createMember);
 
