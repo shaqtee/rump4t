@@ -53,7 +53,11 @@
                             <tr>
                                 <td>{{ $users->firstItem() + $key }}</td>
                                 <td>{{ $usr->name }}</td>
-                                <td><img class="img-thumbnail" src="{{ $usr->image }}" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile"></td>
+                                @if(!empty($usr->image))
+                                    <td><img class="img-thumbnail" src="{{ $usr->image }}" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile"></td>
+                                @else
+                                    <td class="text-danger"> Empty </td>
+                                @endif
                                 <td>{{ $usr->email }}</td>
                                 <td>{{ $usr->phone }}</td>
                                 <td>{{ $usr->community->title ?? '-' }}</td>
@@ -64,19 +68,19 @@
                                 <td>
                                     <a class="btn btn-info" href="{{ route('users.lihat', ['id' => $usr->id]) }}">SHOW</a>
                                 </td>
-                                <td>
-                                    <a class="btn btn-info" href="{{ route('users.gamescore', ['id' => $usr->id]) }}">Game Score</a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-info" href="{{ route('users.hcpindex', ['id' => $usr->id]) }}">Handicap</a>
-                                </td>
                                 {{-- <td>
+                                    <a class="btn btn-info" href="{{ route('users.gamescore', ['id' => $usr->id]) }}">Game Score</a>
+                                </td> --}}
+                                {{-- <td>
+                                    <a class="btn btn-info" href="{{ route('users.hcpindex', ['id' => $usr->id]) }}">Handicap</a>
+                                </td> --}}
+                                <td>
                                     <form action="{{ route('users.hapus', ['id' => $usr->id]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">DELETE</button>
                                     </form>
-                                </td> --}}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

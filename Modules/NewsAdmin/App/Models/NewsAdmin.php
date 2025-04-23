@@ -6,6 +6,7 @@ use Carbon\Traits\Timestamp;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\NewsAdmin\Database\factories\NewsAdminFactory;
+use Modules\Regions\App\Models\Region;
 
 class NewsAdmin extends Model
 {
@@ -22,6 +23,10 @@ class NewsAdmin extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    protected $casts = [
+        'featured' => 'boolean',
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -29,6 +34,13 @@ class NewsAdmin extends Model
         static::creating(function ($model) {
             $model->id = $model->id ?? (string) \Illuminate\Support\Str::ulid();
         });
+    }
+
+
+    // belongsTo reference by region_id
+    public function region()
+    {
+        return $this->belongsTo(Region::class, 'region_id');
     }
 
     

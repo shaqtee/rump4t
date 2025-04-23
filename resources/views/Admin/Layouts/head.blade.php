@@ -13,6 +13,7 @@
 <title>RUMP4T</title>
 <link rel="icon" href="/images/logo-dgolf4.png" type="image/x-icon">
 <link href="/Valex/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 <link href="/Valex/assets/plugins/iconfonts/icons.css" rel="stylesheet" />
 <!--- Internal Fontawesome css-->
@@ -73,6 +74,18 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
+    /* Hide days grid and month selector */
+    .hide-calendar .ui-datepicker-calendar,
+    .hide-calendar .ui-datepicker-month {
+        display: none;
+    }
+
+    /* Optional: Hide previous/next arrows */
+    .hide-calendar .ui-datepicker-prev,
+    .hide-calendar .ui-datepicker-next {
+        display: none;
+    }
+
     /* Custom CSS for switch button */
     .custom-switch {
         position: relative;
@@ -118,15 +131,19 @@
     input:checked + .custom-switch-slider:before {
         transform: translateX(22px);
     }
+
+    .form-preview {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-top: 20px;
+    }
 </style>
 </head>
 
 <body class="main-body app sidebar-mini">
 
     <!-- Loader -->
-    <div id="global-loader">
-        <img src="/Valex/html/assets/img/loader.svg" class="loader-img" alt="Loader">
-    </div>
+
     <!-- /Loader -->
 <!-- Page -->
 <div class="page">

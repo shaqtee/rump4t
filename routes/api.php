@@ -45,11 +45,10 @@ Route::prefix('sign-in')->group(function() {
     Route::post('resend-otp-login', [AuthController::class, 'resend_otp_login']);
 });
 
-route::prefix("news")->group(function(){
-    Route::get('', [NewsController::class, 'index']);
-});
+
 
 Route::get('list-region', [AuthController::class, 'list_region']); // new
+Route::get('list-area/{region_id}', [AuthController::class, 'list_area']); // new
 
 Route::prefix('auth')->middleware('auth:api')->group(function () {
     Route::get('check-login', function(){
@@ -67,7 +66,7 @@ Route::prefix('auth')->middleware('auth:api')->group(function () {
     Route::get('delete-account', [AuthController::class, 'delete_account']);
     Route::post('aggree-eula', [AuthController::class, 'aggree_with_eula']);
 
-    Route::get('list-region', [AuthController::class, 'list_region']); // new
+    // Route::get('list-region', [AuthController::class, 'list_region']); // new
     Route::get('list-city', [AuthController::class, 'list_city']); // new
     Route::post('logout', [AuthController::class, 'logout']); // new
 

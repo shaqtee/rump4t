@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\News\App\Http\Controllers\NewsController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('news', fn (Request $request) => $request->user())->name('news');
+Route::middleware(["auth:api"])->prefix("news")->group(function (){
+    Route::get('', [NewsController::class, 'index'])->name('news.index');
+
 });

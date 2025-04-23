@@ -39,7 +39,8 @@ class NewsAdminController extends Controller
      */
     public function create()
     {
-        return view('newsadmin::create' );
+        $regions = \Modules\Regions\App\Models\Region::where("parameter" , "m_area")->orWhere("parameter" , "m_region")->get();
+        return view('newsadmin::create' , compact('regions')); ;
     }
 
     /**
@@ -56,6 +57,17 @@ class NewsAdminController extends Controller
             $news->title = $request->input('title');
             $news->content = $request->input('description');
             $news->is_published = $request->input('is_published', true);
+            if($request->has('featured') && $request->featured == true){
+                $news->featured = true;
+            }else{
+                $news->featured = false;
+            }
+            if($request->region_id == ""){
+                $news->region_id = null;
+            }else{
+            $news->region_id = $request->input('region_id');
+            }
+            
             $news->author_id = auth()->id();
             if ($request->hasFile('image')) {
                 $path = $request->file('image')->store('newsimage', 's3');
@@ -90,6 +102,7 @@ class NewsAdminController extends Controller
     public function edit($id)
     {
         $news = NewsAdmin::findOrFail($id);
+        $regions = \Modules\Regions\App\Models\Region::where("parameter" , "m_area")->orWhere("parameter" , "m_region")->get();
         // dd($news);
         if ($news->image) {
             $news->image = \Storage::disk('s3')->url($news->image);
@@ -97,7 +110,7 @@ class NewsAdminController extends Controller
             // $news->image = null; // or set a default value if needed
         }
         // $news->image = \Storage::disk('s3')->url($news->image);
-        return view('newsadmin::edit' , compact('news'));
+        return view('newsadmin::edit' , compact('news' , 'regions'));
     }
 
     /**
@@ -110,6 +123,17 @@ class NewsAdminController extends Controller
         $news->title = $request->input('title');
         $news->content = $request->input('content');
         $news->is_published = $request->input('is_published', true);
+        if($request->has('featured') && $request->featured == true){
+            $news->featured = true;
+        }else{
+            $news->featured = false;
+        }
+        if($request->region_id == ""){
+            $news->region_id = null;
+        }else{
+        $news->region_id = $request->input('region_id');
+        }
+        
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('newsimage', 's3');
             $news->image = $path;

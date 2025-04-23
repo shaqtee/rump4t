@@ -5,6 +5,7 @@ namespace Modules\News\App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\ApiResponse;
 use App\Services\Helpers\Helper;
+use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,12 +29,31 @@ class NewsController extends Controller
         $this->newsfeed = $newsfeed;
 
     }
-    public function index() : JsonResponse
+    public function index(Request $request) : JsonResponse
     {
         try {
+            $news = Newsfeed::query(); ; 
+            if(isset($request->region ) && $request->region != null){ 
+                $regionId = Auth::user()->region ;
+                $news = $news->where('region_id', $regionId)->orderBy('created_at', 'desc');
 
-            $news = $this->newsfeed->getNews();
-            return $this->apiResponse->success($news);
+            }
+            if($request->has('featured') && $request->featured == true){
+                $news = $news->where('featured', true);
+            }
+            $news = $news->get();
+
+            $news->map(function($item){
+                if ($item->image) {
+                    $item->image = \Storage::disk('s3')->url($item->image);
+                } else {
+                    $item->image = null;
+                }
+            
+            });
+            
+             return $this->apiResponse->success($news);
+
 
         }catch(\Exception $e){
             return $this->apiResponse->error($e->getMessage());

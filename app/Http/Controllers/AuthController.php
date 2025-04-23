@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Otp;
 use App\Models\User;
 use App\Mail\LoginMail;
+use Hash;
 use Twilio\Rest\Client;
 use App\Mail\GreetingMail;
 use App\Mail\ResendOtpMail;
@@ -95,6 +96,7 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
             $datas = $request->validated();
+
             
             $userCheck = $this->model->where('phone', $request->phone)->first();
 
@@ -104,6 +106,11 @@ class AuthController extends Controller
             
             if($userCheck && $userCheck->flag_done_profile == '1'){
                 return  $this->api->error("Phone Number Has Already Been Registered");
+            }
+
+            // if numbers starts with 0. change to 62
+            if(substr($request->phone, 0, 1) == '0'){
+                $datas['phone'] = '62'.substr($request->phone, 1);
             }
 
             // return response()->json($datas);
@@ -340,8 +347,27 @@ class AuthController extends Controller
             $datas = $this->helper->removeNullValues($datas);
             $dataUser = $this->model->find($id);
 
+            if(!empty($datas['year_of_entry'])){
+                $datas['year_of_entry'] = (int) $datas['year_of_entry'];
+            }
+
+            if(!empty($datas['year_of_retirement'])){
+                $datas['year_of_retirement'] = (int) $datas['year_of_retirement'];
+            }
+
             if(!empty($datas['t_city_id'])){
-                $datas = array_merge($request->all(), ['kota_kabupaten' => $dataUser->city->code]);
+                $city_code = ($this->city->where('id', $datas['t_city_id'])->first())->code;
+                $datas = array_merge($request->all(), ['kota_kabupaten' => $city_code]);
+            }
+
+            if(!empty($datas['birth_date'])){
+                $birthDate = explode("-", $datas['birth_date']);
+                
+                $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[2], $birthDate[1], $birthDate[0]))) > date("md")
+                    ? ((date("Y") - $birthDate[0]) - 1)
+                    : (date("Y") - $birthDate[0]));
+                    
+                $datas = array_merge($request->all(), ['age' => $age]);
             }
             
             if(!$dataUser){
@@ -854,7 +880,11 @@ class AuthController extends Controller
             $id = Auth::id();
             $user = User::with(['community', 'membersCommonity', 'city'])->find($id);
             $member = MembersCommonity::where('t_user_id', $user->id)->first();
-
+            $region = $this->references
+                ->where('parameter', 'm_region')
+                ->where('id', $user->region)
+                ->get();
+            
             $performa = $this->performanceController->box()->getData();
             $hcpIndex = $performa->data->handicapIndex;
             $dataCompany = $this->companyProfile->first();
@@ -891,7 +921,7 @@ class AuthController extends Controller
                     "age" => $user->age,
                     "desa_kelurahan" => $user->desa_kelurahan,
                     "kecamatan" => $user->kecamatan,
-                    "kota_kabupaten" => $user->city->code,
+                    "kota_kabupaten" => $user->city->code ?? null,
                     "postal_code" => $user->postal_code,
                     "provinsi" => $user->provinsi,
                     "year_of_entry" => $user->year_of_entry,
@@ -903,7 +933,8 @@ class AuthController extends Controller
                     "shirt_size" => $user->shirt_size,
                     "notes" => $user->notes,
                     "ec_name" => $user->ec_name,
-                    "ec_kinship" => $user->kinship,
+                    "ec_kinship" => $user->ec_kinship,
+                    "region" => $region,
                 ],
                 'our_contact' => [
                     "id" => $dataCompany->id,
@@ -1202,6 +1233,7 @@ class AuthController extends Controller
 
             DB::commit();
             return $this->api->success($user, "Successfully Allow Notified!");
+    
         } catch(\Throwable $e){
             DB::rollBack();
             if (config('envconfig.app_debug')) {
@@ -1234,14 +1266,24 @@ class AuthController extends Controller
         }
     }
 
+
     public function list_region()
     {
         $list_region = $this->references
             ->where('parameter', 'm_region')
-            ->orWhere('parameter', 'm_area')
             ->get();
 
         return $this->api->success($list_region, 'success');
+    }
+
+    public function list_area($region_id)
+    {
+        $list_area = $this->references
+            ->where('parameter', 'm_area')
+            ->where('parent_id', $region_id)
+            ->get();
+
+        return $this->api->success($list_area, 'success');
     }
 
     public function loginCepat(Request $request){
@@ -1249,11 +1291,27 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
 
-            $credentials = $request->only('email', 'password');
+         
             
-            if (!Auth::attempt($credentials)) {
-                return response()->json(['message' => 'Unauthorized'], 401);
+            $request->validate([
+                'identifier' => 'required|string', // bisa phone atau nomor_anggota
+                'password' => 'required|string',
+            ]);
+        
+            // Cari user berdasarkan nomor_anggota atau phone
+            $user = User::where('nomor_anggota', $request->identifier)
+                        ->orWhere('phone', $request->identifier)
+                        ->first();
+        
+            if ($user && Hash::check($request->password, $user->password)) {
+                Auth::login($user);
+            }else{
+                return $this->api->error('Invalid credentials');
             }
+
+
+
+
             
             $user = Auth::user();
 
@@ -1267,6 +1325,7 @@ class AuthController extends Controller
                     "phone" => $user->phone ?? null,
                     "region" => $user->region ?? null,
                     "remember_token" => $user->remember_token ?? null,
+                    "image" => $user->image ?? null,
                 ]
             ];
 
@@ -1376,13 +1435,13 @@ class AuthController extends Controller
 
     public function total_member()
     {
-        $count_member = count($this->model->where('t_group_id', NULL)->get());
+        $count_member = count($this->model->where("status_anggota" , 1)->get());
         return $this->api->success($count_member, "success");
     }
 
     public function total_member_khusus()
     {
-        $count_member_khusus = count($this->model->where('t_group_id', 1)->get());
+        $count_member_khusus = count($this->model->where('status_anggota',2)->get());
         return $this->api->success($count_member_khusus, "success");
     }
 

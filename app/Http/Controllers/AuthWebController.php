@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Modules\Performace\App\Http\Controllers\PerformaceController;
+use Modules\Masters\App\Http\Controllers\MastersController;
 
 class AuthWebController extends Controller
 {
@@ -21,20 +22,24 @@ class AuthWebController extends Controller
     protected $handler;
     protected $helper;
     protected $performanceController;
+    protected $mastersController;
 
-    public function __construct(User $model, ApiResponse $api, Handler $handler, Helper $helper, PerformaceController $performanceController)
+    public function __construct(User $model, ApiResponse $api, Handler $handler, Helper $helper, PerformaceController $performanceController, MastersController $mastersController)
     {
         $this->model = $model;
         $this->api = $api;
         $this->handler = $handler;
         $this->helper = $helper;
         $this->performanceController = $performanceController;
+        $this->mastersController = $mastersController;
     }
 
     public function home(){
         $data = [
-            'content' => 'Admin/home'
+            'content' => 'Admin/home',
+            'banner_slide' => json_decode(json_encode($this->mastersController->banner_slide()), true)['original']['data'],
         ];
+        
         return view('Admin.Layouts.wrapper', $data);
     }
 

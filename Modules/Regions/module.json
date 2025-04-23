@@ -1,0 +1,11 @@
+{
+    "name": "Regions",
+    "alias": "regions",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Regions\\App\\Providers\\RegionsServiceProvider"
+    ],
+    "files": []
+}

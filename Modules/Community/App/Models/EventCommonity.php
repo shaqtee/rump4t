@@ -38,14 +38,23 @@ class EventCommonity extends Model
     //     'type_scoring',
     // ];
 
+    protected $casts = [
+        'data_input' => 'array',
+    ];
+    
     public function eventCommonity(){
         return $this->belongsTo(Community::class, 't_community_id');
     }
 
     public function membersEvent(){
-        return $this->belongsToMany(User::class, 't_member_event', 't_event_id', 't_user_id');//->where('approve', 2);
+        return $this->belongsToMany(User::class, 't_member_event', 't_event_id', 't_user_id')->withPivot('data_input');//->where('approve', 2);
     }
 
+    public function joinBy($userId)
+    {
+        return $this->membersEvent()->where('t_user_id', $userId)->exists();
+    }
+    
     public function albumEvent(){
         return $this->hasMany(AlbumCommonity::class,'t_event_id');
     }
