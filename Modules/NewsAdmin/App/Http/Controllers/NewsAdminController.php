@@ -57,6 +57,11 @@ class NewsAdminController extends Controller
             $news->title = $request->input('title');
             $news->content = $request->input('description');
             $news->is_published = $request->input('is_published', true);
+            if($request->has('featured') && $request->featured == true){
+                $news->featured = true;
+            }else{
+                $news->featured = false;
+            }
             if($request->region_id == ""){
                 $news->region_id = null;
             }else{
@@ -118,6 +123,11 @@ class NewsAdminController extends Controller
         $news->title = $request->input('title');
         $news->content = $request->input('content');
         $news->is_published = $request->input('is_published', true);
+        if($request->has('featured') && $request->featured == true){
+            $news->featured = true;
+        }else{
+            $news->featured = false;
+        }
         if($request->region_id == ""){
             $news->region_id = null;
         }else{
