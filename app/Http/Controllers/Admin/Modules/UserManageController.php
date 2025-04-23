@@ -533,4 +533,12 @@ class UserManageController extends Controller
             return $this->handler->handleExceptionWeb($e);
         }
     }
+
+    public function delete_soft($id)
+    {
+        $user = $this->model->find($id);
+        $user->delete();
+
+        return redirect('/admin/users/index');
+    }
 }

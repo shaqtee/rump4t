@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
@@ -30,7 +31,7 @@ use Modules\Masters\App\Models\MasterReferences;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -46,6 +47,7 @@ class User extends Authenticatable
     // ];
 
     protected $guarded = ['id'];
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that should be hidden for serialization.
