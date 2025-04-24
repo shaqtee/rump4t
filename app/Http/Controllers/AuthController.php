@@ -109,7 +109,7 @@ class AuthController extends Controller
                 return  $this->api->error("Phone Number Has Already Been Registered");
             }
 
-            if numbers starts with 0. change to 62
+            // if numbers starts with 0. change to 62
             if(substr($request->phone, 0, 1) == '0'){
                 $datas['phone'] = '62'.substr($request->phone, 1);
             }
