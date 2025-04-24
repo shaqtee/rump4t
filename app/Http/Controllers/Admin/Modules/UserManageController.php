@@ -64,6 +64,28 @@ class UserManageController extends Controller
             return $this->handler->handleExceptionWeb($e);
         }
     }
+    public function reset_password(Request $request, string $id)
+    {
+        DB::beginTransaction();
+        try{
+  
+
+            $model = $this->model->findOrfail($id);
+
+            $model->update([
+                'password' => bcrypt("123123"),
+            ]);
+
+            DB::commit();
+            return $this->web->update('users.semua');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            if($e instanceof ValidationException){
+                return $this->web->error_validation($e);
+            }
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -64,12 +64,15 @@
                                 <td>
                                     <a class="btn btn-info" href="{{ route('users.lihat', ['id' => $usr->id]) }}">SHOW</a>
                                 </td>
-                                <td>
+                                {{-- <td>
                                     <a class="btn btn-info" href="{{ route('users.gamescore', ['id' => $usr->id]) }}">Game Score</a>
                                 </td>
                                 <td>
                                     <a class="btn btn-info" href="{{ route('users.hcpindex', ['id' => $usr->id]) }}">Handicap</a>
-                                </td>
+                                </td> --}}                                
+                                <td>
+                                    <a class="btn btn-danger" href="{{ route('users.resetpass', ['id' => $usr->id]) }}">Atur Ulang Password Akun</a>
+                                </td> 
                                 {{-- <td>
                                     <form action="{{ route('users.hapus', ['id' => $usr->id]) }}" method="POST">
                                         @csrf
