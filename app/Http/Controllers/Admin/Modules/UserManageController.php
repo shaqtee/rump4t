@@ -152,6 +152,7 @@ class UserManageController extends Controller
                 'image' => 'required|image|file|max:2048|mimes:jpeg,png,jpg',
                 'email' => [
                     'nullable',
+                    // 'required',
                     'email',
                     Rule::unique('users'),
                 ],
@@ -305,6 +306,7 @@ class UserManageController extends Controller
                 'image' => 'nullable|image|mimes:jpeg,png,jpg',
                 'email' => [
                     'nullable',
+                    // 'required',
                     'email',
                     Rule::unique('users')->ignore($model->id),
                 ],
