@@ -27,7 +27,7 @@ class RegisRequest extends FormRequest
         $rules = [
             "name" => 'required',
             'phone' => 'required',
-            'email' => 'required',
+            // 'email' => 'required',
             'password' => 'required',
             "region" => 'required',
         ];
