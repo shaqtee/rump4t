@@ -12,12 +12,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Modules\Masters\App\Models\MasterCity;
 use Modules\Masters\App\Models\MasterRules;
+use Modules\Masters\App\Models\MasterRegency;
 use Modules\Masters\App\Models\MastersBanner;
+use Modules\Masters\App\Models\MasterVillage;
 use Modules\Masters\App\Models\MasterDistrict;
 use Modules\Masters\App\Models\MasterProvince;
 use Modules\Masters\App\Models\MasterGolfCourse;
 use Modules\Masters\App\Models\MasterConfiguration;
-use Modules\Masters\App\Models\MasterVillage;
 use Modules\Masters\App\Services\Interfaces\MastersInterface;
 
 class MastersController extends Controller
@@ -175,7 +176,7 @@ class MastersController extends Controller
     {
         try {
             $page = $this->request->size ?? 5;
-            $datas = MasterDistrict::where('is_active', '0')->filter($this->request)->paginate($page);
+            $datas = MasterDistrict::with('regency.province')->where('is_active', '0')->filter($this->request)->paginate($page);
 
             return $this->api->list($datas, new MasterDistrict, 'Success Get Data');
         } catch(\Throwable $e) {
@@ -191,9 +192,26 @@ class MastersController extends Controller
     {
         try {
             $page = $this->request->size ?? 5;
-            $datas = MasterVillage::where('is_active', '0')->filter($this->request)->paginate($page);
+            $datas = MasterVillage::with('district.regency.province')->where('is_active', '0')->filter($this->request)->paginate($page);
 
             return $this->api->list($datas, new MasterVillage, 'Success Get Data');
+        } catch(\Throwable $e) {
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
+
+    public function get_regency()
+    {
+        try {
+            $page = $this->request->size ?? 5;
+            $datas = MasterRegency::with(['province'])
+                ->where('is_active', '0')->filter($this->request)->paginate($page);
+                
+            return $this->api->list($datas, new MasterRegency, 'Success Get Data');
         } catch(\Throwable $e) {
             if (config('envconfig.app_debug')) {
                 return $this->api->error_code($e->getMessage(), $e->getCode());

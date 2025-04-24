@@ -25,6 +25,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Masters\App\Models\MasterDistrict;
 use Modules\Masters\App\Models\MasterProvince;
 use Modules\Masters\App\Models\MasterReferences;
+use Modules\Masters\App\Models\MasterRegency;
 
 // use Modules\SocialMedia\App\Models\DiscussionGroup;
 // use Modules\SocialMedia\App\Models\DiscussionGroupMember;
@@ -81,6 +82,10 @@ class User extends Authenticatable
 
     public function village(){
         return $this->belongsTo(MasterVillage::class, 'desa_kelurahan');
+    }
+
+    public function regency(){
+        return $this->hasOne(MasterRegency::class, 'id','t_city_id');
     }
 
     public function district(){
