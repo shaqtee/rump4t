@@ -113,9 +113,12 @@ class AuthController extends Controller
             if(substr($request->phone, 0, 1) == '0'){
                 $datas['phone'] = '62'.substr($request->phone, 1);
             }
-
-            // return response()->json($datas);
+            
             $newUser = $this->model->create($datas);
+            
+            $digits = abs((int)$newUser->id);
+            $newUser->nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$newUser->region.'-1';
+            $newUser->save();
 
             DB::commit();
             return $this->api->success($newUser, "Successfully Registration");
