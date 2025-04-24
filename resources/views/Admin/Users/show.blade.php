@@ -8,6 +8,11 @@
                 @csrf
                 <div class="">
                     <div class="form-group">
+                        <label for="nomor_anggota">Nomor Anggota</label>
+                        <input readonly type="text" class="form-control text-danger @error('nomor_anggota') is-invalid @enderror"
+                            value="{{ $users->nomor_anggota ?? 'Empty' }}" name="nomor_anggota" id="nomor_anggota" autofocus>
+                    </div>
+                    <div class="form-group">
                         <label for="community">Community</label>
                         <input readonly type="text" class="form-control @error('community') is-invalid @enderror"
                             value="{{ $users->community->title ?? 'Empty' }}" name="community" id="community" autofocus>
