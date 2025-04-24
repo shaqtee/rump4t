@@ -22,6 +22,9 @@
                     <label for="region">Region</label>
                     <select name="region_id" id="region" class="form-control" required>
                         <option value="">Global</option>
+                        {{-- no region   --}}
+                
+                            <option value="" selected>Global</option>
                         @foreach ($regions as $region)
                             <option value="{{ $region->id }}" {{ old('region_id', $news->region_id) == $region->id ? 'selected' : '' }}>
                                 {{ $region->value }}
