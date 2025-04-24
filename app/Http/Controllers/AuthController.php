@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Otp;
 use App\Models\User;
 use App\Mail\LoginMail;
+use Exception;
 use Hash;
 use Twilio\Rest\Client;
 use App\Mail\GreetingMail;
@@ -1340,6 +1341,34 @@ class AuthController extends Controller
             };
         }
     }
+
+
+    public function user_reset_password(Request $request) {
+        try {
+            $user = User::where('email', $request->identifier)->orWhere("phone" , $request->identifier)->orWhere("nomor_anggota" , $request->identifier)->first();
+            if(!$user){
+                return $this->api->error("User Not Found!");
+            }
+            DB::beginTransaction();
+
+    }
+}
+
+public function user_reset_request(Request $request) {
+    $user = User::where('email', $request->identifier)->orWhere("phone" , $request->identifier)->orWhere("nomor_anggota" , $request->identifier)->first();
+    DB::beginTransaction();
+    try {
+        $user->update([
+                "reset_request" => true
+        ]);
+    }catch (\Exception $err) {
+        DB::rollBack();
+        return $this->api->error($err->getMessage());
+
+    }
+    DB::commit();
+    return $this->api->success($user, "Success Request Reset Password");
+}
 
     public function delete_account(Request $request){
         DB::beginTransaction();

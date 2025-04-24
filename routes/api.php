@@ -46,7 +46,7 @@ Route::prefix('sign-in')->group(function() {
 });
 
 
-
+Route::get('user-reset-request', [AuthController::class, 'user_reset_request']);
 Route::get('list-region', [AuthController::class, 'list_region']); // new
 Route::get('list-area/{region_id}', [AuthController::class, 'list_area']); // new
 

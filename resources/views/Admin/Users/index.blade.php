@@ -45,6 +45,7 @@
                             <th>Phone</th>
                             <th>Community</th>
                             <th>Active</th>
+                            <th>Meminta mengganti password?</th>
                             <th colspan="4">Action</th>
                         </tr>
                     </thead>
@@ -62,12 +63,22 @@
                                 <td>{{ $usr->phone }}</td>
                                 <td>{{ $usr->community->title ?? '-' }}</td>
                                 <td>{{ $usr->active == '1' ? 'Active' : 'Deactivate' }}</td>
+                                <td>{{ $usr->reset_request == '1' ? 'Yes' : 'No' }}</td>
                                 <td>
                                     <a class="btn btn-info" href="{{ route('users.ubah', ['id' => $usr->id]) }}">EDIT</a>
                                 </td>
                                 <td>
                                     <a class="btn btn-info" href="{{ route('users.lihat', ['id' => $usr->id]) }}">SHOW</a>
                                 </td>
+                                {{-- <td>
+                                    <a class="btn btn-info" href="{{ route('users.gamescore', ['id' => $usr->id]) }}">Game Score</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-info" href="{{ route('users.hcpindex', ['id' => $usr->id]) }}">Handicap</a>
+                                </td> --}}                                
+                                <td>
+                                    <a class="btn btn-danger" href="{{ route('users.resetpass', ['id' => $usr->id]) }}">Atur Ulang Password Akun</a>
+                                </td> 
                                 {{-- <td>
                                     <a class="btn btn-info" href="{{ route('users.gamescore', ['id' => $usr->id]) }}">Game Score</a>
                                 </td> --}}

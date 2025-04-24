@@ -105,8 +105,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{id}/handicap-index', [UserManageController::class, 'hcp_index'])->name('users.hcpindex');
             Route::get('index-admin', [UserManageController::class, 'index_admin'])->name('users.admin.semua');
             Route::patch('{id}/index-admin', [UserManageController::class, 'update_admin'])->name('users.admin.edit');
-            Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');
+            Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');     // reset password
+            Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');
             Route::delete('{id}/hapus', [UserManageController::class, 'delete_soft'])->name('users.hapus');
+
         });
 
         Route::prefix('community')->group(function () {
