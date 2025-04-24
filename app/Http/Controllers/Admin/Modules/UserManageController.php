@@ -73,7 +73,8 @@ class UserManageController extends Controller
             $model = $this->model->findOrfail($id);
 
             $model->update([
-                'password' => bcrypt("123123"),
+                'password' => "123123",
+                "reset_request" => false,
             ]);
 
             DB::commit();
