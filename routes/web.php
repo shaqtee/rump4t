@@ -77,7 +77,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('tambah', [EventController::class, 'create'])->name('events.admin.tambah');
             Route::post('tambah', [EventController::class, 'store'])->name('events.admin.tambah');
             Route::get('{id}/ubah', [EventController::class, 'edit'])->name('events.admin.ubah');
-            Route::patch('{id}/ubah', [EventController::class, 'update'])->name('events.admin.ubah');  
+            Route::put('{id}/ubah', [EventController::class, 'update'])->name('events.admin.ubah');  
             Route::delete('{id}/hapus', [EventController::class, 'destroy'])->name('events.admin.hapus');
             Route::get('{id}/lihat', [EventController::class, 'show'])->name('events.admin.detail');
             //bukutamu

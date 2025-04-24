@@ -22,6 +22,9 @@
                 <div class="mb-3">
                     <label for="region" class="form-label">Region</label>
                     <select id="region" name="region_id" class="form-control">
+                        {{-- no region   --}}
+                        <option value="" selected>Global</option>
+                        {{-- no region   --}}
                         <option value="">Global</option>
                         @foreach ($regions as $region)
                             <option value="{{ $region->id }}">{{ $region->value }}</option>
