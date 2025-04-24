@@ -1291,6 +1291,7 @@ class AuthController extends Controller
         
         DB::beginTransaction();
         try {
+            
 
          
             
@@ -1335,7 +1336,7 @@ class AuthController extends Controller
         } catch(\Throwable $e) {
             DB::rollBack();
             if (config('envconfig.app_debug')) {
-                return $this->api->error_code($e->getMessage(), $e->getCode());
+                return $this->api->error_code($e->getMessage() . " ". $e->getFile().":".$e->getLine(), $e->getCode());
             } else {
                 return $this->api->error_code_log("Internal Server Error", $e->getMessage());
             };
@@ -1350,6 +1351,10 @@ class AuthController extends Controller
                 return $this->api->error("User Not Found!");
             }
             DB::beginTransaction();
+
+    }catch (\Exception $err) {
+        DB::rollBack();
+        return $this->api->error($err->getMessage());
 
     }
 }
