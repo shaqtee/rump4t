@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Dadang\",\r\n    \"phone\":\"08123123\",\r\n    \"email\":\"dadang@gmail.com\",\r\n    \"password\":\"123123\",\r\n    \"region\": 2 // id list region\r\n}",
+							"raw": "\r\n{\r\n    \"name\": \"ptolemy\",\r\n    \"phone\":\"081231236\",\r\n    \"email\":\"ptolemy@gmail.com\",\r\n    \"password\":\"123123\",\r\n    \"region\": 23 // id list region\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -41,7 +41,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"Dadang\",\r\n    \"phone\":\"08123123\",\r\n    \"email\":\"dadang@gmail.com\",\r\n    \"password\":\"123123\",\r\n    \"region\": 2 // id list region\r\n}",
+									"raw": "\r\n{\r\n    \"name\": \"ptolemy\",\r\n    \"phone\":\"081231236\",\r\n    \"email\":\"ptolemy@gmail.com\",\r\n    \"password\":\"123123\",\r\n    \"region\": 23 // id list region\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -88,7 +88,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Thu, 10 Apr 2025 18:43:16 GMT"
+									"value": "Thu, 24 Apr 2025 05:18:04 GMT"
 								},
 								{
 									"key": "X-RateLimit-Limit",
@@ -104,7 +104,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"message\": \"Successfully Registration\",\n    \"code\": 200,\n    \"data\": {\n        \"name\": \"Dadang\",\n        \"phone\": \"08123123\",\n        \"email\": \"dadang@gmail.com\",\n        \"region\": 2,\n        \"updated_at\": \"2025-04-10T18:43:16.000000Z\",\n        \"created_at\": \"2025-04-10T18:43:16.000000Z\",\n        \"id\": 4\n    }\n}"
+							"body": "{\n    \"message\": \"Successfully Registration\",\n    \"code\": 200,\n    \"data\": {\n        \"name\": \"ptolemy\",\n        \"phone\": \"6281231236\",\n        \"email\": \"ptolemy@gmail.com\",\n        \"region\": 23,\n        \"updated_at\": \"2025-04-24T05:18:04.000000Z\",\n        \"created_at\": \"2025-04-24T05:18:03.000000Z\",\n        \"id\": 24,\n        \"nomor_anggota\": \"024-23-1\"\n    }\n}"
 						}
 					]
 				},
@@ -116,7 +116,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjBhNjZmOWY3MmQzZjFlYWQ0M2M1MjYxNDliMTQ0Nzg5YWEzN2NhNmMwODBmNmIzNmIwYWNmZDQxMzg0YmM2YzY5YTgwYjVlZGI0OGUxN2ExIiwiaWF0IjoxNzQ0ODY1NzM4LjcwNzMyMiwibmJmIjoxNzQ0ODY1NzM4LjcwNzMyNiwiZXhwIjoxNzc2NDAxNzM3LjU4MDAyMSwic3ViIjoiMTAiLCJzY29wZXMiOltdfQ.IwqzeZJy_JhMrw_2946KGBfWhZ3DbxWsv74R30dJmZceGJoPUpjKUG-qWNA2EJ5pVOYxk9usqamsM0h4fwcMV5CavYCSEn69Yz0J3LHqmgbhXoZv5z5hVloRwgsL7z6LMoG8o5qoIOYqv9VSnvs3FeWd_M5fgk_FuA_kjoAjw3NgNjfkHsdNo27PTwEDcAP3i9ar8-lfbo824eQVDNEG4rSG54p8sOamL_GaDhQAE1dXWKw6voKMWlLzzTXfi24byzwNsS9HtAWOos8P3y2nCb40N0fc6dEguF2tQ5WWl5yy9Up7lOCTaUSaNR-3ynwwE_Kk3Fzk00NjawI2BvVEvWMNpGHt90rsrAWKoBHIvJPz0ftwFOuTiuJTQGc3uOSO3Drhbn02LnXVB5QARB68n7S8mXvjqMoNEIwuPkVDba-XiJX_D5-3cEadgTJOAkR-imxmYg0o6ob1ulQG7h67uGkM8WS82BJ1CuRbz-lz5gX5AwMbCh1or4qb4hRrefAjM3A7Ru4dX42KmW02z9dctOUS2ENmm9qwpUQfNgQD3uN4OdpTA3VZtVyIuUIZ2kWSri10oo26pI_KArzD1ijfaUg9WrIRyO7lepkNsDdNUjerJwHuHVvZ8I37d9_t6Ev_pcbYX7Xiz2gSFcaz4AWl4FcKC65EVql8bfjatU0k6cI",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6ImNlYTNjNWEwZmVhNmIwNTBhNjBlMzhhYWEzNWJiZDI1OWE0M2NjOTYyZDM2NDNkZTQ4MTEzMzcwNTc3OWE4NDI1ZjJlOWI2NDVmNDg3ODVlIiwiaWF0IjoxNzQ1NDczNzQ4LjU4OTU3MSwibmJmIjoxNzQ1NDczNzQ4LjU4OTU3NSwiZXhwIjoxNzc3MDA5NzQ4LjIwMzcyMSwic3ViIjoiMjYiLCJzY29wZXMiOltdfQ.WR2xPVU8F3CbU11wj1kbK2J7Nrg0fN_VR0IPDwB2U_Bx3dtLjJNQvVlSzWzsLF3KKrTQ_3qXxUJEKTG7kOLrSuTjmLmMuapxA_qpciN5ypy7rPRi2ey2puCC_zkkEvSds1Z3W5SzNmQsMJ3bVlOTi2o_hacOV2HS0rn5w01uf_t4jkrDaHUE4tonbIbb049JMqJRs4KaqYfA5CshrivdHRPC4mCfoYdvpAaP73JTnfYLbZxqeTe1M7HirLKANTy1v9e4qnEd2BfDXxpDjpVjtNWpk9l6HhEmp65lGExcvHr_2WxEgANcGeRdXgjhYKQxi92dRoUTdBbU1OVwJr0pr2LiOtz_8yjzG_MY7EKVCv3PeMkzIjA_jxUL93cxB4MFQ-sIgxyG9gee2pQU2xQLuZbhtTPiDkzyo5I_l_eTp2G0OPy-Qj4-PNTlobGFzfwzGAJsazdfFAcaKlcxndn9oHoy3fQK4AyGLeOkEknFiDECj-dNjgwqyycXbpfUoZ0sILvapCKHCt-DXCzb0IByksMlZscqDDydmo14LXKo2N_FKIDCwGTwpy-fSkbxtG_3-IgsixeF-XKloXm8kS4P3JwLtEFbnSLFJ5YIZL0YzRveaXtWbarr4ULDUDBx_FPiXUPQLoZrZ9M-1dsuZOOvJjKT-7ctrS8_BZLUi_bGMwM",
 									"type": "string"
 								}
 							]
@@ -179,7 +179,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Thu, 10 Apr 2025 19:39:57 GMT"
+									"value": "Thu, 24 Apr 2025 05:49:35 GMT"
 								},
 								{
 									"key": "X-RateLimit-Limit",
@@ -187,7 +187,7 @@
 								},
 								{
 									"key": "X-RateLimit-Remaining",
-									"value": "58"
+									"value": "59"
 								},
 								{
 									"key": "Access-Control-Allow-Origin",
@@ -195,7 +195,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"message\": \"Hallo Adi Sakti\",\n    \"code\": 200,\n    \"data\": {\n        \"user\": {\n            \"id\": 3,\n            \"player_id\": null,\n            \"name\": \"Adi Sakti\",\n            \"email\": \"adi.sakti@live.com\",\n            \"phone\": \"081334090986\",\n            \"gender\": null,\n            \"birth_date\": null,\n            \"address\": null,\n            \"position\": null,\n            \"image\": \"https://sgp1.digitaloceanspaces.com/aksiteknologi/rump4t/user-profile/S1ZehQVpEiFNMxRI29HgyxVQFtRVEYlzSbOQdJsE.png\",\n            \"t_city_id\": 3,\n            \"city\": \"MAKASAR\",\n            \"t_community_id\": null,\n            \"community\": null,\n            \"member_since\": \"27/03/2025\",\n            \"url_barcode\": \"https://rump4t.test/rump4t/profile-user/UWpzWGRzZUdUeGI1T29GYzV2UnNDdz09Ojo9f/6oPAy+VJQoD9n6dCmA\",\n            \"birth_place\": null,\n            \"age\": 30,\n            \"desa_kelurahan\": null,\n            \"kecamatan\": null,\n            \"kota_kabupaten\": \"BDG\",\n            \"postal_code\": null,\n            \"provinsi\": null,\n            \"year_of_entry\": null,\n            \"year_of_retirement\": null,\n            \"retirement_type\": null,\n            \"last_employee_status\": null,\n            \"last_division\": null,\n            \"spouse_name\": null,\n            \"shirt_size\": null,\n            \"notes\": null,\n            \"ec_name\": null,\n            \"ec_kinship\": null\n        },\n        \"our_contact\": {\n            \"id\": 1,\n            \"name\": \"RUMP4T\",\n            \"address\": \"Graha Pulo Building, 3rd Floor Suite 301\\nJl. Buncit Raya No. 89, Kalibata, Pancoran,\\nJakarta Selatan - 12740\",\n            \"email\": \"customer@aksiteknologi.com\",\n            \"phone\": \"081210295485\",\n            \"whatsapp\": \"\",\n            \"website\": \"https://www.aksiteknologi.com/\",\n            \"instagram\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"facebook\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"twitter\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"youtube\": \"https://www.youtube.com/@rump4t\"\n        },\n        \"term_condition\": \"https://rump4t.aksiteknologi.com/term-condition\",\n        \"privacy_policy\": \"https://rump4t.aksiteknologi.com/privacy-and-policy\"\n    }\n}"
+							"body": "{\n    \"message\": \"Hallo nixon\",\n    \"code\": 200,\n    \"data\": {\n        \"user\": {\n            \"id\": 26,\n            \"player_id\": null,\n            \"name\": \"nixon\",\n            \"email\": \"nixon@gmail.com\",\n            \"phone\": \"081231238\",\n            \"gender\": \"L\",\n            \"birth_date\": \"1978-05-08\",\n            \"address\": \"Jl. Orchid Park Residences Blk. B No.21, Taman Baloi\",\n            \"position\": \"Engineer\",\n            \"image\": \"https://sgp1.digitaloceanspaces.com/aksiteknologi/rump4t/user-profile/ZJR0VYBp1tUeL2bGb8uLAMTzRDDuq5GPJr2GLzLu.png\",\n            \"t_city_id\": 1,\n            \"city\": \"JAKARTA\",\n            \"t_community_id\": 13,\n            \"community\": \"D’Golf Tangerang Community\",\n            \"member_since\": \"24/04/2025\",\n            \"url_barcode\": \"https://rump4t.test/rump4t/profile-user/ZHZOVjFHY1VmQUh2czIycHY1bjU5Zz09OjpI8oztp0HdUgQZvpI8liXS\",\n            \"birth_place\": \"Balikpapan\",\n            \"age\": 46,\n            \"desa_kelurahan\": null,\n            \"kecamatan\": \"1101010\",\n            \"kota_kabupaten\": \"JKT\",\n            \"postal_code\": \"29632\",\n            \"provinsi\": \"11\",\n            \"year_of_entry\": 1975,\n            \"year_of_retirement\": 2025,\n            \"retirement_type\": \"9\",\n            \"last_employee_status\": \"12\",\n            \"last_division\": \"IT\",\n            \"spouse_name\": \"Joy\",\n            \"shirt_size\": \"15\",\n            \"notes\": \"okok\",\n            \"ec_name\": \"adi sakti\",\n            \"ec_kinship\": \"other\",\n            \"region\": [\n                {\n                    \"id\": 22,\n                    \"parameter\": \"m_region\",\n                    \"code\": \"01\",\n                    \"value\": \"Sumatra\",\n                    \"description\": null,\n                    \"start_date\": null,\n                    \"end_date\": null,\n                    \"start\": null,\n                    \"end\": null,\n                    \"sort\": null,\n                    \"created_by\": null,\n                    \"updated_by\": null,\n                    \"is_active\": 1,\n                    \"parent_id\": null,\n                    \"created_at\": null,\n                    \"updated_at\": null\n                }\n            ],\n            \"nomor_anggota\": \"026-22-1\"\n        },\n        \"our_contact\": {\n            \"id\": 1,\n            \"name\": \"RUMP4T\",\n            \"address\": \"Graha Pulo Building, 3rd Floor Suite 301\\nJl. Buncit Raya No. 89, Kalibata, Pancoran,\\nJakarta Selatan - 12740\",\n            \"email\": \"customer@aksiteknologi.com\",\n            \"phone\": \"081210295485\",\n            \"whatsapp\": \"\",\n            \"website\": \"https://www.aksiteknologi.com/\",\n            \"instagram\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"facebook\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"twitter\": \"https://www.instagram.com/aksiteknologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==\",\n            \"youtube\": \"https://www.youtube.com/@rump4t\"\n        },\n        \"term_condition\": \"https://rump4t.aksiteknologi.com/term-condition\",\n        \"privacy_policy\": \"https://rump4t.aksiteknologi.com/privacy-and-policy\"\n    }\n}"
 						}
 					]
 				},
@@ -472,7 +472,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"adi.sakti@live.com\",\r\n    \"password\":\"123123\"\r\n}",
+							"raw": "{\r\n    \"identifier\":\"003-22-1\",\r\n    \"password\":\"123123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -780,7 +780,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjBhNjZmOWY3MmQzZjFlYWQ0M2M1MjYxNDliMTQ0Nzg5YWEzN2NhNmMwODBmNmIzNmIwYWNmZDQxMzg0YmM2YzY5YTgwYjVlZGI0OGUxN2ExIiwiaWF0IjoxNzQ0ODY1NzM4LjcwNzMyMiwibmJmIjoxNzQ0ODY1NzM4LjcwNzMyNiwiZXhwIjoxNzc2NDAxNzM3LjU4MDAyMSwic3ViIjoiMTAiLCJzY29wZXMiOltdfQ.IwqzeZJy_JhMrw_2946KGBfWhZ3DbxWsv74R30dJmZceGJoPUpjKUG-qWNA2EJ5pVOYxk9usqamsM0h4fwcMV5CavYCSEn69Yz0J3LHqmgbhXoZv5z5hVloRwgsL7z6LMoG8o5qoIOYqv9VSnvs3FeWd_M5fgk_FuA_kjoAjw3NgNjfkHsdNo27PTwEDcAP3i9ar8-lfbo824eQVDNEG4rSG54p8sOamL_GaDhQAE1dXWKw6voKMWlLzzTXfi24byzwNsS9HtAWOos8P3y2nCb40N0fc6dEguF2tQ5WWl5yy9Up7lOCTaUSaNR-3ynwwE_Kk3Fzk00NjawI2BvVEvWMNpGHt90rsrAWKoBHIvJPz0ftwFOuTiuJTQGc3uOSO3Drhbn02LnXVB5QARB68n7S8mXvjqMoNEIwuPkVDba-XiJX_D5-3cEadgTJOAkR-imxmYg0o6ob1ulQG7h67uGkM8WS82BJ1CuRbz-lz5gX5AwMbCh1or4qb4hRrefAjM3A7Ru4dX42KmW02z9dctOUS2ENmm9qwpUQfNgQD3uN4OdpTA3VZtVyIuUIZ2kWSri10oo26pI_KArzD1ijfaUg9WrIRyO7lepkNsDdNUjerJwHuHVvZ8I37d9_t6Ev_pcbYX7Xiz2gSFcaz4AWl4FcKC65EVql8bfjatU0k6cI",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6IjIyZWRmZThlYTFlOTZkZTMyYWFlZmU1ZGQyZDg2ODJmNGRiZGU0YTI3MGQ4YTY2ZmY2MTEyZDY0ZTMxMTk1MWQ4ZGVlZDE1ODhlY2FhNmM1IiwiaWF0IjoxNzQ1MzM0MTMzLjc4MjE3MSwibmJmIjoxNzQ1MzM0MTMzLjc4MjE3NCwiZXhwIjoxNzc2ODcwMTMzLjc3NjM3NSwic3ViIjoiMyIsInNjb3BlcyI6W119.dDisVrquDqClteISxoBaqgfEoKFWqF-v9bzp1uGHrI2JBrlJiuOCoVovzFyj4ghpW7SRy5wZqmFmh61H1srjrvZ7SaOpYz8-4cEETHKl0NudutpEV81lMBadHj8HuSRQ3_EY76C8l4lCXbivJhwbT7IUY8e-ub5GDgl_sBjwMZiMbVxUmVCP2VseCnUffrIagzrBY8NzqAEWQtiyLDa2Vg3GjkPj6wrw78-_9uLHXLwSNPTU92lzlp88tO5zJyW4V--0O_NCxxORlox7cMoN3y6NItm2Ky983FrGhn4CkpVhESSdSQP6qdwbxgKA6ZDhbvWk6Etqes99dkWiQ7AcaB_4a0-Af4rrXCJWRCeblCooNkdDyyUo4Boaj09IJsrMgqbl3zAYsfmGOvwKHXlrdg5pV5mS9s5LdMyZ2D6-A9cczzD7Hr-NhEHNT7bEdcuUxiSUPC0mLV-QLgcrl6cONYBVwXB0gP7HvS-KNWQJTBtax0LMobECrp5BiAEt4wRmD2CfpjXi-F5Li5D3X9UrcZYHyuTINgfVsgpmHCyZQ5UC2SfM4Mf6UTd6VklM4LKNt8io8LN_jg7uybOtVQfKBr40W8onQH6HtzlIDct0lGTUcuMZsHYcFQMj8FqwUetzhaEQkWGxQp2QBZZnlL4ZnwlWwZr_NYYBq5HomcuQXnk",
 									"type": "string"
 								}
 							]
@@ -792,20 +792,63 @@
 							"formdata": [
 								{
 									"key": "t_city_id",
-									"value": "4",
-									"type": "text"
+									"value": "2",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "birth_date",
 									"value": "1984-04-24",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "birth_place",
+									"value": "Balikpapan",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "address",
+									"value": "JL Jalan",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "desa_kelurahan",
+									"value": "Jiungx",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "kecamatan",
+									"value": "Menteng",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "year_of_entry",
+									"value": "1999",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "year_of_retirement",
+									"value": "2011",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ec_kinship",
+									"value": "suamiy",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{local}}auth/update-profile/3",
+							"raw": "{{dev}}auth/update-profile/3",
 							"host": [
-								"{{local}}auth"
+								"{{dev}}auth"
 							],
 							"path": [
 								"update-profile",
@@ -892,6 +935,89 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"message\": \"Success Update Profile\",\n    \"code\": 200,\n    \"data\": {\n        \"t_city_id\": \"4\",\n        \"birth_date\": \"1984-04-24\",\n        \"age\": 40,\n        \"image\": \"https://sgp1.digitaloceanspaces.com/aksiteknologi/rump4t/user-profile/g5uemHgPU3qtACFJpUtWlXwpeC6VtTnJut5CykuY.jpg\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "list province",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6ImYyY2U4MzE1NWFjZTQ1YzkzNGE3ZWM0YTkwNmFjOTJhZjliYjgxNWM0M2U3MTI3MzY5MTliNWUxYjZlMTBmMjMxNmE5N2U1YmE5N2ZjYThkIiwiaWF0IjoxNzQ1NDgzMzY0LjQyOTI2OSwibmJmIjoxNzQ1NDgzMzY0LjQyOTI3MiwiZXhwIjoxNzc3MDE5MzY0LjI4NzkxOCwic3ViIjoiMjYiLCJzY29wZXMiOltdfQ.JjS10C_vX7QCceFDrRLb3L_TqIC_1F5wcfqXKU30vz1UiNXzFvsS3_wE56Mt1fMc0aXopyErayHRSijwBjX90fSShweztn98HkT73UsG2H1RA7fo1zsW16FmYxWUjviqXvk51dvUeynHxNwrlulLy32fPA8wVJwsPwuVbd3A5S8tSX-hD3nX0JH5OQA7p0ywBKiLF1D1-MRzK8GXUlLvb6Rk74VxfyUzFHk4HJ85R8dw_E2yhAHyR7RY6kbHqZPs_z-DftWXquISK7M9gGh82MQhgfravgykUvNlsfyzpwnGWCITOIWiGYy5Op6g7g-mXm0mpIPH1palMNq3AFX8X23lrqpw9APej4GU-PhRahWC5LtNjBU0tTUkp8vdbu_LYoWdqal3blHCs2Ru8bHFbiG2j2cjSXI2x_gJbUPVuaRx51iChi5FRYLRnBxlVNpzqFHCyP9ZGWN9y7jQaPbUkayNOb-Ctr_NhzABDWCLYHP9WEKAGz4jE2rE_OgX2wpirC-fimyVZ9AjI60viOarUeYMpSA-X3u4z07PdHAFwJGVFDKSOGip4F3y86-hFLhIoWo6eYArR4cq70Y0mmesM0XLPZux1YHtKqcy7JAAMiVk0k8XyOlRam4Lzv875XyaM8_pZt9uPwrQmttX20olU0jbPsh6XnAW5QgPIfuWx6o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}masters/all-province",
+							"host": [
+								"{{local}}masters"
+							],
+							"path": [
+								"all-province"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}masters/all-province",
+									"host": [
+										"{{local}}masters"
+									],
+									"path": [
+										"all-province"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 24 Apr 2025 09:25:21 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success Get Data\",\n    \"code\": 200,\n    \"data\": {\n        \"current_page\": 1,\n        \"data\": [\n            {\n                \"id\": 11,\n                \"name\": \"ACEH\",\n                \"is_active\": 0\n            },\n            {\n                \"id\": 12,\n                \"name\": \"SUMATERA UTARA\",\n                \"is_active\": 0\n            },\n            {\n                \"id\": 13,\n                \"name\": \"SUMATERA BARAT\",\n                \"is_active\": 0\n            },\n            {\n                \"id\": 14,\n                \"name\": \"RIAU\",\n                \"is_active\": 0\n            },\n            {\n                \"id\": 15,\n                \"name\": \"JAMBI\",\n                \"is_active\": 0\n            }\n        ],\n        \"first_page_url\": \"https://rump4t.test/api/masters/all-province?page=1\",\n        \"from\": 1,\n        \"last_page\": 7,\n        \"last_page_url\": \"https://rump4t.test/api/masters/all-province?page=7\",\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-province?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-province?page=2\",\n                \"label\": \"2\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-province?page=3\",\n                \"label\": \"3\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-province?page=4\",\n                \"label\": \"4\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-province?page=5\",\n                \"label\": \"5\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-province?page=6\",\n                \"label\": \"6\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-province?page=7\",\n                \"label\": \"7\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-province?page=2\",\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"next_page_url\": \"https://rump4t.test/api/masters/all-province?page=2\",\n        \"path\": \"https://rump4t.test/api/masters/all-province\",\n        \"per_page\": 5,\n        \"prev_page_url\": null,\n        \"to\": 5,\n        \"total\": 34\n    },\n    \"columns\": [\n        {\n            \"code\": {\n                \"Label\": \"Code\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"name\": {\n                \"Label\": \"Name\",\n                \"type\": \"string\"\n            }\n        }\n    ]\n}"
 						}
 					]
 				},
@@ -983,6 +1109,255 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"message\": \"success\",\n    \"code\": 200,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"code\": \"JKT\",\n            \"name\": \"JAKARTA\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 2,\n            \"code\": \"BJM\",\n            \"name\": \"BANJARMASIN\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 3,\n            \"code\": \"MKS\",\n            \"name\": \"MAKASAR\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 4,\n            \"code\": \"BDG\",\n            \"name\": \"BANDUNG\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 5,\n            \"code\": \"PDG\",\n            \"name\": \"PADANG\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 6,\n            \"code\": \"PPA\",\n            \"name\": \"PAPUA\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 11,\n            \"code\": \"TGR\",\n            \"name\": \"TANGGERANG\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 12,\n            \"code\": \"BGR\",\n            \"name\": \"BOGOR\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 13,\n            \"code\": \"BKS\",\n            \"name\": \"BEKASI\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        },\n        {\n            \"id\": 14,\n            \"code\": \"DPK\",\n            \"name\": \"DEPOK\",\n            \"is_staging\": 1,\n            \"created_at\": null,\n            \"updated_at\": null\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "list district",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6ImYyY2U4MzE1NWFjZTQ1YzkzNGE3ZWM0YTkwNmFjOTJhZjliYjgxNWM0M2U3MTI3MzY5MTliNWUxYjZlMTBmMjMxNmE5N2U1YmE5N2ZjYThkIiwiaWF0IjoxNzQ1NDgzMzY0LjQyOTI2OSwibmJmIjoxNzQ1NDgzMzY0LjQyOTI3MiwiZXhwIjoxNzc3MDE5MzY0LjI4NzkxOCwic3ViIjoiMjYiLCJzY29wZXMiOltdfQ.JjS10C_vX7QCceFDrRLb3L_TqIC_1F5wcfqXKU30vz1UiNXzFvsS3_wE56Mt1fMc0aXopyErayHRSijwBjX90fSShweztn98HkT73UsG2H1RA7fo1zsW16FmYxWUjviqXvk51dvUeynHxNwrlulLy32fPA8wVJwsPwuVbd3A5S8tSX-hD3nX0JH5OQA7p0ywBKiLF1D1-MRzK8GXUlLvb6Rk74VxfyUzFHk4HJ85R8dw_E2yhAHyR7RY6kbHqZPs_z-DftWXquISK7M9gGh82MQhgfravgykUvNlsfyzpwnGWCITOIWiGYy5Op6g7g-mXm0mpIPH1palMNq3AFX8X23lrqpw9APej4GU-PhRahWC5LtNjBU0tTUkp8vdbu_LYoWdqal3blHCs2Ru8bHFbiG2j2cjSXI2x_gJbUPVuaRx51iChi5FRYLRnBxlVNpzqFHCyP9ZGWN9y7jQaPbUkayNOb-Ctr_NhzABDWCLYHP9WEKAGz4jE2rE_OgX2wpirC-fimyVZ9AjI60viOarUeYMpSA-X3u4z07PdHAFwJGVFDKSOGip4F3y86-hFLhIoWo6eYArR4cq70Y0mmesM0XLPZux1YHtKqcy7JAAMiVk0k8XyOlRam4Lzv875XyaM8_pZt9uPwrQmttX20olU0jbPsh6XnAW5QgPIfuWx6o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}masters/all-district",
+							"host": [
+								"{{local}}masters"
+							],
+							"path": [
+								"all-district"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}masters/all-district",
+									"host": [
+										"{{local}}masters"
+									],
+									"path": [
+										"all-district"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 24 Apr 2025 11:32:20 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success Get Data\",\n    \"code\": 200,\n    \"data\": {\n        \"current_page\": 1,\n        \"data\": [\n            {\n                \"id\": 1101010,\n                \"regency_id\": \"1101\",\n                \"name\": \"TEUPAH SELATAN\",\n                \"is_active\": 0,\n                \"regency\": {\n                    \"id\": 1101,\n                    \"province_id\": 11,\n                    \"name\": \"KABUPATEN SIMEULUE\",\n                    \"is_active\": 0,\n                    \"province\": {\n                        \"id\": 11,\n                        \"name\": \"ACEH\",\n                        \"is_active\": 0\n                    }\n                }\n            },\n            {\n                \"id\": 1101020,\n                \"regency_id\": \"1101\",\n                \"name\": \"SIMEULUE TIMUR\",\n                \"is_active\": 0,\n                \"regency\": {\n                    \"id\": 1101,\n                    \"province_id\": 11,\n                    \"name\": \"KABUPATEN SIMEULUE\",\n                    \"is_active\": 0,\n                    \"province\": {\n                        \"id\": 11,\n                        \"name\": \"ACEH\",\n                        \"is_active\": 0\n                    }\n                }\n            },\n            {\n                \"id\": 1101021,\n                \"regency_id\": \"1101\",\n                \"name\": \"TEUPAH BARAT\",\n                \"is_active\": 0,\n                \"regency\": {\n                    \"id\": 1101,\n                    \"province_id\": 11,\n                    \"name\": \"KABUPATEN SIMEULUE\",\n                    \"is_active\": 0,\n                    \"province\": {\n                        \"id\": 11,\n                        \"name\": \"ACEH\",\n                        \"is_active\": 0\n                    }\n                }\n            },\n            {\n                \"id\": 1101022,\n                \"regency_id\": \"1101\",\n                \"name\": \"TEUPAH TENGAH\",\n                \"is_active\": 0,\n                \"regency\": {\n                    \"id\": 1101,\n                    \"province_id\": 11,\n                    \"name\": \"KABUPATEN SIMEULUE\",\n                    \"is_active\": 0,\n                    \"province\": {\n                        \"id\": 11,\n                        \"name\": \"ACEH\",\n                        \"is_active\": 0\n                    }\n                }\n            },\n            {\n                \"id\": 1101030,\n                \"regency_id\": \"1101\",\n                \"name\": \"SIMEULUE TENGAH\",\n                \"is_active\": 0,\n                \"regency\": {\n                    \"id\": 1101,\n                    \"province_id\": 11,\n                    \"name\": \"KABUPATEN SIMEULUE\",\n                    \"is_active\": 0,\n                    \"province\": {\n                        \"id\": 11,\n                        \"name\": \"ACEH\",\n                        \"is_active\": 0\n                    }\n                }\n            }\n        ],\n        \"first_page_url\": \"https://rump4t.test/api/masters/all-district?page=1\",\n        \"from\": 1,\n        \"last_page\": 543,\n        \"last_page_url\": \"https://rump4t.test/api/masters/all-district?page=543\",\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=2\",\n                \"label\": \"2\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=3\",\n                \"label\": \"3\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=4\",\n                \"label\": \"4\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=5\",\n                \"label\": \"5\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=6\",\n                \"label\": \"6\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=7\",\n                \"label\": \"7\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=8\",\n                \"label\": \"8\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=9\",\n                \"label\": \"9\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=10\",\n                \"label\": \"10\",\n                \"active\": false\n            },\n            {\n                \"url\": null,\n                \"label\": \"...\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=542\",\n                \"label\": \"542\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=543\",\n                \"label\": \"543\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-district?page=2\",\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"next_page_url\": \"https://rump4t.test/api/masters/all-district?page=2\",\n        \"path\": \"https://rump4t.test/api/masters/all-district\",\n        \"per_page\": 5,\n        \"prev_page_url\": null,\n        \"to\": 5,\n        \"total\": 2712\n    },\n    \"columns\": [\n        {\n            \"code\": {\n                \"Label\": \"Code\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"name\": {\n                \"Label\": \"Name\",\n                \"type\": \"string\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "list village",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6ImYyY2U4MzE1NWFjZTQ1YzkzNGE3ZWM0YTkwNmFjOTJhZjliYjgxNWM0M2U3MTI3MzY5MTliNWUxYjZlMTBmMjMxNmE5N2U1YmE5N2ZjYThkIiwiaWF0IjoxNzQ1NDgzMzY0LjQyOTI2OSwibmJmIjoxNzQ1NDgzMzY0LjQyOTI3MiwiZXhwIjoxNzc3MDE5MzY0LjI4NzkxOCwic3ViIjoiMjYiLCJzY29wZXMiOltdfQ.JjS10C_vX7QCceFDrRLb3L_TqIC_1F5wcfqXKU30vz1UiNXzFvsS3_wE56Mt1fMc0aXopyErayHRSijwBjX90fSShweztn98HkT73UsG2H1RA7fo1zsW16FmYxWUjviqXvk51dvUeynHxNwrlulLy32fPA8wVJwsPwuVbd3A5S8tSX-hD3nX0JH5OQA7p0ywBKiLF1D1-MRzK8GXUlLvb6Rk74VxfyUzFHk4HJ85R8dw_E2yhAHyR7RY6kbHqZPs_z-DftWXquISK7M9gGh82MQhgfravgykUvNlsfyzpwnGWCITOIWiGYy5Op6g7g-mXm0mpIPH1palMNq3AFX8X23lrqpw9APej4GU-PhRahWC5LtNjBU0tTUkp8vdbu_LYoWdqal3blHCs2Ru8bHFbiG2j2cjSXI2x_gJbUPVuaRx51iChi5FRYLRnBxlVNpzqFHCyP9ZGWN9y7jQaPbUkayNOb-Ctr_NhzABDWCLYHP9WEKAGz4jE2rE_OgX2wpirC-fimyVZ9AjI60viOarUeYMpSA-X3u4z07PdHAFwJGVFDKSOGip4F3y86-hFLhIoWo6eYArR4cq70Y0mmesM0XLPZux1YHtKqcy7JAAMiVk0k8XyOlRam4Lzv875XyaM8_pZt9uPwrQmttX20olU0jbPsh6XnAW5QgPIfuWx6o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}masters/all-village",
+							"host": [
+								"{{local}}masters"
+							],
+							"path": [
+								"all-village"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}masters/all-village",
+									"host": [
+										"{{local}}masters"
+									],
+									"path": [
+										"all-village"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 24 Apr 2025 11:32:50 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success Get Data\",\n    \"code\": 200,\n    \"data\": {\n        \"current_page\": 1,\n        \"data\": [\n            {\n                \"id\": 1101010001,\n                \"district_id\": \"1101010\",\n                \"name\": \"LATIUNG\",\n                \"is_active\": 0,\n                \"district\": {\n                    \"id\": 1101010,\n                    \"regency_id\": \"1101\",\n                    \"name\": \"TEUPAH SELATAN\",\n                    \"is_active\": 0,\n                    \"regency\": {\n                        \"id\": 1101,\n                        \"province_id\": 11,\n                        \"name\": \"KABUPATEN SIMEULUE\",\n                        \"is_active\": 0,\n                        \"province\": {\n                            \"id\": 11,\n                            \"name\": \"ACEH\",\n                            \"is_active\": 0\n                        }\n                    }\n                }\n            },\n            {\n                \"id\": 1101010002,\n                \"district_id\": \"1101010\",\n                \"name\": \"LABUHAN BAJAU\",\n                \"is_active\": 0,\n                \"district\": {\n                    \"id\": 1101010,\n                    \"regency_id\": \"1101\",\n                    \"name\": \"TEUPAH SELATAN\",\n                    \"is_active\": 0,\n                    \"regency\": {\n                        \"id\": 1101,\n                        \"province_id\": 11,\n                        \"name\": \"KABUPATEN SIMEULUE\",\n                        \"is_active\": 0,\n                        \"province\": {\n                            \"id\": 11,\n                            \"name\": \"ACEH\",\n                            \"is_active\": 0\n                        }\n                    }\n                }\n            },\n            {\n                \"id\": 1101010003,\n                \"district_id\": \"1101010\",\n                \"name\": \"SUAK LAMATAN\",\n                \"is_active\": 0,\n                \"district\": {\n                    \"id\": 1101010,\n                    \"regency_id\": \"1101\",\n                    \"name\": \"TEUPAH SELATAN\",\n                    \"is_active\": 0,\n                    \"regency\": {\n                        \"id\": 1101,\n                        \"province_id\": 11,\n                        \"name\": \"KABUPATEN SIMEULUE\",\n                        \"is_active\": 0,\n                        \"province\": {\n                            \"id\": 11,\n                            \"name\": \"ACEH\",\n                            \"is_active\": 0\n                        }\n                    }\n                }\n            },\n            {\n                \"id\": 1101010004,\n                \"district_id\": \"1101010\",\n                \"name\": \"ANA AO\",\n                \"is_active\": 0,\n                \"district\": {\n                    \"id\": 1101010,\n                    \"regency_id\": \"1101\",\n                    \"name\": \"TEUPAH SELATAN\",\n                    \"is_active\": 0,\n                    \"regency\": {\n                        \"id\": 1101,\n                        \"province_id\": 11,\n                        \"name\": \"KABUPATEN SIMEULUE\",\n                        \"is_active\": 0,\n                        \"province\": {\n                            \"id\": 11,\n                            \"name\": \"ACEH\",\n                            \"is_active\": 0\n                        }\n                    }\n                }\n            },\n            {\n                \"id\": 1101010005,\n                \"district_id\": \"1101010\",\n                \"name\": \"LATALING\",\n                \"is_active\": 0,\n                \"district\": {\n                    \"id\": 1101010,\n                    \"regency_id\": \"1101\",\n                    \"name\": \"TEUPAH SELATAN\",\n                    \"is_active\": 0,\n                    \"regency\": {\n                        \"id\": 1101,\n                        \"province_id\": 11,\n                        \"name\": \"KABUPATEN SIMEULUE\",\n                        \"is_active\": 0,\n                        \"province\": {\n                            \"id\": 11,\n                            \"name\": \"ACEH\",\n                            \"is_active\": 0\n                        }\n                    }\n                }\n            }\n        ],\n        \"first_page_url\": \"https://rump4t.test/api/masters/all-village?page=1\",\n        \"from\": 1,\n        \"last_page\": 2041,\n        \"last_page_url\": \"https://rump4t.test/api/masters/all-village?page=2041\",\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=2\",\n                \"label\": \"2\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=3\",\n                \"label\": \"3\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=4\",\n                \"label\": \"4\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=5\",\n                \"label\": \"5\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=6\",\n                \"label\": \"6\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=7\",\n                \"label\": \"7\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=8\",\n                \"label\": \"8\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=9\",\n                \"label\": \"9\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=10\",\n                \"label\": \"10\",\n                \"active\": false\n            },\n            {\n                \"url\": null,\n                \"label\": \"...\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=2040\",\n                \"label\": \"2040\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=2041\",\n                \"label\": \"2041\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-village?page=2\",\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"next_page_url\": \"https://rump4t.test/api/masters/all-village?page=2\",\n        \"path\": \"https://rump4t.test/api/masters/all-village\",\n        \"per_page\": 5,\n        \"prev_page_url\": null,\n        \"to\": 5,\n        \"total\": 10201\n    },\n    \"columns\": [\n        {\n            \"code\": {\n                \"Label\": \"Code\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"name\": {\n                \"Label\": \"Name\",\n                \"type\": \"string\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "list regency",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6ImYyY2U4MzE1NWFjZTQ1YzkzNGE3ZWM0YTkwNmFjOTJhZjliYjgxNWM0M2U3MTI3MzY5MTliNWUxYjZlMTBmMjMxNmE5N2U1YmE5N2ZjYThkIiwiaWF0IjoxNzQ1NDgzMzY0LjQyOTI2OSwibmJmIjoxNzQ1NDgzMzY0LjQyOTI3MiwiZXhwIjoxNzc3MDE5MzY0LjI4NzkxOCwic3ViIjoiMjYiLCJzY29wZXMiOltdfQ.JjS10C_vX7QCceFDrRLb3L_TqIC_1F5wcfqXKU30vz1UiNXzFvsS3_wE56Mt1fMc0aXopyErayHRSijwBjX90fSShweztn98HkT73UsG2H1RA7fo1zsW16FmYxWUjviqXvk51dvUeynHxNwrlulLy32fPA8wVJwsPwuVbd3A5S8tSX-hD3nX0JH5OQA7p0ywBKiLF1D1-MRzK8GXUlLvb6Rk74VxfyUzFHk4HJ85R8dw_E2yhAHyR7RY6kbHqZPs_z-DftWXquISK7M9gGh82MQhgfravgykUvNlsfyzpwnGWCITOIWiGYy5Op6g7g-mXm0mpIPH1palMNq3AFX8X23lrqpw9APej4GU-PhRahWC5LtNjBU0tTUkp8vdbu_LYoWdqal3blHCs2Ru8bHFbiG2j2cjSXI2x_gJbUPVuaRx51iChi5FRYLRnBxlVNpzqFHCyP9ZGWN9y7jQaPbUkayNOb-Ctr_NhzABDWCLYHP9WEKAGz4jE2rE_OgX2wpirC-fimyVZ9AjI60viOarUeYMpSA-X3u4z07PdHAFwJGVFDKSOGip4F3y86-hFLhIoWo6eYArR4cq70Y0mmesM0XLPZux1YHtKqcy7JAAMiVk0k8XyOlRam4Lzv875XyaM8_pZt9uPwrQmttX20olU0jbPsh6XnAW5QgPIfuWx6o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}masters/all-regency",
+							"host": [
+								"{{local}}masters"
+							],
+							"path": [
+								"all-regency"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}masters/all-regency",
+									"host": [
+										"{{local}}masters"
+									],
+									"path": [
+										"all-regency"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.22.0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.14"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 24 Apr 2025 11:33:28 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success Get Data\",\n    \"code\": 200,\n    \"data\": {\n        \"current_page\": 1,\n        \"data\": [\n            {\n                \"id\": 1101,\n                \"province_id\": 11,\n                \"name\": \"KABUPATEN SIMEULUE\",\n                \"is_active\": 0,\n                \"province\": {\n                    \"id\": 11,\n                    \"name\": \"ACEH\",\n                    \"is_active\": 0\n                }\n            },\n            {\n                \"id\": 1102,\n                \"province_id\": 11,\n                \"name\": \"KABUPATEN ACEH SINGKIL\",\n                \"is_active\": 0,\n                \"province\": {\n                    \"id\": 11,\n                    \"name\": \"ACEH\",\n                    \"is_active\": 0\n                }\n            },\n            {\n                \"id\": 1103,\n                \"province_id\": 11,\n                \"name\": \"KABUPATEN ACEH SELATAN\",\n                \"is_active\": 0,\n                \"province\": {\n                    \"id\": 11,\n                    \"name\": \"ACEH\",\n                    \"is_active\": 0\n                }\n            },\n            {\n                \"id\": 1104,\n                \"province_id\": 11,\n                \"name\": \"KABUPATEN ACEH TENGGARA\",\n                \"is_active\": 0,\n                \"province\": {\n                    \"id\": 11,\n                    \"name\": \"ACEH\",\n                    \"is_active\": 0\n                }\n            },\n            {\n                \"id\": 1105,\n                \"province_id\": 11,\n                \"name\": \"KABUPATEN ACEH TIMUR\",\n                \"is_active\": 0,\n                \"province\": {\n                    \"id\": 11,\n                    \"name\": \"ACEH\",\n                    \"is_active\": 0\n                }\n            }\n        ],\n        \"first_page_url\": \"https://rump4t.test/api/masters/all-regency?page=1\",\n        \"from\": 1,\n        \"last_page\": 103,\n        \"last_page_url\": \"https://rump4t.test/api/masters/all-regency?page=103\",\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=2\",\n                \"label\": \"2\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=3\",\n                \"label\": \"3\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=4\",\n                \"label\": \"4\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=5\",\n                \"label\": \"5\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=6\",\n                \"label\": \"6\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=7\",\n                \"label\": \"7\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=8\",\n                \"label\": \"8\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=9\",\n                \"label\": \"9\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=10\",\n                \"label\": \"10\",\n                \"active\": false\n            },\n            {\n                \"url\": null,\n                \"label\": \"...\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=102\",\n                \"label\": \"102\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=103\",\n                \"label\": \"103\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://rump4t.test/api/masters/all-regency?page=2\",\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"next_page_url\": \"https://rump4t.test/api/masters/all-regency?page=2\",\n        \"path\": \"https://rump4t.test/api/masters/all-regency\",\n        \"per_page\": 5,\n        \"prev_page_url\": null,\n        \"to\": 5,\n        \"total\": 513\n    },\n    \"columns\": [\n        {\n            \"code\": {\n                \"Label\": \"Code\",\n                \"type\": \"string\"\n            }\n        },\n        {\n            \"name\": {\n                \"Label\": \"Name\",\n                \"type\": \"string\"\n            }\n        }\n    ]\n}"
 						}
 					]
 				},
@@ -2769,7 +3144,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6ImNkZmQzNjg1ZDBlY2RmY2JmMTdmNTAxODFlMDI5ZGE3MjVjY2M1NzA4YjY0ZjZkMGZlM2JlOTAxYWEzMWQ0YjBjMGIyZTAyNWVjZjNhYjI3IiwiaWF0IjoxNzQ0Njk0ODI1LjUyMTA0MSwibmJmIjoxNzQ0Njk0ODI1LjUyMTA0NSwiZXhwIjoxNzc2MjMwODI1LjE0MDUyLCJzdWIiOiIzIiwic2NvcGVzIjpbXX0.B8pB3PdsXL7wrOUr-tYRRCU1N52VyIr61GcTjSy7vNB59Ytw9vXwk0VTmfssmj-lE5Gl4TWG-gKuoprKCBs_0u92DKGim7cobIZMbKpxtBFuWJjG7E8zZWYJ4xSjDMbZAdz6raETnJ9007RTQXrGGMbm6rvXwkcfSQhuD1adgnST9VpI1hnPiz6cOoqY1vL_ABYkdKfKVcyQK_EBNWNxEzi_nTuswMPC3tWNYp40H2crAdktwijN8HG1i94XhEldghcfanjFrZx92PcHXjyGL9RAAS26INN5-Se-XJ4F_P78thneh3EpwkxQ_32xm_KrpngOmLHEc3lTugRpwBR6ybD9hVr2MTRxibsGAPQClClHW6XHi91VM_cAFf_99AI9rwz_wcp1mDippjw-7D3JBoccmpOlSJcCNLbVBxkLBgCtdNJtFNnzcGFEFIgRTvRenhqglH1E88T2Bx6h5LGqv5S_lzpu70MsPtMzHZerng03MQhrOKHLZmH6x5-fZA1V33TvhSKvvfGdzWX4_aCLuwpj_W5QL4q8v5e5BiERaFjiIJGijLCTZFUjZx-EIMh6pJOOEYvxLRy-qvDTJr6vWDmnV20uvjLebVRurKo0W2IP71PJYsaN7JTIiZzmUsH9TqZUoyC1bekJ8v6KP_4_2oXJjkTTfbK8c7ZQTW35e84",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6ImYyY2U4MzE1NWFjZTQ1YzkzNGE3ZWM0YTkwNmFjOTJhZjliYjgxNWM0M2U3MTI3MzY5MTliNWUxYjZlMTBmMjMxNmE5N2U1YmE5N2ZjYThkIiwiaWF0IjoxNzQ1NDgzMzY0LjQyOTI2OSwibmJmIjoxNzQ1NDgzMzY0LjQyOTI3MiwiZXhwIjoxNzc3MDE5MzY0LjI4NzkxOCwic3ViIjoiMjYiLCJzY29wZXMiOltdfQ.JjS10C_vX7QCceFDrRLb3L_TqIC_1F5wcfqXKU30vz1UiNXzFvsS3_wE56Mt1fMc0aXopyErayHRSijwBjX90fSShweztn98HkT73UsG2H1RA7fo1zsW16FmYxWUjviqXvk51dvUeynHxNwrlulLy32fPA8wVJwsPwuVbd3A5S8tSX-hD3nX0JH5OQA7p0ywBKiLF1D1-MRzK8GXUlLvb6Rk74VxfyUzFHk4HJ85R8dw_E2yhAHyR7RY6kbHqZPs_z-DftWXquISK7M9gGh82MQhgfravgykUvNlsfyzpwnGWCITOIWiGYy5Op6g7g-mXm0mpIPH1palMNq3AFX8X23lrqpw9APej4GU-PhRahWC5LtNjBU0tTUkp8vdbu_LYoWdqal3blHCs2Ru8bHFbiG2j2cjSXI2x_gJbUPVuaRx51iChi5FRYLRnBxlVNpzqFHCyP9ZGWN9y7jQaPbUkayNOb-Ctr_NhzABDWCLYHP9WEKAGz4jE2rE_OgX2wpirC-fimyVZ9AjI60viOarUeYMpSA-X3u4z07PdHAFwJGVFDKSOGip4F3y86-hFLhIoWo6eYArR4cq70Y0mmesM0XLPZux1YHtKqcy7JAAMiVk0k8XyOlRam4Lzv875XyaM8_pZt9uPwrQmttX20olU0jbPsh6XnAW5QgPIfuWx6o",
 									"type": "string"
 								}
 							]
@@ -3146,7 +3521,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6ImNkZmQzNjg1ZDBlY2RmY2JmMTdmNTAxODFlMDI5ZGE3MjVjY2M1NzA4YjY0ZjZkMGZlM2JlOTAxYWEzMWQ0YjBjMGIyZTAyNWVjZjNhYjI3IiwiaWF0IjoxNzQ0Njk0ODI1LjUyMTA0MSwibmJmIjoxNzQ0Njk0ODI1LjUyMTA0NSwiZXhwIjoxNzc2MjMwODI1LjE0MDUyLCJzdWIiOiIzIiwic2NvcGVzIjpbXX0.B8pB3PdsXL7wrOUr-tYRRCU1N52VyIr61GcTjSy7vNB59Ytw9vXwk0VTmfssmj-lE5Gl4TWG-gKuoprKCBs_0u92DKGim7cobIZMbKpxtBFuWJjG7E8zZWYJ4xSjDMbZAdz6raETnJ9007RTQXrGGMbm6rvXwkcfSQhuD1adgnST9VpI1hnPiz6cOoqY1vL_ABYkdKfKVcyQK_EBNWNxEzi_nTuswMPC3tWNYp40H2crAdktwijN8HG1i94XhEldghcfanjFrZx92PcHXjyGL9RAAS26INN5-Se-XJ4F_P78thneh3EpwkxQ_32xm_KrpngOmLHEc3lTugRpwBR6ybD9hVr2MTRxibsGAPQClClHW6XHi91VM_cAFf_99AI9rwz_wcp1mDippjw-7D3JBoccmpOlSJcCNLbVBxkLBgCtdNJtFNnzcGFEFIgRTvRenhqglH1E88T2Bx6h5LGqv5S_lzpu70MsPtMzHZerng03MQhrOKHLZmH6x5-fZA1V33TvhSKvvfGdzWX4_aCLuwpj_W5QL4q8v5e5BiERaFjiIJGijLCTZFUjZx-EIMh6pJOOEYvxLRy-qvDTJr6vWDmnV20uvjLebVRurKo0W2IP71PJYsaN7JTIiZzmUsH9TqZUoyC1bekJ8v6KP_4_2oXJjkTTfbK8c7ZQTW35e84",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMyIsImp0aSI6ImYyY2U4MzE1NWFjZTQ1YzkzNGE3ZWM0YTkwNmFjOTJhZjliYjgxNWM0M2U3MTI3MzY5MTliNWUxYjZlMTBmMjMxNmE5N2U1YmE5N2ZjYThkIiwiaWF0IjoxNzQ1NDgzMzY0LjQyOTI2OSwibmJmIjoxNzQ1NDgzMzY0LjQyOTI3MiwiZXhwIjoxNzc3MDE5MzY0LjI4NzkxOCwic3ViIjoiMjYiLCJzY29wZXMiOltdfQ.JjS10C_vX7QCceFDrRLb3L_TqIC_1F5wcfqXKU30vz1UiNXzFvsS3_wE56Mt1fMc0aXopyErayHRSijwBjX90fSShweztn98HkT73UsG2H1RA7fo1zsW16FmYxWUjviqXvk51dvUeynHxNwrlulLy32fPA8wVJwsPwuVbd3A5S8tSX-hD3nX0JH5OQA7p0ywBKiLF1D1-MRzK8GXUlLvb6Rk74VxfyUzFHk4HJ85R8dw_E2yhAHyR7RY6kbHqZPs_z-DftWXquISK7M9gGh82MQhgfravgykUvNlsfyzpwnGWCITOIWiGYy5Op6g7g-mXm0mpIPH1palMNq3AFX8X23lrqpw9APej4GU-PhRahWC5LtNjBU0tTUkp8vdbu_LYoWdqal3blHCs2Ru8bHFbiG2j2cjSXI2x_gJbUPVuaRx51iChi5FRYLRnBxlVNpzqFHCyP9ZGWN9y7jQaPbUkayNOb-Ctr_NhzABDWCLYHP9WEKAGz4jE2rE_OgX2wpirC-fimyVZ9AjI60viOarUeYMpSA-X3u4z07PdHAFwJGVFDKSOGip4F3y86-hFLhIoWo6eYArR4cq70Y0mmesM0XLPZux1YHtKqcy7JAAMiVk0k8XyOlRam4Lzv875XyaM8_pZt9uPwrQmttX20olU0jbPsh6XnAW5QgPIfuWx6o",
 							"type": "string"
 						}
 					]
@@ -3155,7 +3530,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"liga\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3163,12 +3538,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{local}}events/test",
+					"raw": "{{local}}masters/all-regency",
 					"host": [
-						"{{local}}events"
+						"{{local}}masters"
 					],
 					"path": [
-						"test"
+						"all-regency"
 					]
 				}
 			},
@@ -3200,12 +3575,17 @@
 	"variable": [
 		{
 			"key": "local",
-			"value": "https://rump4t.test/api/",
+			"value": "http://127.0.0.1:8000/api/",
 			"type": "default"
 		},
 		{
 			"key": "dev",
 			"value": "http://rump4t-dev.aksiteknologi.com/api/",
+			"type": "string"
+		},
+		{
+			"key": "prod",
+			"value": "https://rump4t.aksiteknologi.com/api/",
 			"type": "string"
 		}
 	]
