@@ -156,11 +156,17 @@ class MastersController extends Controller
         }
     }
 
-    public function get_province()
+    public function get_province($simple)
     {
         try {
             $page = $this->request->size ?? 5;
-            $datas = MasterProvince::where('is_active', '0')->filter($this->request)->paginate($page);
+
+            if($simple == 'true'){
+                $datas = MasterProvince::where('is_active', '0')->filter($this->request)->paginate($page);
+            }else{
+                $datas = MasterProvince::with(['regency.district.village'])
+                    ->where('is_active', '0')->filter($this->request)->paginate($page);
+            }
 
             return $this->api->list($datas, new MasterProvince, 'Success Get Data');
         } catch(\Throwable $e) {
@@ -172,11 +178,40 @@ class MastersController extends Controller
         }
     }
 
-    public function get_district()
+    public function get_regency($parent)
     {
         try {
             $page = $this->request->size ?? 5;
-            $datas = MasterDistrict::with('regency.province')->where('is_active', '0')->filter($this->request)->paginate($page);
+
+            if($parent == 'true'){
+                $datas = MasterRegency::with(['province'])
+                    ->where('is_active', '0')->filter($this->request)->paginate($page);
+            }else{
+                $datas = MasterRegency::with(['district.village'])
+                    ->where('is_active', '0')->filter($this->request)->paginate($page);
+            }
+                
+            return $this->api->list($datas, new MasterRegency, 'Success Get Data');
+        } catch(\Throwable $e) {
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
+
+    public function get_district($parent)
+    {
+        try {
+            $page = $this->request->size ?? 5;
+
+            if($parent == 'true'){
+                $datas = MasterDistrict::with('regency.province')->where('is_active', '0')->filter($this->request)->paginate($page);
+            }else{
+                $datas = MasterDistrict::with(['village'])
+                    ->where('is_active', '0')->filter($this->request)->paginate($page);
+            }
 
             return $this->api->list($datas, new MasterDistrict, 'Success Get Data');
         } catch(\Throwable $e) {
@@ -188,30 +223,19 @@ class MastersController extends Controller
         }
     }
 
-    public function get_village()
+    public function get_village($simple)
     {
         try {
             $page = $this->request->size ?? 5;
-            $datas = MasterVillage::with('district.regency.province')->where('is_active', '0')->filter($this->request)->paginate($page);
+
+            if($simple == 'true'){
+                $datas = MasterVillage::where('is_active', '0')->filter($this->request)->paginate($page);
+            }else{
+                $datas = MasterVillage::with('district.regency.province')
+                    ->where('is_active', '0')->filter($this->request)->paginate($page);
+            }
 
             return $this->api->list($datas, new MasterVillage, 'Success Get Data');
-        } catch(\Throwable $e) {
-            if (config('envconfig.app_debug')) {
-                return $this->api->error_code($e->getMessage(), $e->getCode());
-            } else {
-                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
-            };
-        }
-    }
-
-    public function get_regency()
-    {
-        try {
-            $page = $this->request->size ?? 5;
-            $datas = MasterRegency::with(['province'])
-                ->where('is_active', '0')->filter($this->request)->paginate($page);
-                
-            return $this->api->list($datas, new MasterRegency, 'Success Get Data');
         } catch(\Throwable $e) {
             if (config('envconfig.app_debug')) {
                 return $this->api->error_code($e->getMessage(), $e->getCode());
