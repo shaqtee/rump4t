@@ -7,7 +7,7 @@
     <h2>Edit Event</h2>
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('events.admin.update', $event->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('events.admin.ubah', $event->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
