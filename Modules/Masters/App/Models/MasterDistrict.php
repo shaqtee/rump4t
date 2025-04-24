@@ -16,6 +16,10 @@ class MasterDistrict extends Model
     protected $table = "m_districts";
     protected $guarded = ['id'];
 
+    public function regency(){
+        return $this->hasOne(MasterRegency::class,'id', 'regency_id');
+    }
+
     public function scopeFilter($query, $request)
     {
         // if ($request->has('search')) {
