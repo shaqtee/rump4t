@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
@@ -11,21 +12,26 @@ use Illuminate\Notifications\Notifiable;
 use Modules\MyGames\App\Models\LetsPlay;
 use Modules\Masters\App\Models\MasterCity;
 use Modules\Community\App\Models\Community;
+use Modules\Masters\App\Models\MasterVillage;
 use Modules\MyGames\App\Models\MemberLetsPlay;
 use Modules\Community\App\Models\EventCommonity;
+use Modules\Performace\App\Models\ScoreHandicap;
 use Modules\ScoreHandicap\App\Models\LetsPlaySH;
+use Modules\MyGames\App\Models\InvitationPlayers;
 use Modules\Community\App\Models\MembersCommonity;
 use Modules\Masters\App\Models\MasterConfiguration;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\MyGames\App\Models\InvitationPlayers;
-use Modules\Performace\App\Models\ScoreHandicap;
+use Modules\Masters\App\Models\MasterDistrict;
+use Modules\Masters\App\Models\MasterProvince;
+use Modules\Masters\App\Models\MasterReferences;
+
 // use Modules\SocialMedia\App\Models\DiscussionGroup;
 // use Modules\SocialMedia\App\Models\DiscussionGroupMember;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -41,6 +47,7 @@ class User extends Authenticatable
     // ];
 
     protected $guarded = ['id'];
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -70,6 +77,18 @@ class User extends Authenticatable
 
     public function city(){
         return $this->belongsTo(MasterCity::class, 't_city_id');
+    }
+
+    public function village(){
+        return $this->belongsTo(MasterVillage::class, 'desa_kelurahan');
+    }
+
+    public function district(){
+        return $this->belongsTo(MasterDistrict::class, 'kecamatan');
+    }
+
+    public function province(){
+        return $this->belongsTo(MasterProvince::class, 'provinsi');
     }
 
     // public function membersCommonity(){
