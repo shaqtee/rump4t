@@ -15,6 +15,7 @@ class MasterVillage extends Model
      */
     protected $table = "m_villages";
     protected $guarded = ['id'];
+    protected $keyType = 'string';
 
     public function district(){
         return $this->hasOne(MasterDistrict::class,'id', 'district_id');

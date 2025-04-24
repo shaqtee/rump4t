@@ -15,9 +15,14 @@ class MasterDistrict extends Model
      */
     protected $table = "m_districts";
     protected $guarded = ['id'];
+    protected $keyType = 'string';
 
     public function regency(){
         return $this->hasOne(MasterRegency::class,'id', 'regency_id');
+    }
+
+    public function village(){
+        return $this->hasMany(MasterVillage::class, 'district_id');
     }
 
     public function scopeFilter($query, $request)
