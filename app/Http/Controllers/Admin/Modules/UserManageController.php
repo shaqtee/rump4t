@@ -151,7 +151,7 @@ class UserManageController extends Controller
                 'nickname' => 'required|string',
                 'image' => 'required|image|file|max:2048|mimes:jpeg,png,jpg',
                 'email' => [
-                    'required',
+                    'nullable',
                     'email',
                     Rule::unique('users'),
                 ],
@@ -190,7 +190,7 @@ class UserManageController extends Controller
             $folder = "rump4t/user-profile";
             $column = "image";
 
-            $datas['status_anggota'] = empty($datas['status_anggota']) ? 1 : 2;
+            $datas['status_anggota'] = empty($datas['status_anggota']) ? 1 : $datas['status_anggota'];
             $datas['flag_done_profile'] = '1';
             $datas['email_verified_at'] = now();
             $datas['phone_verified_at'] = now();
@@ -304,7 +304,7 @@ class UserManageController extends Controller
                 'nickname' => 'required|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg',
                 'email' => [
-                    'required',
+                    'nullable',
                     'email',
                     Rule::unique('users')->ignore($model->id),
                 ],
