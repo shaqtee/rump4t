@@ -63,6 +63,7 @@ Route::withoutMiddleware('auth:api')->group(function () {
     Route::get('all-city', [MastersController::class, 'get_city']);
     Route::get('all-village', [MastersController::class, 'get_village']);
     Route::get('all-district', [MastersController::class, 'get_district']);
+    Route::get('all-regency', [MastersController::class, 'get_regency']);
 });
 
 Route::get('all-course', [MastersController::class, 'get_course']);

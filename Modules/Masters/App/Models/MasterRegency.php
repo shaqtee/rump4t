@@ -6,18 +6,18 @@ use App\Services\Helpers\Helper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class MasterVillage extends Model
+class MasterRegency extends Model
 {
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      */
-    protected $table = "m_villages";
+    protected $table = "m_regencies";
     protected $guarded = ['id'];
 
-    public function district(){
-        return $this->hasOne(MasterDistrict::class,'id', 'district_id');
+    public function province(){
+        return $this->hasOne(MasterProvince::class,'id', 'province_id');
     }
 
     public function scopeFilter($query, $request)
@@ -57,4 +57,5 @@ class MasterVillage extends Model
             'Name' => 'string',
         ]);
     }
+    
 }
