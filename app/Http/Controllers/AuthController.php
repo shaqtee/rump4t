@@ -1344,12 +1344,31 @@ class AuthController extends Controller
                 return $this->api->error("User Not Found!");
             }
             DB::beginTransaction();
+            // update reset_request to true
+            $user->update([
+                "reset_request" => true
+            ]);
+
 
     }catch (\Exception $err) {
         DB::rollBack();
         return $this->api->error($err->getMessage());
 
     }
+    DB::commit();
+}
+
+public function update_eula (Request $req) { 
+    try {
+        DB::beginTransaction();
+        // updating current table data
+        $user = User::where(Auth::user()->id)->get() ; 
+        $user->update(["eula_accepted" => true]);
+    }catch(Exception $e) {
+        DB::rollBack();
+        return $this->api->error(message: $e->getMessage());
+    }
+    DB::commit();
 }
 
 public function user_reset_request(Request $request) {
