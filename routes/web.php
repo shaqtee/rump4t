@@ -109,6 +109,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');
             Route::delete('{id}/hapus', [UserManageController::class, 'delete_soft'])->name('users.hapus');
 
+            Route::post('lists/{scope}', [UserManageController::class, 'lists'])->name('lists');
         });
 
         Route::prefix('community')->group(function () {
