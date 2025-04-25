@@ -115,9 +115,10 @@ class AuthController extends Controller
             }
             
             $newUser = $this->model->create($datas);
+            $region = $this->references->where('id', $request->region)->first();
             
             $digits = abs((int)$newUser->id);
-            $newUser->nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$newUser->region.'-1';
+            $newUser->nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$region->code.'-1';
             $newUser->save();
 
             DB::commit();
