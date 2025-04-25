@@ -30,6 +30,7 @@ use Modules\Community\App\Models\MembersCommonity;
 use Modules\Masters\App\Models\MasterConfiguration;
 use Modules\Masters\App\Models\MasterReferences;
 use Modules\Masters\App\Models\MasterCity;
+use Modules\Masters\App\Models\MasterRegency;
 use Modules\MyGames\App\Models\MemberLetsPlay;
 use Modules\Performace\App\Http\Controllers\PerformaceController;
 use Modules\ScoreHandicap\App\Models\ScoreHandicap;
@@ -47,8 +48,9 @@ class AuthController extends Controller
     protected $performanceController;
     protected $references;
     protected $city;
+    protected $regency;
 
-    public function __construct(User $model, ApiResponse $api, Helper $helper, UserInterface $interface, MasterConfiguration $config, CompanyProfile $companyProfile, Community $community, MembersCommonity $memberCommunity, PerformaceController $performanceController, MasterReferences $references, MasterCity $city)
+    public function __construct(User $model, ApiResponse $api, Helper $helper, UserInterface $interface, MasterConfiguration $config, CompanyProfile $companyProfile, Community $community, MembersCommonity $memberCommunity, PerformaceController $performanceController, MasterReferences $references, MasterCity $city, MasterRegency $regency)
     {
         $this->model = $model;
         $this->api = $api;
@@ -61,6 +63,7 @@ class AuthController extends Controller
         $this->performanceController = $performanceController;
         $this->references = $references;
         $this->city = $city;
+        $this->regency = $regency;
     }
 
     //register
@@ -1550,6 +1553,7 @@ public function user_reset_request(Request $request) {
         return $this->api->success($users, "success");
     }
 
+    /* kota: old version */
     public function search_by_city($name)
     {
         $cities = $this->city->where('name', 'ILIKE', '%'.$name.'%')->get();
@@ -1557,9 +1561,25 @@ public function user_reset_request(Request $request) {
         return $this->api->success($cities, "success");
     }
 
+    
     public function selected_city($id)
     {
         $users = $this->model->where('t_city_id', $id)->get();
+        
+        return $this->api->success($users, "success");
+    }
+
+    /* kota: new version */
+    public function search_by_regency($name)
+    {
+        $cities = $this->regency->where('name', 'ILIKE', '%'.$name.'%')->get();
+
+        return $this->api->success($cities, "success");
+    }
+
+    public function selected_regency($id)
+    {
+        $users = $this->model->with(['province','regency','district','village'])->where('kota_kabupaten', $id)->get();
 
         return $this->api->success($users, "success");
     }
