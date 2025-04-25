@@ -442,6 +442,15 @@
                             <input type="text" class="form-control @error('ec_kinship') is-invalid @enderror"  value="{{ old('ec_kinship', isset($users) ? $users->ec_kinship : '') }}" name="ec_kinship" id="ec_kinship" placeholder="Hubungan Keluarga Kontak Darurat" autofocus>
                         </div>
 
+                        {{-- PHONE KONTAK DARURAT --}}
+                        <div class="form-group">
+                            <label for="ec_contact">Emergency Contact Phone</label>
+                            @error('ec_contact')
+                                <small style="color: red">{{ $message }}</small>
+                            @enderror
+                            <input type="text" class="form-control @error('ec_contact') is-invalid @enderror"  value="{{ old('ec_contact', isset($users) ? $users->ec_contact : '') }}" name="ec_contact" id="ec_contact" placeholder="Telepon Kontak Darurat" autofocus>
+                        </div>
+
                         <div class="form-group">
                             <label for="status_anggota">Member Status</label>
                             @error('status_anggota')
