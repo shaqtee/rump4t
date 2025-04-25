@@ -938,7 +938,9 @@ class AuthController extends Controller
                     "notes" => $user->notes,
                     "ec_name" => $user->ec_name,
                     "ec_kinship" => $user->ec_kinship,
+                    "ec_contact" => $user->ec_contact,
                     "region" => $region,
+                    "status_anggota" => $user->status_anggota,
                     "nomor_anggota" => $user->nomor_anggota,
                 ],
                 'our_contact' => [
