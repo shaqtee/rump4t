@@ -1358,7 +1358,7 @@ class AuthController extends Controller
     DB::commit();
 }
 
-public function update_eula (Request $req) { 
+public function accept_eula (Request $req) { 
     try {
         DB::beginTransaction();
         // updating current table data
