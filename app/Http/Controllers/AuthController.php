@@ -114,6 +114,7 @@ class AuthController extends Controller
                 $datas['phone'] = '62'.substr($request->phone, 1);
             }
             
+            $datas['active'] = 1;
             $newUser = $this->model->create($datas);
             $region = $this->references->where('id', $request->region)->first();
             
@@ -1313,9 +1314,13 @@ class AuthController extends Controller
                         ->first();
         
             if ($user && Hash::check($request->password, $user->password)) {
-                Auth::login($user);
+                if($user->active == 1){
+                    Auth::login($user);
+                }else{
+                    return $this->api->error('User Inactive');
+                }
             }else{
-                return $this->api->error('Invalid credentials');
+                return $this->api->error('Invalid Credentials');
             }
 
 
