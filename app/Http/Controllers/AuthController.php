@@ -361,10 +361,10 @@ class AuthController extends Controller
                 $datas['year_of_retirement'] = (int) $datas['year_of_retirement'];
             }
 
-            if(!empty($datas['t_city_id'])){
-                $city_code = ($this->city->where('id', $datas['t_city_id'])->first())->code;
-                $datas = array_merge($request->all(), ['kota_kabupaten' => $city_code]);
-            }
+            // if(!empty($datas['t_city_id'])){
+            //     $city_code = ($this->city->where('id', $datas['t_city_id'])->first())->code;
+            //     $datas = array_merge($request->all(), ['kota_kabupaten' => $city_code]);
+            // }
 
             if(!empty($datas['birth_date'])){
                 $birthDate = explode("-", $datas['birth_date']);
@@ -925,11 +925,11 @@ class AuthController extends Controller
 
                     "birth_place" => $user->birth_place,
                     "age" => $user->age,
-                    "desa_kelurahan" => $user->desa_kelurahan,
-                    "kecamatan" => $user->kecamatan,
-                    "kota_kabupaten" => $user->city->code ?? null,
+                    "desa_kelurahan" => $user->village->name ?? null,
+                    "kecamatan" => $user->district->name ?? null,
+                    "kota_kabupaten" => $user->regency->name ?? null,
                     "postal_code" => $user->postal_code,
-                    "provinsi" => $user->provinsi,
+                    "provinsi" => $user->province->name ?? null,
                     "year_of_entry" => $user->year_of_entry,
                     "year_of_retirement" => $user->year_of_retirement,
                     "retirement_type" => $user->retirement_type,
