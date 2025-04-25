@@ -208,8 +208,9 @@ class UserManageController extends Controller
                 'active' => 1,
             ];
             
+            $region = $this->references->where('id', $model->region)->first();
             $digits = abs((int)$model->id);
-            $nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$model->region.'-'.$model->status_anggota;
+            $nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$region->code.'-'.$model->status_anggota;
 
             $updateUser = [
                 'flag_community' => 'JOINED',
@@ -366,8 +367,9 @@ class UserManageController extends Controller
                 $modelMember = $this->memberComm->create($createMember);
             }
 
+            $region = $this->references->where('id', $datas['region'])->first();
             $digits = abs((int)$model->id);
-            $nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$datas['region'].'-'.$datas['status_anggota'];
+            $nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$region->code.'-'.$datas['status_anggota'];
 
             $datas['nomor_anggota'] = $nomor_anggota;
             $model->update($datas);
