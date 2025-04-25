@@ -33,6 +33,27 @@
                             @endforeach
                         </select>
                         </div>
+
+                        {{-- REGION --}}
+                        <div class="form-group">
+                            <label for="region">Region</label>
+                            @error('region')
+                                <small style="color: red">{{ $message }}</small>
+                            @enderror
+                            <select name="region" id="region" class="form-control select2" required autofocus>
+                                <option label="Choose one" selected disabled></option>
+                                @foreach ($regions as $r)
+                                    <option value="{{ $r->id }}" 
+                                        @if (old('region', isset($users) ? $users->region : '') == $r->id)
+                                            selected
+                                        @endif
+                                    >
+                                        {{ $r->value }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="form-group">
                             <label for="name">Name</label>
                             @error('name')
@@ -67,7 +88,7 @@
                             @error('email')
                                 <small style="color: red">{{ $message }}</small>
                             @enderror
-                            <input type="text" class="form-control @error('email') is-invalid @enderror"  value="{{ old('email', isset($users) ? $users->email : '') }}" name="email" id="email" placeholder="Email" required autofocus>
+                            <input type="text" class="form-control @error('email') is-invalid @enderror"  value="{{ old('email', isset($users) ? $users->email : '') }}" name="email" id="email" placeholder="Email" autofocus>
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone</label>
@@ -106,7 +127,7 @@
                                 <div class="input-group-text">
                                     <i class="typcn typcn-calendar-outline tx-24 lh--9 op-6"></i>
                                 </div>
-                                <input class="form-control fc-datepicker" id="datetimepicker" name="birth_date" type="text" value="{{ old('birth_date', isset($users) ? $users->birth_date : '') }}" placeholder="Birth Date" required autofocus>
+                                <input class="form-control fc-datepicker" id="datetimepicker" name="birth_date" type="text" value="{{ old('birth_date', isset($users) ? $users->birth_date : '') }}" placeholder="Birth Date" autofocus>
                             </div>
                         </div>
 
@@ -183,20 +204,76 @@
                             <input type="text" class="form-control @error('address') is-invalid @enderror"  value="{{ old('address', isset($users) ? $users->address : '') }}" name="address" id="address" placeholder="Address" autofocus>
                         </div>
 
+                        {{-- KODE POS --}}
                         <div class="form-group">
-                            <label for="t_city_id">City (Kota/Kabupaten)</label>
-                            @error('t_city_id')
+                            <label for="postal_code">Postal Code (Kode Pos)</label>
+                            @error('postal_code')
                                 <small style="color: red">{{ $message }}</small>
                             @enderror
-                            <select name="t_city_id" id="t_city_id" class="form-control select2" autofocus>
+                            <input type="text" class="form-control @error('postal_code') is-invalid @enderror"  value="{{ old('postal_code', isset($users) ? $users->postal_code : '') }}" name="postal_code" id="postal_code" placeholder="Kode Pos" autofocus>
+                        </div>
+
+                        {{-- Propinsi --}}
+                        <div class="form-group">
+                            <label for="provinsi">Province</label>
+                            @error('provinsi')
+                                <small style="color: red">{{ $message }}</small>
+                            @enderror
+                            <select name="provinsi" id="provinsi" class="form-control select2" data-area="{{ $users->kota_kabupaten ?? '' }}" autofocus>
                                 <option label="Choose one" selected disabled></option>
-                                @foreach ($city as $c)
-                                    <option value="{{ $c->id }}" 
-                                        @if (old('t_city_id', isset($users) ? $users->t_city_id : '') == $c->id)
+                                @foreach ($provinces as $p)
+                                    <option value="{{ $p->id }}" 
+                                        @if (old('provinsi', isset($users) ? $users->provinsi : '') == $p->id)
                                             selected
                                         @endif
                                     >
-                                        {{ $c->name }}
+                                        {{ $p->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- KOTA / KABUPATEN --}}
+                        <div class="form-group">
+                            <label for="kota_kabupaten">City (Kota/Kabupaten)</label>&nbsp;&nbsp;
+                            <div class="d-none loader-city spinner-border spinner-border-sm" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            @error('kota_kabupaten')
+                                <small style="color: red">{{ $message }}</small>
+                            @enderror
+                            <select name="kota_kabupaten" id="kota_kabupaten" class="form-control select2" data-area="{{ $users->kecamatan ?? '' }}" autofocus>
+                                <option label="Choose one" selected disabled></option>
+                                @foreach ($regencies as $r)
+                                    <option value="{{ $r->id }}" 
+                                        @if (old('kota_kabupaten', isset($users) ? $users->kota_kabupaten : '') == $r->id)
+                                            selected
+                                        @endif
+                                    >
+                                        {{ $r->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- KECAMATAN --}}
+                        <div class="form-group">
+                            <label for="kecamatan">District (Kecamatan)</label>&nbsp;&nbsp;
+                            <div class="d-none loader-district spinner-border spinner-border-sm" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            @error('kecamatan')
+                                <small style="color: red">{{ $message }}</small>
+                            @enderror
+                            <select name="kecamatan" id="kecamatan" class="form-control select2" data-area="{{ $users->desa_kelurahan ?? '' }}" autofocus>
+                                <option label="Choose one" selected disabled></option>
+                                @foreach ($districts as $d)
+                                    <option value="{{ $d->id }}" 
+                                        @if (old('kecamatan', isset($users) ? $users->kecamatan : '') == $d->id)
+                                            selected
+                                        @endif
+                                    >
+                                        {{ $d->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -204,7 +281,10 @@
 
                         {{-- DESA / KELURAHAN --}}
                         <div class="form-group">
-                            <label for="desa_kelurahan">Village (Desa/Kelurahan)</label>
+                            <label for="desa_kelurahan">Village (Desa/Kelurahan)</label>&nbsp;&nbsp;
+                            <div class="d-none loader-village spinner-border spinner-border-sm" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
                             @error('desa_kelurahan')
                                 <small style="color: red">{{ $message }}</small>
                             @enderror
@@ -220,75 +300,6 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
-
-                        {{-- KECAMATAN --}}
-                        <div class="form-group">
-                            <label for="kecamatan">District (Kecamatan)</label>
-                            @error('kecamatan')
-                                <small style="color: red">{{ $message }}</small>
-                            @enderror
-                            <select name="kecamatan" id="kecamatan" class="form-control select2" autofocus>
-                                <option label="Choose one" selected disabled></option>
-                                @foreach ($districts as $d)
-                                    <option value="{{ $d->id }}" 
-                                        @if (old('kecamatan', isset($users) ? $users->kecamatan : '') == $d->id)
-                                            selected
-                                        @endif
-                                    >
-                                        {{ $d->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        {{-- Propinsi --}}
-                        <div class="form-group">
-                            <label for="provinsi">Province</label>
-                            @error('provinsi')
-                                <small style="color: red">{{ $message }}</small>
-                            @enderror
-                            <select name="provinsi" id="provinsi" class="form-control select2" autofocus>
-                                <option label="Choose one" selected disabled></option>
-                                @foreach ($provinces as $p)
-                                    <option value="{{ $p->id }}" 
-                                        @if (old('provinsi', isset($users) ? $users->provinsi : '') == $p->id)
-                                            selected
-                                        @endif
-                                    >
-                                        {{ $p->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        {{-- REGION --}}
-                        <div class="form-group">
-                            <label for="region">Region</label>
-                            @error('region')
-                                <small style="color: red">{{ $message }}</small>
-                            @enderror
-                            <select name="region" id="region" class="form-control select2" autofocus>
-                                <option label="Choose one" selected disabled></option>
-                                @foreach ($regions as $r)
-                                    <option value="{{ $r->id }}" 
-                                        @if (old('provinsi', isset($users) ? $users->region : '') == $r->id)
-                                            selected
-                                        @endif
-                                    >
-                                        {{ $r->value }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        {{-- KODE POS --}}
-                        <div class="form-group">
-                            <label for="postal_code">Postal Code (Kode Pos)</label>
-                            @error('postal_code')
-                                <small style="color: red">{{ $message }}</small>
-                            @enderror
-                            <input type="text" class="form-control @error('postal_code') is-invalid @enderror"  value="{{ old('postal_code', isset($users) ? $users->postal_code : '') }}" name="postal_code" id="postal_code" placeholder="Kode Pos" autofocus>
                         </div>
 
                         {{-- TAHUN MASUK PTPP --}}
@@ -458,8 +469,8 @@
                             @enderror
                             <div class="row">
                                 <div class="col">
-                                    <label class="rdiobox"><input value="1" name="status_anggota" type="radio" {{ old('status_anggota', isset($users) && $users->status_anggota == '1') ? 'checked' : '' }} autofocus> <span>Regular</span></label>
-                                    <label class="rdiobox"><input value="2" name="status_anggota" type="radio" {{ old('status_anggota', isset($users) && $users->status_anggota == '2') ? 'checked' : '' }} autofocus> <span>Privilege</span></label>
+                                    <label class="rdiobox"><input value="1" name="status_anggota" type="radio" {{ old('status_anggota', isset($users) && $users->status_anggota == '1' ? 'checked' : '')  }} autofocus> <span>Regular</span></label>
+                                    <label class="rdiobox"><input value="2" name="status_anggota" type="radio" {{ old('status_anggota', isset($users) && $users->status_anggota == '2'? 'checked' : '')  }} autofocus> <span>Privilege</span></label>
                                 </div>
                             </div>
                         </div>
