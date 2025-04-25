@@ -85,7 +85,7 @@ class User extends Authenticatable
     }
 
     public function regency(){
-        return $this->hasOne(MasterRegency::class, 'id','t_city_id');
+        return $this->belongsTo(MasterRegency::class, 'kota_kabupaten');
     }
 
     public function district(){
