@@ -17,6 +17,13 @@
                         <input readonly type="text" class="form-control @error('community') is-invalid @enderror"
                             value="{{ $users->community->title ?? 'Empty' }}" name="community" id="community" autofocus>
                     </div>
+
+                    <div class="form-group">
+                        <label for="region">Region</label>
+                        <input readonly type="text" class="form-control @error('region') is-invalid @enderror"
+                            value="{{ $region->value ?? 'Empty' }}" name="region" id="region" autofocus>
+                    </div>
+
                     <div class="form-group">
                         <label for="name">Name</label>
                         @error('name')
@@ -110,26 +117,11 @@
                             value="{{ old('address', isset($users) ? $users->address : '') }}" name="address"
                             id="address" placeholder="Address" required autofocus>
                     </div>
-                    <div class="form-group">
-                        <label for="t_city_id">City</label>
-                        @error('t_city_id')
-                            <small style="color: red">{{ $message }}</small>
-                        @enderror
-                        <input readonly type="text" class="form-control @error('address') is-invalid @enderror"
-                            value="{{ old('address', isset($users) && isset($users->city) ? $users->city->name : '') }}" name="address"
-                            id="address" placeholder="Address" required autofocus>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="village">Village</label>
-                        <input readonly type="text" class="form-control @error('village') is-invalid @enderror"
-                            value="{{ $users->village->name ?? 'Empty' }}" name="village" id="village" autofocus>
-                    </div>
 
                     <div class="form-group">
-                        <label for="district">District</label>
-                        <input readonly type="text" class="form-control @error('district') is-invalid @enderror"
-                            value="{{ $users->district->name ?? 'Empty' }}" name="district" id="district" autofocus>
+                        <label for="postal_code">Postal Code</label>
+                        <input readonly type="text" class="form-control @error('postal_code') is-invalid @enderror"
+                            value="{{ $users->postal_code ?? 'Empty' }}" name="postal_code" id="postal_code" autofocus>
                     </div>
 
                     <div class="form-group">
@@ -139,15 +131,21 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="region">Region</label>
-                        <input readonly type="text" class="form-control @error('region') is-invalid @enderror"
-                            value="{{ $region->value ?? 'Empty' }}" name="region" id="region" autofocus>
+                        <label for="kota_kabupaten">City</label>
+                        <input readonly type="text" class="form-control @error('address') is-invalid @enderror"
+                            value="{{ $users->regency->name ?? 'Empty' }}" name="address" id="kota_kabupaten" autofocus>
                     </div>
 
                     <div class="form-group">
-                        <label for="postal_code">Postal Code</label>
-                        <input readonly type="text" class="form-control @error('postal_code') is-invalid @enderror"
-                            value="{{ $users->postal_code ?? 'Empty' }}" name="postal_code" id="postal_code" autofocus>
+                        <label for="district">District</label>
+                        <input readonly type="text" class="form-control @error('district') is-invalid @enderror"
+                            value="{{ $users->district->name ?? 'Empty' }}" name="district" id="district" autofocus>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="village">Village</label>
+                        <input readonly type="text" class="form-control @error('village') is-invalid @enderror"
+                            value="{{ $users->village->name ?? 'Empty' }}" name="village" id="village" autofocus>
                     </div>
 
                     <div class="form-group">
