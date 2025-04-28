@@ -1386,13 +1386,15 @@ public function accept_eula (Request $req) {
     try {
         DB::beginTransaction();
         // updating current table data
-        $user = User::where(Auth::user()->id)->get() ; 
+        $user = User::where("id" ,  "=" , Auth::user()->id) ; 
         $user->update(["eula_accepted" => true]);
     }catch(Exception $e) {
         DB::rollBack();
         return $this->api->error(message: $e->getMessage());
     }
     DB::commit();
+        return $this->api->success($user, "success");
+    
 }
 
 public function user_reset_request(Request $request) {
