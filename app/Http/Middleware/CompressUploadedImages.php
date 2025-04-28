@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
 
 class CompressUploadedImages
@@ -12,16 +11,40 @@ class CompressUploadedImages
     {
         foreach ($request->files->all() as $key => $file) {
             if ($file && $file->isValid() && Str::startsWith($file->getMimeType(), 'image/')) {
-                // Read the image
-                $img = Image::make($file);
+                // Open the image with GD
+                $image = imagecreatefromstring(file_get_contents($file));
 
-                // Compress it
-                $quality = 75; // you can change this
-                $compressedImage = (string) $img->encode(null, $quality);
+                if ($image === false) {
+                    // If GD fails to load the image, skip compression
+                    continue;
+                }
 
-                // Create a temporary file to replace the original upload
+                // Set the quality (0 - 100)
+                $quality = 75;
+
+                // Get the file extension
+                $extension = strtolower($file->getClientOriginalExtension());
+
+                // Generate a temporary file
                 $tempPath = tempnam(sys_get_temp_dir(), 'compressed_');
-                file_put_contents($tempPath, $compressedImage);
+                switch ($extension) {
+                    case 'jpg':
+                    case 'jpeg':
+                        imagejpeg($image, $tempPath, $quality);
+                        break;
+                    case 'png':
+                        // PNG is lossless, you can't change quality the same way
+                        imagepng($image, $tempPath, round($quality / 10));
+                        break;
+                    case 'gif':
+                        imagegif($image, $tempPath);
+                        break;
+                    default:
+                        continue;
+                }
+
+                // Free up memory
+                imagedestroy($image);
 
                 // Replace the uploaded file in the request
                 $request->files->set($key, new \Illuminate\Http\UploadedFile(
