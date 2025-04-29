@@ -81,4 +81,7 @@ Route::prefix('auth')->middleware('auth:api')->group(function () {
     Route::get('selected-area/{id}', [AuthController::class, 'selected_area']);
     Route::get('search-by-city/{name}', [AuthController::class, 'search_by_city']);
     Route::get('selected-city/{id}', [AuthController::class, 'selected_city']);
+
+    Route::get('search-by-regency/{name}', [AuthController::class, 'search_by_regency']);
+    Route::get('selected-regency/{id}', [AuthController::class, 'selected_regency']);
 });

@@ -74,6 +74,18 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
+    /* Hide days grid and month selector */
+    .hide-calendar .ui-datepicker-calendar,
+    .hide-calendar .ui-datepicker-month {
+        display: none;
+    }
+
+    /* Optional: Hide previous/next arrows */
+    .hide-calendar .ui-datepicker-prev,
+    .hide-calendar .ui-datepicker-next {
+        display: none;
+    }
+
     /* Custom CSS for switch button */
     .custom-switch {
         position: relative;
