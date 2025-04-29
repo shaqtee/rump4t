@@ -30,6 +30,7 @@ class RegisRequest extends FormRequest
             // 'email' => 'required',
             'password' => 'required',
             "region" => 'required',
+            "eula_accepted" => 'required',
         ];
 
         return $rules;
@@ -42,7 +43,8 @@ class RegisRequest extends FormRequest
             'phone' => 'Telephone Number',
             'email' => 'Email',
             'password' => 'Password',
-            'region' => 'Region'
+            'region' => 'Region',
+            'eula_accepted' => 'Eula Accepted',
         ];
     }
 
