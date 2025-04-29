@@ -910,6 +910,7 @@ class AuthController extends Controller
                     "member_since" => Carbon::parse($user->created_at)->format('d/m/Y'),
                     // "handicap_index" => $hcpIndex,
                     "url_barcode" => url('/rump4t/profile-user/' . $this->helper->encryptDecrypt($id)),
+                    "eula_accepted" => $user->eula_accepted,
 
                     "birth_place" => $user->birth_place,
                     "age" => $user->age,
