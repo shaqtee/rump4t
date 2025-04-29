@@ -123,6 +123,7 @@ class AuthController extends Controller
             
             $digits = abs((int)$newUser->id);
             $newUser->nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$region->code.'-1';
+            $newUser->eula_accepted = $request->eula_accepted ;
             $newUser->save();
 
             DB::commit();
