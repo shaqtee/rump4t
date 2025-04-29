@@ -116,7 +116,145 @@
 <script src="/Valex/html/assets/plugins/owl-carousel/owl.carousel.js"></script>
 
 <script>
+    $(function() {
+        var $radios = $('input:radio[name=status_anggota]');
+        if($radios.is(':checked') === false) {
+            $radios.filter('[value=1]').prop('checked', true);
+        }
+    });
+
     $(document).ready(function() {
+        $('#provinsi').on('change', function(){
+            let id = $(this).val();
+            let scope = 'province';
+            let relation = 'regency';
+            let area = $(this).data('area');
+            $('.loader-city').removeClass('d-none');
+            $('.loader-district').removeClass('d-none');
+            $('.loader-village').removeClass('d-none');
+            
+            $.post(
+                "{{ url('admin/users/lists') }}"+'/'+scope,
+                {_token:"{{ csrf_token() }}", id, relation},
+                function(data){
+                    console.log('kota',data);
+                    $('.loader-city').addClass('d-none');
+                    $('.loader-district').addClass('d-none');
+                    $('.loader-village').addClass('d-none');
+                    $('#kota_kabupaten').empty();
+                    $('#kecamatan').empty();
+                    $('#desa_kelurahan').empty();
+                    let option = '';
+                    data.rsp.regency.forEach((v,i) => {
+                        //console.log(v);
+                        option +=
+                        `
+                         <option label="Choose one" selected disabled></option>
+                         <option value="${v.id}">
+                            ${v.name}
+                         </option
+                        `
+                    });
+                    $('#kota_kabupaten').append(option);
+                }
+            )
+        });
+        
+        $('#kota_kabupaten').on('change', function(){
+            let id = $(this).val();
+            let scope = 'regency';
+            let relation = 'district';
+            let area = $(this).data('area');
+            $('.loader-district').removeClass('d-none');
+            $('.loader-village').removeClass('d-none');
+            
+            $.post(
+                "{{ url('admin/users/lists') }}"+'/'+scope,
+                {_token:"{{ csrf_token() }}", id, relation},
+                function(data){
+                    console.log('kecamatan',data);
+                    $('.loader-district').addClass('d-none');
+                    $('.loader-village').addClass('d-none');
+                    $('#kecamatan').empty();
+                    let option = '';
+                    data.rsp.district.forEach((v,i) => {
+                        //console.log(v);
+                        option +=
+                        `
+                         <option label="Choose one" selected disabled></option>
+                         <option value="${v.id}">
+                            ${v.name}
+                         </option
+                        `
+                    });
+                    $('#kecamatan').append(option);
+                }
+            )
+        });
+
+        $('#kecamatan').on('change', function(){
+            let id = $(this).val();
+            let scope = 'district';
+            let relation = 'village';
+            let area = $(this).data('area');
+            $('.loader-village').removeClass('d-none');
+            
+            $.post(
+                "{{ url('admin/users/lists') }}"+'/'+scope,
+                {_token:"{{ csrf_token() }}", id, relation},
+                function(data){
+                    console.log('desa',data);
+                    $('.loader-village').addClass('d-none');
+                    $('#desa_kelurahan').empty();
+                    let option = '';
+                    data.rsp.village.forEach((v,i) => {
+                        //console.log(v);
+                        option +=
+                        `
+                         <option label="Choose one" selected disabled></option>
+                         <option value="${v.id}">
+                            ${v.name}
+                         </option
+                        `
+                    });
+                    $('#desa_kelurahan').append(option);
+                }
+            )
+        });
+
+        $('#datetimepicker').on('change', function() {
+            console.log('bith date',this.value);
+            let getBirthDate = this.value.split(' ')[0];
+
+            const birthDate = new Date(getBirthDate);
+            const today = new Date();
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            const dayDiff = today.getDate() - birthDate.getDate();
+
+            // Adjust if birthday hasn't occurred yet this year
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+
+            $('#age').val(age);
+        })
+
+        $('.yearPicker').datepicker({
+            yearRange: '1945:2050',
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy',
+            onClose: function(dateText, inst) {
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, 0, 1));
+            },
+            beforeShow: function(input, inst) {
+            $(input).datepicker("widget").addClass("hide-calendar");
+            }
+        });
+
         var owl = $("#owl-demo");
         owl.owlCarousel({
             navigation : false, // Show next and prev buttons
