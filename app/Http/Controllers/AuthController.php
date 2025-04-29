@@ -30,6 +30,7 @@ use Modules\Community\App\Models\MembersCommonity;
 use Modules\Masters\App\Models\MasterConfiguration;
 use Modules\Masters\App\Models\MasterReferences;
 use Modules\Masters\App\Models\MasterCity;
+use Modules\Masters\App\Models\MasterRegency;
 use Modules\MyGames\App\Models\MemberLetsPlay;
 use Modules\Performace\App\Http\Controllers\PerformaceController;
 use Modules\ScoreHandicap\App\Models\ScoreHandicap;
@@ -47,8 +48,9 @@ class AuthController extends Controller
     protected $performanceController;
     protected $references;
     protected $city;
+    protected $regency;
 
-    public function __construct(User $model, ApiResponse $api, Helper $helper, UserInterface $interface, MasterConfiguration $config, CompanyProfile $companyProfile, Community $community, MembersCommonity $memberCommunity, PerformaceController $performanceController, MasterReferences $references, MasterCity $city)
+    public function __construct(User $model, ApiResponse $api, Helper $helper, UserInterface $interface, MasterConfiguration $config, CompanyProfile $companyProfile, Community $community, MembersCommonity $memberCommunity, PerformaceController $performanceController, MasterReferences $references, MasterCity $city, MasterRegency $regency)
     {
         $this->model = $model;
         $this->api = $api;
@@ -61,6 +63,7 @@ class AuthController extends Controller
         $this->performanceController = $performanceController;
         $this->references = $references;
         $this->city = $city;
+        $this->regency = $regency;
     }
 
     //register
@@ -113,9 +116,14 @@ class AuthController extends Controller
             if(substr($request->phone, 0, 1) == '0'){
                 $datas['phone'] = '62'.substr($request->phone, 1);
             }
-
-            // return response()->json($datas);
+            
+            $datas['active'] = 1;
             $newUser = $this->model->create($datas);
+            $region = $this->references->where('id', $request->region)->first();
+            
+            $digits = abs((int)$newUser->id);
+            $newUser->nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$region->code.'-1';
+            $newUser->save();
 
             DB::commit();
             return $this->api->success($newUser, "Successfully Registration");
@@ -348,11 +356,18 @@ class AuthController extends Controller
             $datas = $this->helper->removeNullValues($datas);
             $dataUser = $this->model->find($id);
 
-            if(!empty($datas['t_city_id'])){
-                $city_code = ($this->city->where('id', $id)->first())->code;
-                $datas = array_merge($request->all(), ['kota_kabupaten' => $city_code]);
+            if(!empty($datas['year_of_entry'])){
+                $datas['year_of_entry'] = (int) $datas['year_of_entry'];
             }
-            // return $this->api->success($datas, "Success Update Profile");
+
+            if(!empty($datas['year_of_retirement'])){
+                $datas['year_of_retirement'] = (int) $datas['year_of_retirement'];
+            }
+
+            // if(!empty($datas['t_city_id'])){
+            //     $city_code = ($this->city->where('id', $datas['t_city_id'])->first())->code;
+            //     $datas = array_merge($request->all(), ['kota_kabupaten' => $city_code]);
+            // }
 
             if(!empty($datas['birth_date'])){
                 $birthDate = explode("-", $datas['birth_date']);
@@ -888,37 +903,39 @@ class AuthController extends Controller
                     "id" => $user->id,
                     "player_id" => $user->player_id,
                     "name" => $user->name,
-                    // "nickname" => $user->nickname,
                     "email" => $user->email,
                     "phone" => $user->phone,
                     "gender" => $user->gender,
                     "birth_date" => $user->birth_date,
+                    "address" => $user->address,
+                    "position" => $user->position,
+                    "image" => $user->image,
+                    "t_city_id" => $user->city->id ?? null,
+                    "city" => $user->city->name ?? null,
+                    "t_community_id" => $user->community->id ?? null,
+                    "community" => $user->community->title ?? null,
+                    "member_since" => Carbon::parse($user->created_at)->format('d/m/Y'),
+                    
+                    "url_barcode" => url('/rump4t/profile-user/' . $this->helper->encryptDecrypt($id)),
+                    // "nickname" => $user->nickname ?? null,
                     // "hcp_index" => $user->hcp_index,
                     // "faculty" => $user->faculty,
                     // "batch" => $user->batch,
                     // "office_name" => $user->office_name,
-                    "address" => $user->address,
                     // "business_sector" => $user->business_sector,
-                    "position" => $user->position,
-                    "image" => $user->image,
                     // "fcm_token" => $user->fcm_token,
-                    "t_city_id" => $user->city->id ?? null,
-                    "city" => $user->city->name ?? null,
                     // "flag_community" => $user->flag_community,
-                    "t_community_id" => $user->community->id ?? null,
-                    "community" => $user->community->title ?? null,
-                    "member_since" => Carbon::parse($user->created_at)->format('d/m/Y'),
                     // "handicap_index" => $hcpIndex,
                     "url_barcode" => url('/rump4t/profile-user/' . $this->helper->encryptDecrypt($id)),
                     "eula_accepted" => $user->eula_accepted,
 
                     "birth_place" => $user->birth_place,
                     "age" => $user->age,
-                    "desa_kelurahan" => $user->desa_kelurahan,
-                    "kecamatan" => $user->kecamatan,
-                    "kota_kabupaten" => $user->city->code ?? null,
+                    "desa_kelurahan" => $user->village->name ?? null,
+                    "kecamatan" => $user->district->name ?? null,
+                    "kota_kabupaten" => $user->regency->name ?? null,
                     "postal_code" => $user->postal_code,
-                    "provinsi" => $user->provinsi,
+                    "provinsi" => $user->province->name ?? null,
                     "year_of_entry" => $user->year_of_entry,
                     "year_of_retirement" => $user->year_of_retirement,
                     "retirement_type" => $user->retirement_type,
@@ -928,8 +945,11 @@ class AuthController extends Controller
                     "shirt_size" => $user->shirt_size,
                     "notes" => $user->notes,
                     "ec_name" => $user->ec_name,
-                    "ec_kinship" => $user->kinship,
+                    "ec_kinship" => $user->ec_kinship,
+                    "ec_contact" => $user->ec_contact,
                     "region" => $region,
+                    "status_anggota" => $user->status_anggota,
+                    "nomor_anggota" => $user->nomor_anggota,
                 ],
                 'our_contact' => [
                     "id" => $dataCompany->id,
@@ -1300,9 +1320,13 @@ class AuthController extends Controller
                         ->first();
         
             if ($user && Hash::check($request->password, $user->password)) {
-                Auth::login($user);
+                if($user->active == 1){
+                    Auth::login($user);
+                }else{
+                    return $this->api->error('User Inactive');
+                }
             }else{
-                return $this->api->error('Invalid credentials');
+                return $this->api->error('Invalid Credentials');
             }
 
 
@@ -1322,6 +1346,7 @@ class AuthController extends Controller
                     "region" => $user->region ?? null,
                     "remember_token" => $user->remember_token ?? null,
                     "image" => $user->image ?? null,
+                    "nomor_anggota" => $user->nomor_anggota ?? null,
                 ]
             ];
 
@@ -1532,6 +1557,7 @@ public function user_reset_request(Request $request) {
         return $this->api->success($users, "success");
     }
 
+    /* kota: old version */
     public function search_by_city($name)
     {
         $cities = $this->city->where('name', 'ILIKE', '%'.$name.'%')->get();
@@ -1539,9 +1565,25 @@ public function user_reset_request(Request $request) {
         return $this->api->success($cities, "success");
     }
 
+    
     public function selected_city($id)
     {
         $users = $this->model->where('t_city_id', $id)->get();
+        
+        return $this->api->success($users, "success");
+    }
+
+    /* kota: new version */
+    public function search_by_regency($name)
+    {
+        $cities = $this->regency->where('name', 'ILIKE', '%'.$name.'%')->get();
+
+        return $this->api->success($cities, "success");
+    }
+
+    public function selected_regency($id)
+    {
+        $users = $this->model->with(['province','regency','district','village'])->where('kota_kabupaten', $id)->get();
 
         return $this->api->success($users, "success");
     }

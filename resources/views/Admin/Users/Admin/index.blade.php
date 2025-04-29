@@ -94,7 +94,7 @@
                             <tr>
                                 <th scope="row">{{ $admin->firstItem() + $key }}</th>
                                 <td>{{ $adm->name }}</td>
-                                <td><img class="img-thumbnail" src="{{ $adm->image }}" style="width: 100px; height: 100px; object-fit: fill;" alt="Profil User"></td>
+                                <td><img class="img-thumbnail" src="{{ $adm->image }}" style="width: 100px; height: 100px; object-fit: cover;" alt="Profil User"></td>
                                 <td>{{ $adm->email }}</td>
                                 <td>{{ $adm->phone }}</td>
                                 <td>{{ $adm->community->title ?? '-'}}</td>
