@@ -926,6 +926,8 @@ class AuthController extends Controller
                     // "fcm_token" => $user->fcm_token,
                     // "flag_community" => $user->flag_community,
                     // "handicap_index" => $hcpIndex,
+                    "url_barcode" => url('/rump4t/profile-user/' . $this->helper->encryptDecrypt($id)),
+                    "eula_accepted" => $user->eula_accepted,
 
                     "birth_place" => $user->birth_place,
                     "age" => $user->age,
