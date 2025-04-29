@@ -1346,7 +1346,7 @@ class AuthController extends Controller
                     "region" => $user->region ?? null,
                     "remember_token" => $user->remember_token ?? null,
                     "image" => $user->image ?? null,
-                    "eula_accepted" => $user->eula_accepted
+                    "eula_accepted" => $user->eula_accepted,
                     "nomor_anggota" => $user->nomor_anggota ?? null,
                 ]
             ];
