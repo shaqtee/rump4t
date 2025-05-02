@@ -40,7 +40,7 @@ class CompressUploadedImages
                         imagegif($image, $tempPath);
                         break;
                     default:
-                        continue;
+                        continue 2;
                 }
 
                 // Free up memory
