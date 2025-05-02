@@ -156,13 +156,16 @@ class MastersController extends Controller
         }
     }
 
+    /* start */
+
     public function get_province($simple)
     {
         try {
-            $page = $this->request->size ?? 5;
+            // $page = $this->request->size ?? 5;
 
             if($simple == 'true'){
-                $datas = MasterProvince::where('is_active', '0')->filter($this->request)->paginate($page);
+                $datas = MasterProvince::where('is_active', '0')->get();
+                    // ->filter($this->request)->paginate($page);
             }else{
                 $datas = MasterProvince::with(['regency.district.village'])
                     ->where('is_active', '0')->filter($this->request)->paginate($page);
@@ -181,11 +184,11 @@ class MastersController extends Controller
     public function get_regency($parent)
     {
         try {
-            $page = $this->request->size ?? 5;
+            // $page = $this->request->size ?? 5;
 
             if($parent == 'true'){
-                $datas = MasterRegency::with(['province'])
-                    ->where('is_active', '0')->filter($this->request)->paginate($page);
+                $datas = MasterRegency::where('is_active', '0')->get();
+                    // ->filter($this->request)->paginate($page);
             }else{
                 $datas = MasterRegency::with(['district.village'])
                     ->where('is_active', '0')->filter($this->request)->paginate($page);
@@ -204,10 +207,11 @@ class MastersController extends Controller
     public function get_district($parent)
     {
         try {
-            $page = $this->request->size ?? 5;
+            // $page = $this->request->size ?? 5;
 
             if($parent == 'true'){
-                $datas = MasterDistrict::with('regency.province')->where('is_active', '0')->filter($this->request)->paginate($page);
+                $datas = MasterDistrict::where('is_active', '0')->get();
+                    // ->filter($this->request)->paginate($page);
             }else{
                 $datas = MasterDistrict::with(['village'])
                     ->where('is_active', '0')->filter($this->request)->paginate($page);
@@ -226,10 +230,11 @@ class MastersController extends Controller
     public function get_village($simple)
     {
         try {
-            $page = $this->request->size ?? 5;
+            // $page = $this->request->size ?? 5;
 
             if($simple == 'true'){
-                $datas = MasterVillage::where('is_active', '0')->filter($this->request)->paginate($page);
+                $datas = MasterVillage::where('is_active', '0')->get();
+                    // ->filter($this->request)->paginate($page);
             }else{
                 $datas = MasterVillage::with('district.regency.province')
                     ->where('is_active', '0')->filter($this->request)->paginate($page);
@@ -244,6 +249,28 @@ class MastersController extends Controller
             };
         }
     }
+
+    /* =================================== */
+
+    public function get_regencyById($id)
+    {
+        $datas = MasterRegency::where('province_id',$id)->get();
+        return $this->api->list($datas, new MasterRegency, 'Success Get Data');
+    }
+
+    public function get_districtById($id)
+    {
+        $datas = MasterDistrict::where('regency_id',$id)->get();
+        return $this->api->list($datas, new MasterDistrict, 'Success Get Data');
+    }
+
+    public function get_villageById($id)
+    {
+        $datas = Mastervillage::where('district_id',$id)->get();
+        return $this->api->list($datas, new MasterVillage, 'Success Get Data');
+    }
+
+    /* end */
 
     public function get_course()
     {

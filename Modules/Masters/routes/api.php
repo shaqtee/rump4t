@@ -64,6 +64,10 @@ Route::withoutMiddleware('auth:api')->group(function () {
     Route::get('all-regency/{parent}', [MastersController::class, 'get_regency']);
     Route::get('all-district/{parent}', [MastersController::class, 'get_district']);
     Route::get('all-village/{simple}', [MastersController::class, 'get_village']);
+
+    Route::get('get-regency-by-id/{id}', [MastersController::class, 'get_regencyById']);
+    Route::get('get-district-by-id/{id}', [MastersController::class, 'get_districtById']);
+    Route::get('get-village-by-id/{id}', [MastersController::class, 'get_villageById']);
 });
 
 Route::get('all-course', [MastersController::class, 'get_course']);
