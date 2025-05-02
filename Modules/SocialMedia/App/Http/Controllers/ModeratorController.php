@@ -61,7 +61,7 @@ class ModeratorController extends Controller
 
     public function comments($id)
     {
-        $post = Post::find($id);
+        $post = Post::withTrashed()->find($id);
         $comments = DetailPost::where('id_post', $id)->where("parent_id" , null)->get();
         return view('socialmedia.moderations::comment' , compact('post' , "comments"));
     }
@@ -288,6 +288,15 @@ class ModeratorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $post = Post::find($id);
+            $post->delete();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to delete post: ' . $e->getMessage());
+        }
+        DB::commit();
+        return redirect()->route('socialmedia.moderation.index')->with('success', 'Post deleted successfully.');
     }
 }
