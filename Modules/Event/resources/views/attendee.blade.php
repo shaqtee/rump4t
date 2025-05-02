@@ -24,28 +24,28 @@
                 <tbody>
                     @foreach ($attendees as $attendee)
                         <tr>
-                            <td>{{ $attendee['data_input']['nama'] ?? $attendee['user']["name"] ?? 'N/A' }}</td>
-                            <td>{{ $attendee['data_input']['no_hp'] ?? $attendee["user"]['phone'] ?? 'N/A' }}</td>
-                            <td>{{ $attendee['voucher'] ?? 'N/A' }}</td>
-                            <td>{{ $attendee['payment_date'] ?? 'N/A' }}</td>
-                            <td>{{ $attendee['nominal_pembayaran'] ?? 'N/A' }}</td>
+                            <td>{{ $attendee?->data_input?->nama ?? $attendee?->user?->name ?? 'N/A' }}</td>
+                            <td>{{ $attendee?->data_input?->no_hp ?? $attendee?->user?->phone ?? 'N/A' }}</td>
+                            <td>{{ $attendee?->voucher ?? 'N/A' }}</td>
+                            <td>{{ $attendee?->payment_date ?? 'N/A' }}</td>
+                            <td>{{ $attendee?->nominal_pembayaran ?? 'N/A' }}</td>
                             <td>
-                                @if (!empty($attendee['data_input']['ukuran_kaos']))
-                                    {{ $attendee['data_input']['ukuran_kaos'] }} ({{ $attendee['data_input']['type_lengan'] ?? 'N/A' }})
+                                @if (!empty($attendee?->data_input?->ukuran_kaos))
+                                    {{ $attendee?->data_input?->ukuran_kaos }} ({{ $attendee?->data_input?->type_lengan ?? 'N/A' }})
                                 @else
                                     N/A
                                 @endif
                             </td>
                             <td>
-                                @if (!empty($attendee['data_input']['ukuran_kaos_pendamping']))
-                                    {{ $attendee['data_input']['ukuran_kaos_pendamping'] }} ({{ $attendee['data_input']['type_lengan_pendamping'] ?? 'N/A' }})
+                                @if (!empty($attendee?->data_input?->ukuran_kaos_pendamping))
+                                    {{ $attendee?->data_input?->ukuran_kaos_pendamping }} ({{ $attendee?->data_input?->type_lengan_pendamping ?? 'N/A' }})
                                 @else
                                     N/A
                                 @endif
                             </td>
                             <td>
-                                @if (!empty($attendee['image_bukti']))
-                                    <img src="{{ $attendee['image_bukti'] }}" alt="Proof of Payment" style="width: 100px; height: auto;">
+                                @if (!empty($attendee?->image_bukti))
+                                    <img src="{{ $attendee?->image_bukti }}" alt="Proof of Payment" style="width: 100px; height: auto;">
                                 @else
                                     N/A
                                 @endif
