@@ -26,6 +26,7 @@ Route::get('/', function (){
 });
 
 Route::apiResource('dimensions', DimensionsController::class)->only('index', 'store');
+Route::middleware("auth:api")->post('delete-account', [NewsController::class, 'deleteSelfAccount']);
 
 Route::prefix('sign-up')->group(function() {
     Route::post('get-user', [AuthController::class, 'get_user2']);

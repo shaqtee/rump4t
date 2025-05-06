@@ -44,6 +44,31 @@ class SocialMediaController extends Controller
         }
     }
 
+    public function deleteSelfAccount(Request $request)
+    {
+
+        // verifikasi akun dengan password 
+        $request->validate([
+            'password' => 'required'
+        ]);
+        $user = auth()->user();
+        if (!password_verify($request->password, $user->password)) {
+            return $this->web->error('Password tidak sesuai');
+        }
+        DB::beginTransaction();
+        try {
+            $this->model->where('id_user', $user->id)->delete();
+            $this->reportPost->where('id_user', $user->id)->delete();
+            $user->delete();
+            DB::commit();
+            return $this->web->success('Akun berhasil dihapus');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return $this->handler->handleExceptionWeb($e);
+        }
+       
+    }
+
     public function destroy(string $id)
     {
         DB::beginTransaction();
