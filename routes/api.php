@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Modules\SocialMedia\SocialMediaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DimensionsController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ Route::get('/', function (){
 });
 
 Route::apiResource('dimensions', DimensionsController::class)->only('index', 'store');
-Route::middleware("auth:api")->post('delete-account', [NewsController::class, 'deleteSelfAccount']);
+Route::middleware("auth:api")->post('delete-account', [SocialMediaController::class, 'deleteSelfAccount']);
 
 Route::prefix('sign-up')->group(function() {
     Route::post('get-user', [AuthController::class, 'get_user2']);
