@@ -121,7 +121,7 @@ class UserManageController extends Controller
 
             $data = [
                 'content' => 'Admin/Users/addEdit',
-                'title' => 'Create Data User',
+                'title' => 'Registrasi Data Anggota',
                 'users' => null,
                 'community' => $this->community->get(),
                 'faculty' => $this->config->where('parameter', 'm_faculty')->get(),
@@ -190,19 +190,21 @@ class UserManageController extends Controller
                 'ec_kinship' => 'nullable|string',
                 'ec_contact' => 'nullable|string',
                 't_community_id' => 'nullable',
+                'pass_away_status' => 'nullable',
                 'status_anggota' => 'required|in:1,2',
                 'active' => 'required|in:1,0',
             ]);
-
+            
             $folder = "rump4t/user-profile";
             $column = "image";
 
+            $datas['pass_away_status'] = empty($datas['pass_away_status']) ? false : true;
             $datas['status_anggota'] = empty($datas['status_anggota']) ? 1 : $datas['status_anggota'];
             $datas['flag_done_profile'] = '1';
             $datas['email_verified_at'] = now();
             $datas['phone_verified_at'] = now();
             $datas['password'] = bcrypt(123123);
-            
+            // dd($datas);
             $model = $this->model->create($datas);
 
             $this->helper->uploads($folder, $model, $column);
@@ -354,10 +356,11 @@ class UserManageController extends Controller
                 'ec_kinship' => 'nullable|string',
                 'ec_contact' => 'nullable|string',
                 't_community_id' => 'nullable',
+                'pass_away_status' => 'nullable',
                 'status_anggota' => 'required|in:1,2',
                 'active' => 'required|in:1,0',
             ]);
-            
+            // dd($datas);
             $folder = "rump4t/user-profile";
             $column = "image";
             
