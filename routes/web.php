@@ -110,6 +110,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('{id}/hapus', [UserManageController::class, 'delete_soft'])->name('users.hapus');
 
             Route::post('lists/{scope}', [UserManageController::class, 'lists'])->name('lists');
+            Route::post('{id}', [UserManageController::class, 'user_by_id']);
         });
 
         Route::prefix('community')->group(function () {

@@ -22,16 +22,16 @@
                             {{-- <select name="t_community_id" id="t_community_id" class="form-control select2" autofocus {{ !isset($users->t_community_id) && empty($users->t_community_id) ? 'disabled' : ''}}> --}}
                             <select name="t_community_id" id="t_community_id" class="form-control select2" autofocus >
                                 <option label="Choose one"></option>
-                            @foreach ($community as $com)
-                                <option value="{{ $com->id }}"
-                                    @if(old('t_community_id', isset($users) ? $users->t_community_id : '') == $com->id)
-                                        selected
-                                    @endif
-                                >
-                                    {{  $com->title }}
-                                </option>
-                            @endforeach
-                        </select>
+                                @foreach ($community as $com)
+                                    <option value="{{ $com->id }}"
+                                        @if(old('t_community_id', isset($users) ? $users->t_community_id : '') == $com->id)
+                                            selected
+                                        @endif
+                                    >
+                                        {{  $com->title }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         {{-- REGION --}}

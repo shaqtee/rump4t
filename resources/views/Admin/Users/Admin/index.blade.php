@@ -27,15 +27,29 @@
                                                 <select name="id" class="form-control select2" style="width: 100%" required autofocus>
                                                     <option label="Choose one"></option>
                                                     @foreach ($users as $usr)
-                                                        <option value="{{ $usr->id }}"
-                                                            @if(old('id', isset($users) ? $usr->id : '') == $usr->id)
-                                                                selected
-                                                            @endif
-                                                        >
+                                                        <option value="{{ $usr->id }}">
                                                             {{  $usr->name }}
                                                         </option>
                                                     @endforeach
                                                 </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="t_group_id">Role</label>
+                                                <select name="t_group_id" class="form-control" style="width: 100%" required autofocus>
+                                                    <option label="Choose Role"></option>
+                                                    <option value="1">ADMINISTRATOR</option>
+                                                    <option value="3">PENGURUS</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>&nbsp;
+                                                <div class="d-none loader-email spinner-border spinner-border-sm" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                                @error('email')
+                                                    <small style="color: red">{{ $message }}</small>
+                                                @enderror
+                                                <input type="email" name="email" class="form-control" id="email" aria-describedby="basic-addon3" placeholder="Member Email" readonly required>
                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn ripple btn-success" type="submit">Save</button>
@@ -81,6 +95,7 @@
                         <tr>
                             <th>No</th>
                             <th>Name</th>
+                            <th>Role</th>
                             <th>Image</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -94,7 +109,12 @@
                             <tr>
                                 <th scope="row">{{ $admin->firstItem() + $key }}</th>
                                 <td>{{ $adm->name }}</td>
+                                <td>{{ $adm->group->name ?? '' }}</td>
+                                @if(empty($adm->image))
+                                <td class="text-danger">{{ 'Empty' }}</td>
+                                @else
                                 <td><img class="img-thumbnail" src="{{ $adm->image }}" style="width: 100px; height: 100px; object-fit: cover;" alt="Profil User"></td>
+                                @endif
                                 <td>{{ $adm->email }}</td>
                                 <td>{{ $adm->phone }}</td>
                                 <td>{{ $adm->community->title ?? '-'}}</td>
@@ -104,6 +124,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="is_admin" value="0">
+                                        <input type="hidden" name="t_group_id" value="0">
                                         <button type="submit" class="btn btn-danger">Delete Admin</button>
                                     </form>
                                 </td>
