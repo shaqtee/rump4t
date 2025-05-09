@@ -69,8 +69,6 @@
 <script src="/Valex/html/assets/js/apexcharts.js"></script>
 <!-- custom js -->
 <script src="/Valex/html/assets/js/custom.js"></script>
-<script src="/Valex/html/assets/js/custom.js"></script>
-<script src="/Valex/html/assets/js/jquery.vmap.sampledata.js"></script>
 <script src="/Valex/html/assets/js/jquery.vmap.sampledata.js"></script>
 <!--Internal  Datepicker js -->
 <script src="/Valex/html/assets/plugins/jquery-ui/ui/widgets/datepicker.js"></script>
@@ -124,6 +122,26 @@
     });
 
     $(document).ready(function() {
+        $('select[name="id"]').on('change', function(){
+            let selected_id = $(this).find(':selected').val();
+            $('.loader-email').removeClass('d-none');
+            
+            $.post(
+                "{{ url('admin/users') }}"+"/"+selected_id,
+                {_token:"{{ csrf_token() }}"},
+                function(data){
+                    $('.loader-email').addClass('d-none');
+                    $('#email').val('');        
+                    if(!data.rsp.email){
+                        $('#email').attr('placeholder','User ini belum menyimpan email, isikan email ..')
+                            .prop('readonly', false).focus();
+                    }else{
+                        $('#email').val(data.rsp.email).prop('readonly', true);
+                    }
+                }
+            )
+        });
+
         $('#provinsi').on('change', function(){
             let id = $(this).val();
             let scope = 'province';
