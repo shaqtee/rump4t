@@ -564,8 +564,10 @@ class UserManageController extends Controller
         try{
             $datas = $request->validate([
                 'is_admin' => 'required',
+                't_group_id' => 'required',
+                'email' => 'required',
             ]);
-
+            
             $model = $this->model->findOrfail($request->id);
 
             $model->update($datas);
@@ -587,11 +589,13 @@ class UserManageController extends Controller
         try{
             $datas = $request->validate([
                 'is_admin' => 'required',
+                't_group_id' => 'required',
             ]);
 
             $model = $this->model->findOrfail($id);
-
-            $model->update($datas);
+            $model->is_admin = NULL;
+            $model->t_group_id = NULL;
+            $model->save();
             
             DB::commit();
             if(Auth::user()->id == $id && $datas['is_admin'] == 0) {
@@ -623,6 +627,16 @@ class UserManageController extends Controller
         return response()->json([
             "status" => "success",
             "rsp" => $lists,
+        ],200);
+    }
+
+    public function user_by_id($id)
+    {
+        $user = $this->model->where('id',$id)->first();
+        
+        return response()->json([
+            "status" => "success",
+            "rsp" => $user,
         ],200);
     }
 }
