@@ -69,7 +69,13 @@ class UserManageController extends Controller
             $data = [
                 'content' => 'Admin/Users/index',
                 'title' => 'Data User',
-                'users' => $this->model->with(['community:id,title', 'group:id,name', 'city:id,name'])->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
+                'users' => $this->model->with(['community:id,title', 'group:id,name', 'city:id,name'])
+                    ->where(function($q){
+                        if(auth()->user()->t_group_id == 3){
+                            $q->where('region', auth()->user()->region);
+                        }
+                    })
+                    ->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
                 'columns' => $this->model->columnsWeb(),
             ];
 
