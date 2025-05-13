@@ -15,8 +15,18 @@ class EventController extends Controller
      */
     public function index()
     {
-        // $events = \Modules\Event\App\Models\Events::all();
-        $events = \Modules\Event\App\Models\Events::paginate(10);   
+        $raw_user_id = User::select('id')->where('region', auth()->user()->region)->get()->toArray();
+        $arr_user_id = [];
+        foreach($raw_user_id as $aui){
+            $arr_user_id[] = $aui['id'];
+        }
+
+        if(auth()->user()->t_group_id == 3){
+            $events = \Modules\Event\App\Models\Events::whereIn('created_by', $arr_user_id)
+                ->paginate(10);   
+        }else{
+            $events = \Modules\Event\App\Models\Events::paginate(10);   
+        }
         return view('event::index' , compact('events'));    
     }
 
