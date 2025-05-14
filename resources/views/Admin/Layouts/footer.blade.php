@@ -380,6 +380,20 @@
     //     });
     // });
 	$(document).ready(function() {
+        $('#bday_auto').on('change', function(){
+            console.log('checkbox',this.checked)
+            let is_active = this.checked ? 1:0;
+            $('.loader-bday-auto').removeClass('d-none');
+            $.post(
+                "{{ url('admin/masters/banner-slide/activate/birthday') }}",
+                {_token:"{{ csrf_token() }}", is_active},
+                function(data){
+                    $('.loader-bday-auto').addClass('d-none');
+                }
+            )
+            
+        });
+
         function updateTees() {
             const selectedGolfCourse = $('#m_golf_course_id').find(':selected');
             const teeData = selectedGolfCourse.data('tee');

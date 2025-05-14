@@ -283,6 +283,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('delete/{golf_course_id}/hole', [MasterGolfCourseController::class, 'delete_hole'])->name('golf-course.hole.delete');
             Route::resources(['golf-course' => MasterGolfCourseController::class]);
             Route::resources(['banner-slide' => MasterBannerSlideController::class]);
+            Route::post('banner-slide/activate/{desc}', [MasterBannerSlideController::class, 'activate']);
             Route::resources(['winner-category' => MasterWinnerCategoryController::class]);
             Route::resources(['rules-score' => MasterRulesScoreController::class]);
         });
