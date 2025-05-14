@@ -8,6 +8,22 @@
                 <div class="col-auto">
                     <a href="{{ route('banner-slide.create') }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
                 </div>
+                <div class="col-auto">
+                    <div>
+                        <label><b>Automation</b></label>&nbsp;&nbsp;
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" name="bday_auto" class="custom-control-input" id="bday_auto" {{ $bday_auto->is_active == 1 ? 'checked':'' }}>
+                            <label class="custom-control-label" for="bday_auto">
+                                <div class="d-flex align-items-center">
+                                    Birthday&nbsp;
+                                    <div class="d-none loader-bday-auto spinner-border spinner-border-sm" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -41,7 +57,7 @@
                             <th>No</th>
                             <th>Name</th>
                             <th>Image</th>
-                            <th>Status View</th>
+                            <th>Status</th>
                             <th colspan="2">Action</th>
                         </tr>
                     </thead>
@@ -50,18 +66,32 @@
                             <tr>
                                 <th scope="row">{{ $bannerSlide->firstItem() + $key }}</th>
                                 <td>{{ $bs->name }}</td>
-                                <td><img  class="img-thumbnail" src="{{ $bs->image }}" style="width: 100px; height: 100px; object-fit: fill;" alt=""></td>
-                                <td>{{ ($bs->on_view == true) ? 'On View' : 'Off View' }}</td>
-                                <td>
-                                    <a class="btn btn-info" href="{{ route('banner-slide.edit', ['banner_slide' => $bs->id]) }}">EDIT</a>
-                                </td>
-                                <td>   
-                                    <form action="{{ route('banner-slide.destroy', ['banner_slide' => $bs->id]) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">DELETE</button>
-                                    </form>
-                                </td>
+                                <td><img  class="img-thumbnail" src="{{ $bs->image }}" style="width: 100px; height: 100px; object-fit: cover;" alt=""></td>
+                                @if(!empty($bs->flag_auto))
+                                    <td class="text-primary">Auto</td>
+                                @else
+                                    <td>{{ ($bs->on_view == true) ? 'On View' : 'Off View' }}</td>
+                                @endif
+
+                                @if(!empty($bs->flag_auto))
+                                    <td class="text-primary">Auto</td>
+                                @else
+                                    <td>
+                                        <a class="btn btn-info" href="{{ route('banner-slide.edit', ['banner_slide' => $bs->id]) }}">EDIT</a>
+                                    </td>
+                                @endif
+
+                                @if(!empty($bs->flag_auto))
+                                    <td class="text-primary">Auto</td>
+                                @else
+                                    <td>   
+                                        <form action="{{ route('banner-slide.destroy', ['banner_slide' => $bs->id]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">DELETE</button>
+                                        </form>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
