@@ -15,7 +15,7 @@
               <div id="owl-demo" class="owl-carousel owl-theme bg-primary shadow-lg border border-2 border-white" style="width:400px;height:250px;">
                 @foreach ( $banner_slide as $bs )
                 <div class="item d-flex justify-content-center">
-                  <img src="{{ $bs['image'] }}" alt="{{ $bs['name'].' image' }}" style="object-fit:cover;width:400px;height:250px;">
+                  <img src="{{ $bs['image'] }}" alt="{{ $bs['name'].' image' }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" style="object-fit:cover;width:400px;height:250px;">
                 </div>
                 @endforeach
               </div>
