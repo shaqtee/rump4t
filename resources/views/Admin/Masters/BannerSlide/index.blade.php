@@ -66,7 +66,7 @@
                             <tr>
                                 <th scope="row">{{ $bannerSlide->firstItem() + $key }}</th>
                                 <td>{{ $bs->name }}</td>
-                                <td><img  class="img-thumbnail" src="{{ $bs->image }}" style="width: 100px; height: 100px; object-fit: cover;" alt=""></td>
+                                <td><img  class="img-thumbnail" src="{{ $bs->image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" style="width: 100px; height: 100px; object-fit: cover;" alt=""></td>
                                 @if(!empty($bs->flag_auto))
                                     <td class="text-primary">Auto</td>
                                 @else
