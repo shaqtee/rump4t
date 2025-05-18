@@ -40,7 +40,7 @@ class MasterBannerSlideController extends Controller
             $page = $request->size ?? 10;
             $data = [
                 'content' => 'Admin/Masters/BannerSlide/index',
-                'title' => 'Data Golf Course',
+                'title' => 'Data Kegiatan',
                 'bannerSlide' => $this->model->filter($request)->paginate($page)->appends($request->all()),
                 'columns' => $this->model->columnsWeb(),
                 'bday_auto' => $bday_auto,

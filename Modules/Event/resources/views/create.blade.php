@@ -36,7 +36,7 @@
                     <input type="text" class="form-control" id="location" name="location" required>
                 </div>
                 <div class="form-group">
-                    <label for="description">Deskkripsi:</label>
+                    <label for="description">Deskripsi:</label>
                     <textarea class="form-control" id="description" name="description" rows="4"></textarea>
                 </div>
                 <!-- // biaya -->
