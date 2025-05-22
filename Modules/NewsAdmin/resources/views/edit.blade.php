@@ -22,6 +22,9 @@
                     <label for="region">Region</label>
                     <select name="region_id" id="region" class="form-control" required>
                         <option value="">Global</option>
+                        {{-- no region   --}}
+                
+                            <option value="" selected>Global</option>
                         @foreach ($regions as $region)
                             <option value="{{ $region->id }}" {{ old('region_id', $news->region_id) == $region->id ? 'selected' : '' }}>
                                 {{ $region->value }}
@@ -42,6 +45,14 @@
                         <option value="published" {{ old('status', $news->status) == 'published' ? 'selected' : '' }}>Published</option>
                     </select>
                 </div> --}}
+                   {{-- dropdown featured true or false  --}}
+                <div class="form-group">
+                    <label for="featured">Featured</label>
+                    <select name="featured" id="featured" class="form-control">
+                        <option value="0" {{ old('featured', $news->featured) == 0 ? 'selected' : '' }}>No</option>
+                        <option value="1" {{ old('featured', $news->featured) == 1 ? 'selected' : '' }}>Yes</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label for="image">Unggah File yang ingin diubah (Jika ada)</label>

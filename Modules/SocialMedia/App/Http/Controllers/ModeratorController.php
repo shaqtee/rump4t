@@ -3,6 +3,7 @@
 namespace Modules\SocialMedia\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,7 +19,19 @@ class ModeratorController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy("created_at" , "desc")->withTrashed() ->paginate(6);
+        $raw_user_id = User::select('id')->where('region', auth()->user()->region)->get()->toArray();
+        $arr_user_id = [];
+        foreach($raw_user_id as $aui){
+            $arr_user_id[] = $aui['id'];
+        }
+        
+        if(auth()->user()->t_group_id == 3){
+            $posts = Post::whereIn('id_user', $arr_user_id)
+                ->orderBy("created_at" , "desc")->withTrashed() ->paginate(6);
+        }else{
+            $posts = Post::orderBy("created_at" , "desc")->withTrashed() ->paginate(6);
+        }
+
         return view('socialmedia.moderations::index' , compact('posts'));
     }
 
@@ -61,7 +74,7 @@ class ModeratorController extends Controller
 
     public function comments($id)
     {
-        $post = Post::find($id);
+        $post = Post::withTrashed()->find($id);
         $comments = DetailPost::where('id_post', $id)->where("parent_id" , null)->get();
         return view('socialmedia.moderations::comment' , compact('post' , "comments"));
     }
@@ -288,6 +301,15 @@ class ModeratorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $post = Post::find($id);
+            $post->delete();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to delete post: ' . $e->getMessage());
+        }
+        DB::commit();
+        return redirect()->route('socialmedia.moderation.index')->with('success', 'Post deleted successfully.');
     }
 }

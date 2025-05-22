@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Modules\Masters\App\Models\MasterCity;
+use Modules\Masters\App\Models\MasterVillage;
+use Modules\Masters\App\Models\MasterDistrict;
+use Modules\Masters\App\Models\MasterRegency;
+use Modules\Masters\App\Models\MasterProvince;
+use Modules\Masters\App\Models\MasterReferences;
 use Illuminate\Validation\ValidationException;
 use Modules\Community\App\Models\Community;
 use Modules\Community\App\Models\MembersCommonity;
@@ -28,11 +33,16 @@ class UserManageController extends Controller
     protected $web;
     protected $config;
     protected $city;
+    protected $village;
+    protected $district;
+    protected $regency;
+    protected $province;
+    protected $references;
     protected $sh;
     protected $community;
     protected $memberComm;
 
-    public function __construct(User $model, Helper $helper, Handler $handler, WebRedirect $web, MasterConfiguration $config, MasterCity $city, ScoreHandicap $sh, Community $community, MembersCommonity $memberComm)
+    public function __construct(User $model, Helper $helper, Handler $handler, WebRedirect $web, MasterConfiguration $config, MasterCity $city, MasterVillage $village, MasterDistrict $district, MasterRegency $regency, MasterProvince $province, MasterReferences $references, ScoreHandicap $sh, Community $community, MembersCommonity $memberComm)
     {
         $this->model = $model;
         $this->helper = $helper;
@@ -40,6 +50,11 @@ class UserManageController extends Controller
         $this->web = $web;
         $this->config = $config;
         $this->city = $city;
+        $this->village = $village;
+        $this->district = $district;
+        $this->regency = $regency;
+        $this->province = $province;
+        $this->references = $references;
         $this->sh = $sh;
         $this->community = $community;
         $this->memberComm = $memberComm;
@@ -54,7 +69,13 @@ class UserManageController extends Controller
             $data = [
                 'content' => 'Admin/Users/index',
                 'title' => 'Data User',
-                'users' => $this->model->with(['community:id,title', 'group:id,name', 'city:id,name'])->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
+                'users' => $this->model->with(['community:id,title', 'group:id,name', 'city:id,name'])
+                    ->where(function($q){
+                        if(auth()->user()->t_group_id == 3){
+                            $q->where('region', auth()->user()->region);
+                        }
+                    })
+                    ->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
                 'columns' => $this->model->columnsWeb(),
             ];
 
@@ -64,12 +85,37 @@ class UserManageController extends Controller
             return $this->handler->handleExceptionWeb($e);
         }
     }
+    public function reset_password(Request $request, string $id)
+    {
+        DB::beginTransaction();
+        try{
+  
+
+            $model = $this->model->findOrfail($id);
+
+            $model->update([
+                'password' => "rump4t123",
+                "reset_request" => false,
+            ]);
+
+            DB::commit();
+            return $this->web->update('users.semua');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            if($e instanceof ValidationException){
+                return $this->web->error_validation($e);
+            }
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
     {
+        // dd($this->references->where('parameter', 'm_region')->get());
+        // dd($this->community->get());
         try{
             $now = Carbon::now()->year;
             $yearAgo = 100;
@@ -81,12 +127,20 @@ class UserManageController extends Controller
 
             $data = [
                 'content' => 'Admin/Users/addEdit',
-                'title' => 'Create Data User',
+                'title' => 'Registrasi Data Anggota',
                 'users' => null,
                 'community' => $this->community->get(),
                 'faculty' => $this->config->where('parameter', 'm_faculty')->get(),
                 'years' => $dataYears,
                 'city' => $this->city->get(),
+                'villages' => $this->village->get(),
+                'districts' => $this->district->get(),
+                'regencies' => $this->regency->get(),
+                'provinces' => $this->province->get(),
+                'regions' => $this->references->where('parameter', 'm_region')->get(),
+                'retirement_type' => $this->references->where('parameter', 'm_retirement_type')->get(),
+                'last_employee_status' => $this->references->where('parameter', 'm_last_employee_status')->get(),
+                'shirt_size' => $this->references->where('parameter', 'm_shirt_size')->get(),
             ];
 
             return view('Admin.Layouts.wrapper', $data);
@@ -105,46 +159,92 @@ class UserManageController extends Controller
         try{
             $datas = $request->validate([
                 'name' => 'required|string',
-                'nickname' => 'required|string',
-                'image' => 'required|image|file|max:2048|mimes:jpeg,png,jpg',
+                'nickname' => 'nullable|string',
+                'image' => 'nullable|image|file|max:2048|mimes:jpeg,png,jpg',
                 'email' => [
-                    'required',
+                    'nullable',
+                    // 'required',
                     'email',
-                    Rule::unique('users')->ignore($request->user()->id),
+                    Rule::unique('users'),
                 ],
                 'phone' => [
                     'required',
                     'string',
-                    Rule::unique('users')->ignore($request->user()->id),
+                    Rule::unique('users'),
                 ],
-                'gender' => 'required|in:L,P',
-                'birth_date' => 'required',
-                // 'hcp_index' => 'required|numeric',
-                'faculty' => 'required|string',
-                'batch' => 'required',
-                'office_name' => 'required|string',
-                'address' => 'required|string',
-                't_city_id' => 'required',
-                'business_sector' => 'required|string',
-                'position' => 'required|string',
+                'gender' => 'nullable|in:L,P',
+                'birth_place' => 'nullable|string',
+                'birth_date' => 'nullable',
+                'age' => 'nullable|numeric',
+                'address' => 'nullable|string',
+                'desa_kelurahan' => 'nullable',
+                'kecamatan' => 'nullable',
+                'kota_kabupaten' => 'nullable',
+                'provinsi' => 'nullable',
+                'region' => 'required|numeric',
+                'postal_code' => 'nullable|numeric',
+                'year_of_entry' => 'nullable|numeric',
+                'year_of_retirement' => 'nullable|numeric',
+                'retirement_type' => 'nullable|numeric',
+                'last_employee_status' => 'nullable|numeric',
+                'position' => 'nullable|string',
+                'last_division' => 'nullable|string',
+                'spouse_name' => 'nullable|string',
+                'shirt_size' => 'nullable|numeric',
+                'notes' => 'nullable|string',
+                'ec_name' => 'nullable|string',
+                'ec_kinship' => 'nullable|string',
+                'ec_contact' => 'nullable|string',
+                't_community_id' => 'nullable',
+                'pass_away_status' => 'nullable',
+                'status_anggota' => 'required|in:1,2',
                 'active' => 'required|in:1,0',
             ]);
-
-            $folder = "dgolf/user-profile";
+            
+            $folder = "rump4t/user-profile";
             $column = "image";
 
+            $datas['pass_away_status'] = empty($datas['pass_away_status']) ? false : true;
+            $datas['status_anggota'] = empty($datas['status_anggota']) ? 1 : $datas['status_anggota'];
             $datas['flag_done_profile'] = '1';
             $datas['email_verified_at'] = now();
             $datas['phone_verified_at'] = now();
             $datas['password'] = bcrypt(123123);
-
+            // dd($datas);
             $model = $this->model->create($datas);
 
             $this->helper->uploads($folder, $model, $column);
 
+            /* create memberComm */
+            $createMember = [
+                't_user_id' => $model->id,
+                't_community_id' => $datas['t_community_id'],
+                'active' => 1,
+            ];
+            
+            /* nomor anggota */
+            $region = $this->references->where('id', $model->region)->first();
+            $digits = abs((int)$model->id);
+            $nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$region->code.'-'.$model->status_anggota;
+
+            if(!empty($datas['t_community_id'])){
+                /* join community */
+                $updateUser = [
+                    'flag_community' => 'JOINED',
+                    'nomor_anggota' => $nomor_anggota,
+                ];
+                
+                $model->update($updateUser);
+                $this->memberComm->create($createMember);
+            }else{
+                $updateUser = ['nomor_anggota' => $nomor_anggota];
+                $model->update($updateUser);
+            }
+
             DB::commit();
             return $this->web->store('users.semua');
         } catch (\Throwable $e) {
+            report($e);
             DB::rollBack();
             if($e instanceof ValidationException){
                 return $this->web->error_validation($e);
@@ -159,10 +259,15 @@ class UserManageController extends Controller
     public function show(string $id)
     {
         try{
+            $users = $this->model->with(['city:id,name'])->findOrfail($id);
             $data = [
                 'content' => 'Admin/Users/show',
-                'title' => 'Update Data User',
-                'users' => $this->model->with(['city:id,name'])->findOrfail($id),
+                'title' => 'Show Data User',
+                'users' => $users,
+                'region' => $this->references->where('id', $users->region)->first(),
+                'retirement_type' => $this->references->where('id', $users->retirement_type)->first(),
+                'last_employee_status' => $this->references->where('id', $users->last_employee_status)->first(),
+                'shirt_size' => $this->references->where('id', $users->shirt_size)->first()
             ];
 
             return view('Admin.Layouts.wrapper', $data);
@@ -193,6 +298,14 @@ class UserManageController extends Controller
                 'faculty' => $this->config->where('parameter', 'm_faculty')->get(),
                 'years' => $dataYears,
                 'city' => $this->city->get(),
+                'villages' => $this->village->get(),
+                'districts' => $this->district->get(),
+                'regencies' => $this->regency->get(),
+                'provinces' => $this->province->get(),
+                'regions' => $this->references->where('parameter', 'm_region')->get(),
+                'retirement_type' => $this->references->where('parameter', 'm_retirement_type')->get(),
+                'last_employee_status' => $this->references->where('parameter', 'm_last_employee_status')->get(),
+                'shirt_size' => $this->references->where('parameter', 'm_shirt_size')->get(),
             ];
 
             return view('Admin.Layouts.wrapper', $data);
@@ -208,47 +321,81 @@ class UserManageController extends Controller
     {
         DB::beginTransaction();
         try{
+            $model = $this->model->findOrfail($id);
+            
             $datas = $request->validate([
                 'name' => 'required|string',
-                'nickname' => 'required|string',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg',
-                // 'email' => [
-                //     'required',
-                //     'email',
-                //     Rule::unique('users')->ignore($request->user()->id),
-                // ],
-                // 'phone' => [
-                //     'required',
-                //     'string',
-                //     Rule::unique('users')->ignore($request->user()->id),
-                // ],
+                'nickname' => 'nullable|string',
+                'image' => 'nullable|image|file|max:2048|mimes:jpeg,png,jpg',
+                'email' => [
+                    'nullable',
+                    // 'required',
+                    'email',
+                    Rule::unique('users')->ignore($model->id),
+                ],
+                'phone' => [
+                    'required',
+                    'string',
+                    Rule::unique('users')->ignore($model->id),
+                ],
                 'gender' => 'nullable|in:L,P',
-                'birth_date' => 'required',
-                // 'hcp_index' => 'required|numeric',
-                'faculty' => 'nullable|string',
-                'batch' => 'nullable',
-                'office_name' => 'required|string',
-                'address' => 'required|string',
-                't_city_id' => 'nullable',
-                'business_sector' => 'required|string',
-                'position' => 'required|string',
+                'birth_place' => 'nullable|string',
+                'birth_date' => 'nullable',
+                'age' => 'nullable|numeric',
+                'address' => 'nullable|string',
+                'desa_kelurahan' => 'nullable',
+                'kecamatan' => 'nullable',
+                'kota_kabupaten' => 'nullable',
+                'provinsi' => 'nullable',
+                'region' => 'required|numeric',
+                'postal_code' => 'nullable|numeric',
+                'year_of_entry' => 'nullable|numeric',
+                'year_of_retirement' => 'nullable|numeric',
+                'retirement_type' => 'nullable|numeric',
+                'last_employee_status' => 'nullable|numeric',
+                'position' => 'nullable|string',
+                'last_division' => 'nullable|string',
+                'spouse_name' => 'nullable|string',
+                'shirt_size' => 'nullable|numeric',
+                'notes' => 'nullable|string',
+                'ec_name' => 'nullable|string',
+                'ec_kinship' => 'nullable|string',
+                'ec_contact' => 'nullable|string',
                 't_community_id' => 'nullable',
-                'active' => 'nullable|in:1,0',
+                'pass_away_status' => 'nullable',
+                'status_anggota' => 'required|in:1,2',
+                'active' => 'required|in:1,0',
             ]);
-            
-            $folder = "dgolf/user-profile";
+            // dd($datas);
+            $folder = "rump4t/user-profile";
             $column = "image";
-
-            $model = $this->model->findOrfail($id);
+            
             if (!empty($model->t_community_id) && !empty($datas['t_community_id'])) {
                 $modelMember = $this->memberComm->where('t_user_id', $model->id)->where('t_community_id', $model->t_community_id)->first();
-    
-                $modelMember->update([
-                    't_community_id' => $datas['t_community_id'],
-                ]);
+
+                /* change community */
+                if( !empty($modelMember) ){
+                    $modelMember->update([
+                        't_community_id' => $datas['t_community_id'],
+                    ]);
+                }else{
+                    /* user not registered comm but have t_community_id */
+                    $createMember = [
+                        't_user_id' => $id,
+                        't_community_id' => $datas['t_community_id'],
+                        'active' => 1,
+                    ];
+                    $updateUser = [
+                        'flag_community' => 'JOINED',
+                    ];
+                    $model->update($updateUser);
+                    $modelMember = $this->memberComm->create($createMember);
+                }
             }
             
+            /* haven't join at all */
             if (!empty($datas['t_community_id']) && !isset($model->t_community_id)) {
+                
                 $createMember = [
                     't_user_id' => $id,
                     't_community_id' => $datas['t_community_id'],
@@ -261,6 +408,11 @@ class UserManageController extends Controller
                 $modelMember = $this->memberComm->create($createMember);
             }
 
+            $region = $this->references->where('id', $datas['region'])->first();
+            $digits = abs((int)$model->id);
+            $nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$region->code.'-'.$datas['status_anggota'];
+
+            $datas['nomor_anggota'] = $nomor_anggota;
             $model->update($datas);
 
             $this->helper->uploads($folder, $model, $column);
@@ -418,8 +570,10 @@ class UserManageController extends Controller
         try{
             $datas = $request->validate([
                 'is_admin' => 'required',
+                't_group_id' => 'required',
+                'email' => 'required',
             ]);
-
+            
             $model = $this->model->findOrfail($request->id);
 
             $model->update($datas);
@@ -441,11 +595,13 @@ class UserManageController extends Controller
         try{
             $datas = $request->validate([
                 'is_admin' => 'required',
+                't_group_id' => 'required',
             ]);
 
             $model = $this->model->findOrfail($id);
-
-            $model->update($datas);
+            $model->is_admin = NULL;
+            $model->t_group_id = NULL;
+            $model->save();
             
             DB::commit();
             if(Auth::user()->id == $id && $datas['is_admin'] == 0) {
@@ -460,5 +616,33 @@ class UserManageController extends Controller
             }
             return $this->handler->handleExceptionWeb($e);
         }
+    }
+
+    public function delete_soft($id)
+    {
+        $user = $this->model->find($id);
+        $user->delete();
+
+        return redirect('/admin/users/index');
+    }
+
+    public function lists(Request $request, $scope)
+    {
+        $data = $request->all();
+        $lists = $this->$scope->with($data['relation'])->where('id', $data['id'])->first();
+        return response()->json([
+            "status" => "success",
+            "rsp" => $lists,
+        ],200);
+    }
+
+    public function user_by_id($id)
+    {
+        $user = $this->model->where('id',$id)->first();
+        
+        return response()->json([
+            "status" => "success",
+            "rsp" => $user,
+        ],200);
     }
 }

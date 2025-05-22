@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 namespace App\Http\Controllers;
 
+use Hash;
 use App\Models\User;
 use App\Exceptions\Handler;
 use Illuminate\Http\Request;
@@ -109,6 +110,18 @@ class AuthWebController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
+        
+        // jika menggunakan phone atau nomor anggota aktifkan ini
+        // $user = User::where('nomor_anggota', $credentials['email'])
+        //                 ->orWhere('phone', $credentials['email'])
+        //                 ->first();
+
+        // $authenticate = ($user && Hash::check($request->password, $user->password)) ?? '';
+        
+        // if($authenticate){
+        //     $credentials['email'] = $user->email;
+        // }
+        // end.
 
         if (!Auth::attempt($credentials)) {
             return back()->withErrors([

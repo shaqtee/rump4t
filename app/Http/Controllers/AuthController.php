@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Models\Otp;
 use App\Models\User;
 use App\Mail\LoginMail;
+use Exception;
+use Hash;
 use Twilio\Rest\Client;
 use App\Mail\GreetingMail;
 use App\Mail\ResendOtpMail;
@@ -28,6 +30,7 @@ use Modules\Community\App\Models\MembersCommonity;
 use Modules\Masters\App\Models\MasterConfiguration;
 use Modules\Masters\App\Models\MasterReferences;
 use Modules\Masters\App\Models\MasterCity;
+use Modules\Masters\App\Models\MasterRegency;
 use Modules\MyGames\App\Models\MemberLetsPlay;
 use Modules\Performace\App\Http\Controllers\PerformaceController;
 use Modules\ScoreHandicap\App\Models\ScoreHandicap;
@@ -45,8 +48,9 @@ class AuthController extends Controller
     protected $performanceController;
     protected $references;
     protected $city;
+    protected $regency;
 
-    public function __construct(User $model, ApiResponse $api, Helper $helper, UserInterface $interface, MasterConfiguration $config, CompanyProfile $companyProfile, Community $community, MembersCommonity $memberCommunity, PerformaceController $performanceController, MasterReferences $references, MasterCity $city)
+    public function __construct(User $model, ApiResponse $api, Helper $helper, UserInterface $interface, MasterConfiguration $config, CompanyProfile $companyProfile, Community $community, MembersCommonity $memberCommunity, PerformaceController $performanceController, MasterReferences $references, MasterCity $city, MasterRegency $regency)
     {
         $this->model = $model;
         $this->api = $api;
@@ -59,6 +63,7 @@ class AuthController extends Controller
         $this->performanceController = $performanceController;
         $this->references = $references;
         $this->city = $city;
+        $this->regency = $regency;
     }
 
     //register
@@ -95,6 +100,7 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
             $datas = $request->validated();
+
             
             $userCheck = $this->model->where('phone', $request->phone)->first();
 
@@ -106,8 +112,19 @@ class AuthController extends Controller
                 return  $this->api->error("Phone Number Has Already Been Registered");
             }
 
-            // return response()->json($datas);
+            // if numbers starts with 0. change to 62
+            if(substr($request->phone, 0, 1) == '0'){
+                $datas['phone'] = '62'.substr($request->phone, 1);
+            }
+            
+            $datas['active'] = 1;
             $newUser = $this->model->create($datas);
+            $region = $this->references->where('id', $request->region)->first();
+            
+            $digits = abs((int)$newUser->id);
+            $newUser->nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$region->code.'-1';
+            $newUser->eula_accepted = $request->eula_accepted ;
+            $newUser->save();
 
             DB::commit();
             return $this->api->success($newUser, "Successfully Registration");
@@ -340,9 +357,18 @@ class AuthController extends Controller
             $datas = $this->helper->removeNullValues($datas);
             $dataUser = $this->model->find($id);
 
-            if(!empty($datas['t_city_id'])){
-                $datas = array_merge($request->all(), ['kota_kabupaten' => $dataUser->city->code]);
+            if(!empty($datas['year_of_entry'])){
+                $datas['year_of_entry'] = (int) $datas['year_of_entry'];
             }
+
+            if(!empty($datas['year_of_retirement'])){
+                $datas['year_of_retirement'] = (int) $datas['year_of_retirement'];
+            }
+
+            // if(!empty($datas['t_city_id'])){
+            //     $city_code = ($this->city->where('id', $datas['t_city_id'])->first())->code;
+            //     $datas = array_merge($request->all(), ['kota_kabupaten' => $city_code]);
+            // }
 
             if(!empty($datas['birth_date'])){
                 $birthDate = explode("-", $datas['birth_date']);
@@ -865,11 +891,10 @@ class AuthController extends Controller
             $user = User::with(['community', 'membersCommonity', 'city'])->find($id);
             $member = MembersCommonity::where('t_user_id', $user->id)->first();
             $region = $this->references
-                ->where('parameter', 'm_area')
-                ->orWhere('parameter', 'm_region')
+                ->where('parameter', 'm_region')
                 ->where('id', $user->region)
                 ->get();
-
+            
             $performa = $this->performanceController->box()->getData();
             $hcpIndex = $performa->data->handicapIndex;
             $dataCompany = $this->companyProfile->first();
@@ -879,36 +904,39 @@ class AuthController extends Controller
                     "id" => $user->id,
                     "player_id" => $user->player_id,
                     "name" => $user->name,
-                    // "nickname" => $user->nickname,
                     "email" => $user->email,
                     "phone" => $user->phone,
                     "gender" => $user->gender,
                     "birth_date" => $user->birth_date,
+                    "address" => $user->address,
+                    "position" => $user->position,
+                    "image" => $user->image,
+                    "t_city_id" => $user->city->id ?? null,
+                    "city" => $user->city->name ?? null,
+                    "t_community_id" => $user->community->id ?? null,
+                    "community" => $user->community->title ?? null,
+                    "member_since" => Carbon::parse($user->created_at)->format('d/m/Y'),
+                    
+                    "url_barcode" => url('/rump4t/profile-user/' . $this->helper->encryptDecrypt($id)),
+                    // "nickname" => $user->nickname ?? null,
                     // "hcp_index" => $user->hcp_index,
                     // "faculty" => $user->faculty,
                     // "batch" => $user->batch,
                     // "office_name" => $user->office_name,
-                    "address" => $user->address,
                     // "business_sector" => $user->business_sector,
-                    "position" => $user->position,
-                    "image" => $user->image,
                     // "fcm_token" => $user->fcm_token,
-                    "t_city_id" => $user->city->id ?? null,
-                    "city" => $user->city->name ?? null,
                     // "flag_community" => $user->flag_community,
-                    "t_community_id" => $user->community->id ?? null,
-                    "community" => $user->community->title ?? null,
-                    "member_since" => Carbon::parse($user->created_at)->format('d/m/Y'),
                     // "handicap_index" => $hcpIndex,
                     "url_barcode" => url('/rump4t/profile-user/' . $this->helper->encryptDecrypt($id)),
+                    "eula_accepted" => $user->eula_accepted,
 
                     "birth_place" => $user->birth_place,
                     "age" => $user->age,
-                    "desa_kelurahan" => $user->desa_kelurahan,
-                    "kecamatan" => $user->kecamatan,
-                    "kota_kabupaten" => $user->city->code ?? null,
+                    "desa_kelurahan" => $user->village->name ?? null,
+                    "kecamatan" => $user->district->name ?? null,
+                    "kota_kabupaten" => $user->regency->name ?? null,
                     "postal_code" => $user->postal_code,
-                    "provinsi" => $user->provinsi,
+                    "provinsi" => $user->province->name ?? null,
                     "year_of_entry" => $user->year_of_entry,
                     "year_of_retirement" => $user->year_of_retirement,
                     "retirement_type" => $user->retirement_type,
@@ -918,8 +946,11 @@ class AuthController extends Controller
                     "shirt_size" => $user->shirt_size,
                     "notes" => $user->notes,
                     "ec_name" => $user->ec_name,
-                    "ec_kinship" => $user->kinship,
+                    "ec_kinship" => $user->ec_kinship,
+                    "ec_contact" => $user->ec_contact,
                     "region" => $region,
+                    "status_anggota" => $user->status_anggota,
+                    "nomor_anggota" => $user->nomor_anggota,
                 ],
                 'our_contact' => [
                     "id" => $dataCompany->id,
@@ -1218,6 +1249,7 @@ class AuthController extends Controller
 
             DB::commit();
             return $this->api->success($user, "Successfully Allow Notified!");
+    
         } catch(\Throwable $e){
             DB::rollBack();
             if (config('envconfig.app_debug')) {
@@ -1250,6 +1282,7 @@ class AuthController extends Controller
         }
     }
 
+
     public function list_region()
     {
         $list_region = $this->references
@@ -1273,12 +1306,33 @@ class AuthController extends Controller
         
         DB::beginTransaction();
         try {
-
-            $credentials = $request->only('email', 'password');
             
-            if (!Auth::attempt($credentials)) {
-                return response()->json(['message' => 'Unauthorized'], 401);
+
+         
+            
+            $request->validate([
+                'identifier' => 'required|string', // bisa phone atau nomor_anggota
+                'password' => 'required|string',
+            ]);
+        
+            // Cari user berdasarkan nomor_anggota atau phone
+            $user = User::where('nomor_anggota', $request->identifier)
+                        ->orWhere('phone', $request->identifier)
+                        ->first();
+        
+            if ($user && Hash::check($request->password, $user->password)) {
+                if($user->active == 1){
+                    Auth::login($user);
+                }else{
+                    return $this->api->error('User Inactive');
+                }
+            }else{
+                return $this->api->error('Invalid Credentials');
             }
+
+
+
+
             
             $user = Auth::user();
 
@@ -1292,6 +1346,9 @@ class AuthController extends Controller
                     "phone" => $user->phone ?? null,
                     "region" => $user->region ?? null,
                     "remember_token" => $user->remember_token ?? null,
+                    "image" => $user->image ?? null,
+                    "eula_accepted" => $user->eula_accepted,
+                    "nomor_anggota" => $user->nomor_anggota ?? null,
                 ]
             ];
 
@@ -1300,12 +1357,65 @@ class AuthController extends Controller
         } catch(\Throwable $e) {
             DB::rollBack();
             if (config('envconfig.app_debug')) {
-                return $this->api->error_code($e->getMessage(), $e->getCode());
+                return $this->api->error_code($e->getMessage() . " ". $e->getFile().":".$e->getLine(), $e->getCode());
             } else {
                 return $this->api->error_code_log("Internal Server Error", $e->getMessage());
             };
         }
     }
+
+
+    public function user_reset_password(Request $request) {
+        try {
+            $user = User::where('email', $request->identifier)->orWhere("phone" , $request->identifier)->orWhere("nomor_anggota" , $request->identifier)->first();
+            if(!$user){
+                return $this->api->error("User Not Found!");
+            }
+            DB::beginTransaction();
+            // update reset_request to true
+            $user->update([
+                "reset_request" => true
+            ]);
+
+
+    }catch (\Exception $err) {
+        DB::rollBack();
+        return $this->api->error($err->getMessage());
+
+    }
+    DB::commit();
+}
+
+public function accept_eula (Request $req) { 
+    try {
+        DB::beginTransaction();
+        // updating current table data
+        $user = User::where("id" ,  "=" , Auth::user()->id) ; 
+        $user->update(["eula_accepted" => true]);
+    }catch(Exception $e) {
+        DB::rollBack();
+        return $this->api->error(message: $e->getMessage());
+    }
+    DB::commit();
+        return $this->api->success($user, "success");
+    
+}
+
+public function user_reset_request(Request $request) {
+    $user = User::where('email', $request->identifier)->orWhere("phone" , $request->identifier)->orWhere("nomor_anggota" , $request->identifier)->first();
+    DB::beginTransaction();
+    try {
+        $user->update([
+                "reset_request" => true
+        ]);
+    }catch (\Exception $err) {
+        DB::rollBack();
+        return $this->api->error($err->getMessage());
+
+    }
+    DB::commit();
+    return $this->api->success($user, "Success Request Reset Password");
+}
 
     public function delete_account(Request $request){
         DB::beginTransaction();
@@ -1401,13 +1511,13 @@ class AuthController extends Controller
 
     public function total_member()
     {
-        $count_member = count($this->model->where('t_group_id', NULL)->get());
+        $count_member = count($this->model->where("status_anggota" , 1)->get());
         return $this->api->success($count_member, "success");
     }
 
     public function total_member_khusus()
     {
-        $count_member_khusus = count($this->model->where('t_group_id', 1)->get());
+        $count_member_khusus = count($this->model->where('status_anggota',2)->get());
         return $this->api->success($count_member_khusus, "success");
     }
 
@@ -1449,6 +1559,7 @@ class AuthController extends Controller
         return $this->api->success($users, "success");
     }
 
+    /* kota: old version */
     public function search_by_city($name)
     {
         $cities = $this->city->where('name', 'ILIKE', '%'.$name.'%')->get();
@@ -1456,9 +1567,25 @@ class AuthController extends Controller
         return $this->api->success($cities, "success");
     }
 
+    
     public function selected_city($id)
     {
         $users = $this->model->where('t_city_id', $id)->get();
+        
+        return $this->api->success($users, "success");
+    }
+
+    /* kota: new version */
+    public function search_by_regency($name)
+    {
+        $cities = $this->regency->where('name', 'ILIKE', '%'.$name.'%')->get();
+
+        return $this->api->success($cities, "success");
+    }
+
+    public function selected_regency($id)
+    {
+        $users = $this->model->with(['province','regency','district','village'])->where('kota_kabupaten', $id)->get();
 
         return $this->api->success($users, "success");
     }

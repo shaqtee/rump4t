@@ -9,6 +9,7 @@ use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Modules\Masters\App\Models\MastersBanner;
+use Modules\Masters\App\Models\MasterReferences;
 use Illuminate\Validation\ValidationException;
 
 class MasterBannerSlideController extends Controller
@@ -17,13 +18,15 @@ class MasterBannerSlideController extends Controller
     protected $web;
     protected $handler;
     protected $helper;
+    protected $references;
 
-    public function __construct(MastersBanner $model, WebRedirect $web, Handler $handler, Helper $helper)
+    public function __construct(MastersBanner $model, WebRedirect $web, Handler $handler, Helper $helper, MasterReferences $references)
     {
         $this->model = $model;
         $this->web = $web;
         $this->handler = $handler;
         $this->helper = $helper;
+        $this->references = $references;
     }
     
     /**
@@ -32,12 +35,15 @@ class MasterBannerSlideController extends Controller
     public function index(Request $request)
     {
         try{
+            $bday_auto = $this->references->where('parameter', 'm_automation')->where('description', 'birthday')->first();
+            
             $page = $request->size ?? 10;
             $data = [
                 'content' => 'Admin/Masters/BannerSlide/index',
-                'title' => 'Data Golf Course',
+                'title' => 'Data Kegiatan',
                 'bannerSlide' => $this->model->filter($request)->paginate($page)->appends($request->all()),
                 'columns' => $this->model->columnsWeb(),
+                'bday_auto' => $bday_auto,
             ];
             return view('Admin.Layouts.wrapper', $data);
         } catch (\Throwable $e) {
@@ -60,6 +66,20 @@ class MasterBannerSlideController extends Controller
         } catch (\Throwable $e) {
             return $this->handler->handleExceptionWeb($e);
         }
+    }
+
+    public function activate(Request $request, $desc)
+    {
+        $is_active = $request->all()['is_active'];
+        $references = $this->references->where('parameter', 'm_automation')
+            ->where('description', $desc)->first();
+        $references->is_active = $is_active;
+        $references->save();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $references,
+        ]);
     }
 
     /**

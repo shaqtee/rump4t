@@ -45,6 +45,9 @@ Route::get('/like/was-liked', [SocialMediaController::class, 'wasLiked']);
 Route::get('/like/count', [SocialMediaController::class, 'likeCount']);
 Route::apiResource('sm', SocialMediaController::class);
 
+// delete comment
+Route::delete('comment/{id}', [SocialMediaController::class, 'deleteDetail']);
+
 Route::apiResource('information', InformationController::class);
 Route::apiResource('form-group-discussion', FormGroupDiscussionController::class);
 Route::prefix('form-group-discussion')->group(function() {

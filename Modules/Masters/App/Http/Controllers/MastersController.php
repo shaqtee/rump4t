@@ -2,19 +2,23 @@
 
 namespace Modules\Masters\App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\ApiResponse;
 use Illuminate\Http\Response;
 use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Modules\Masters\App\Models\MasterCity;
-use Modules\Masters\App\Models\MasterConfiguration;
-use Modules\Masters\App\Models\MasterGolfCourse;
 use Modules\Masters\App\Models\MasterRules;
+use Modules\Masters\App\Models\MasterRegency;
 use Modules\Masters\App\Models\MastersBanner;
+use Modules\Masters\App\Models\MasterVillage;
+use Modules\Masters\App\Models\MasterDistrict;
+use Modules\Masters\App\Models\MasterProvince;
+use Modules\Masters\App\Models\MasterGolfCourse;
+use Modules\Masters\App\Models\MasterConfiguration;
 use Modules\Masters\App\Services\Interfaces\MastersInterface;
 
 class MastersController extends Controller
@@ -151,6 +155,122 @@ class MastersController extends Controller
             };
         }
     }
+
+    /* start */
+
+    public function get_province($simple)
+    {
+        try {
+            // $page = $this->request->size ?? 5;
+
+            if($simple == 'true'){
+                $datas = MasterProvince::where('is_active', '0')->get();
+                    // ->filter($this->request)->paginate($page);
+            }else{
+                $datas = MasterProvince::with(['regency.district.village'])
+                    ->where('is_active', '0')->filter($this->request)->paginate($page);
+            }
+
+            return $this->api->list($datas, new MasterProvince, 'Success Get Data');
+        } catch(\Throwable $e) {
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
+
+    public function get_regency($parent)
+    {
+        try {
+            // $page = $this->request->size ?? 5;
+
+            if($parent == 'true'){
+                $datas = MasterRegency::where('is_active', '0')->get();
+                    // ->filter($this->request)->paginate($page);
+            }else{
+                $datas = MasterRegency::with(['district.village'])
+                    ->where('is_active', '0')->filter($this->request)->paginate($page);
+            }
+                
+            return $this->api->list($datas, new MasterRegency, 'Success Get Data');
+        } catch(\Throwable $e) {
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
+
+    public function get_district($parent)
+    {
+        try {
+            // $page = $this->request->size ?? 5;
+
+            if($parent == 'true'){
+                $datas = MasterDistrict::where('is_active', '0')->get();
+                    // ->filter($this->request)->paginate($page);
+            }else{
+                $datas = MasterDistrict::with(['village'])
+                    ->where('is_active', '0')->filter($this->request)->paginate($page);
+            }
+
+            return $this->api->list($datas, new MasterDistrict, 'Success Get Data');
+        } catch(\Throwable $e) {
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
+
+    public function get_village($simple)
+    {
+        try {
+            // $page = $this->request->size ?? 5;
+
+            if($simple == 'true'){
+                $datas = MasterVillage::where('is_active', '0')->get();
+                    // ->filter($this->request)->paginate($page);
+            }else{
+                $datas = MasterVillage::with('district.regency.province')
+                    ->where('is_active', '0')->filter($this->request)->paginate($page);
+            }
+
+            return $this->api->list($datas, new MasterVillage, 'Success Get Data');
+        } catch(\Throwable $e) {
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
+
+    /* =================================== */
+
+    public function get_regencyById($id)
+    {
+        $datas = MasterRegency::where('province_id',$id)->get();
+        return $this->api->list($datas, new MasterRegency, 'Success Get Data');
+    }
+
+    public function get_districtById($id)
+    {
+        $datas = MasterDistrict::where('regency_id',$id)->get();
+        return $this->api->list($datas, new MasterDistrict, 'Success Get Data');
+    }
+
+    public function get_villageById($id)
+    {
+        $datas = Mastervillage::where('district_id',$id)->get();
+        return $this->api->list($datas, new MasterVillage, 'Success Get Data');
+    }
+
+    /* end */
 
     public function get_course()
     {

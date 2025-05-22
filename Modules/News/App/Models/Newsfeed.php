@@ -18,12 +18,15 @@ class Newsfeed extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     
+    protected $casts = [
+        'is_published' => 'boolean',
+    ];
 
     protected $table = "t_news";
     
     public function getNews()
     {
-        $news =  $this->where("is_published" , true)->orderBy("created_at" , "desc")->get();
+        $news =  $this->where("is_published" , true)->orderBy("created_at" , "asc")->get();
 
         $news->map(function($item){
             if ($item->image) {

@@ -22,11 +22,21 @@
                 <div class="mb-3">
                     <label for="region" class="form-label">Region</label>
                     <select id="region" name="region_id" class="form-control">
+                        {{-- no region   --}}
+                        <option value="" selected>Global</option>
+                        {{-- no region   --}}
                         <option value="">Global</option>
                         @foreach ($regions as $region)
                             <option value="{{ $region->id }}">{{ $region->value }}</option>
                         @endforeach
                     </select>
+                    {{-- dropdown featured true or false  --}}
+                    <div class="mb-3">
+                        <label for="featured" class="form-label">Featured</label>
+                        <select id="featured" name="featured" class="form-control">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
                 {{-- image --}}
                 <div class="mb-3">
                     <label for="image" class="form-label">Image</label>

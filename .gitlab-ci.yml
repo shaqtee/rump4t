@@ -18,8 +18,8 @@ dev:
   only:
     - dev
 
-# main:
-#   script:
-#     - ssh -i ~/.ssh/id_rsa ${!SSH_HOST} "cd /var/www/html/dgolf/ && git checkout -- . && git pull origin ${CI_COMMIT_BRANCH} && composer update && exit"
-#   only:
-#     - main
+prod:
+  script:
+    - ssh -i ~/.ssh/id_rsa ${!SSH_HOST} "cd /var/www/html/rump4t/ && git checkout -- . && git pull origin ${CI_COMMIT_BRANCH} && composer update && exit"
+  only:
+    - prod

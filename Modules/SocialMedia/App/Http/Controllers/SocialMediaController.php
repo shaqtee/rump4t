@@ -57,7 +57,7 @@ class SocialMediaController extends Controller
             $authUserId = auth()->user()->id;
             $blockedUsers = $this->userblock->where('t_user_blocker_id', $authUserId)->get()->pluck('t_user_blocked_id')->unique()->values();
             $reportPost = $this->reportpost->where('t_user_id', $authUserId)->get()->pluck('t_post_id')->unique()->values();
-            $index = $this->model->with(['user:id,name,image'])->withCount('comment','like')->whereNotIn('id', $reportPost)->whereNotIn('id_user', $blockedUsers)->filter($request)->orderByDesc('id')->paginate($page)
+            $index = $this->model->with(['user:id,name,image'])->withCount('comment','like')->whereNotIn('id', $reportPost)->whereNotIn('id_user', $blockedUsers)->filter($request)->orderByDesc("created_at")->paginate($page)
             ->through(function ($post) use ($authUserId) {
                 $post->is_liked = $post->likedBy($authUserId);
                 return $post;
@@ -242,9 +242,13 @@ class SocialMediaController extends Controller
     {
         DB::beginTransaction();
         try {
+            
             $delete = $this->model->findOrFail($id);
+            if($delete->id_user != auth()->user()->id) {
+                return $this->api->error('Woy, Hitam! ngapain ngapus postingan orang!?', 403);
+            }
             $delete->delete();
-
+            
             DB::commit();
             return  $this->api->delete($delete,  "Delete Successfully");
         } catch(\Throwable $e) {
@@ -256,6 +260,8 @@ class SocialMediaController extends Controller
             };
         }
     }
+
+    
 
     public function showdetail($id)
     {
@@ -276,6 +282,33 @@ class SocialMediaController extends Controller
             };
         }
     }
+
+    public function deleteDetail($id) {
+
+    try {
+        $detail = $this->detailpost->find($id);
+        if (!$detail) {
+            return $this->api->error('Comment not found', 404);
+        }
+
+        if ($detail->id_user != auth()->user()->id) {
+            return $this->api->error('You are not authorized to delete this comment', 403);
+        }
+
+        $detail->delete();
+
+        return $this->api->success($detail, 'Comment deleted successfully');
+    } catch (\Throwable $e) {
+        DB::rollBack();
+        if (config('envconfig.app_debug')) {
+            return $this->api->error_code($e->getMessage(), $e->getCode());
+        } else {
+            return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+        };
+
+    }
+
+}
 
     public function showChildDetail(int $commentID) {
         try {

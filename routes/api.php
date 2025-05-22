@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Modules\SocialMedia\SocialMediaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DimensionsController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,7 @@ Route::get('/', function (){
 });
 
 Route::apiResource('dimensions', DimensionsController::class)->only('index', 'store');
+Route::middleware("auth:api")->post('delete-account', [SocialMediaController::class, 'deleteSelfAccount']);
 
 Route::prefix('sign-up')->group(function() {
     Route::post('get-user', [AuthController::class, 'get_user2']);
@@ -45,10 +47,9 @@ Route::prefix('sign-in')->group(function() {
     Route::post('resend-otp-login', [AuthController::class, 'resend_otp_login']);
 });
 
-route::prefix("news")->group(function(){
-    Route::get('', [NewsController::class, 'index']);
-});
 
+Route::get('user-reset-request', [AuthController::class, 'user_reset_request']);
+Route::middleware("auth:api")->get('accept-eula', [AuthController::class, 'accept_eula']);
 Route::get('list-region', [AuthController::class, 'list_region']); // new
 Route::get('list-area/{region_id}', [AuthController::class, 'list_area']); // new
 
@@ -82,4 +83,7 @@ Route::prefix('auth')->middleware('auth:api')->group(function () {
     Route::get('selected-area/{id}', [AuthController::class, 'selected_area']);
     Route::get('search-by-city/{name}', [AuthController::class, 'search_by_city']);
     Route::get('selected-city/{id}', [AuthController::class, 'selected_city']);
+
+    Route::get('search-by-regency/{name}', [AuthController::class, 'search_by_regency']);
+    Route::get('selected-regency/{id}', [AuthController::class, 'selected_regency']);
 });

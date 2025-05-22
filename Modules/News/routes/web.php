@@ -14,6 +14,4 @@ use Modules\News\App\Http\Controllers\NewsController;
 |
 */
 
-Route::group([], function () {
-    Route::resource('news', NewsController::class)->names('news');
-});
+

@@ -2,12 +2,13 @@
 
 namespace Modules\NewsAdmin\App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\News\App\Http\Controllers\NewsController;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Modules\NewsAdmin\App\Models\NewsAdmin;
+use Modules\News\App\Http\Controllers\NewsController;
 
 class NewsAdminController extends Controller
 {
@@ -16,20 +17,31 @@ class NewsAdminController extends Controller
      */
     public function index()
     {
-        $news = NewsAdmin::join('users', 't_news.author_id', '=', 'users.id')
-            ->select('t_news.*', 'users.name as author_name' , 'users.image as author_image')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-            // dd($news);
-
+        $raw_user_id = User::select('id')->where('region', auth()->user()->region)->get()->toArray();
+        $arr_user_id = [];
+        foreach($raw_user_id as $aui){
+            $arr_user_id[] = $aui['id'];
+        }
+        
+        if(auth()->user()->t_group_id == 3){
+            $news = NewsAdmin::whereIn('author_id', $arr_user_id)
+                ->join('users', 't_news.author_id', '=', 'users.id')
+                ->select('t_news.*', 'users.name as author_name' , 'users.image as author_image')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }else{
+            $news = NewsAdmin::join('users', 't_news.author_id', '=', 'users.id')
+                ->select('t_news.*', 'users.name as author_name' , 'users.image as author_image')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
             
-            foreach ($news as $item) {
-                $short_id = substr($item->id, -5);
-                // lowercase the id
-                $short_id = strtolower($short_id);
-                $item->short_id = $short_id;
-            }
+        foreach ($news as $item) {
+            $short_id = substr($item->id, -5);
+            // lowercase the id
+            $short_id = strtolower($short_id);
+            $item->short_id = $short_id;
+        }
 
         return view('newsadmin::index' , compact('news'));
     }
@@ -57,6 +69,11 @@ class NewsAdminController extends Controller
             $news->title = $request->input('title');
             $news->content = $request->input('description');
             $news->is_published = $request->input('is_published', true);
+            if($request->has('featured') && $request->featured == true){
+                $news->featured = true;
+            }else{
+                $news->featured = false;
+            }
             if($request->region_id == ""){
                 $news->region_id = null;
             }else{
@@ -118,6 +135,11 @@ class NewsAdminController extends Controller
         $news->title = $request->input('title');
         $news->content = $request->input('content');
         $news->is_published = $request->input('is_published', true);
+        if($request->has('featured') && $request->featured == true){
+            $news->featured = true;
+        }else{
+            $news->featured = false;
+        }
         if($request->region_id == ""){
             $news->region_id = null;
         }else{

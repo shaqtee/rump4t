@@ -2,12 +2,12 @@ $(document).ready(function() {
 	$('.select2').select2({
 		placeholder: 'Choose one',
 		searchInputPlaceholder: 'Search',
-		 width: '100%'
+		width: '100%'
 	});
 	$('.select2-no-search').select2({
 		minimumResultsForSearch: Infinity,
 		placeholder: 'Choose one',
-		 width: '100%'
+		width: '100%'
 	});
 	
 	function formatState (state) {

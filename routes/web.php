@@ -33,6 +33,7 @@ use App\Http\Controllers\ManagePeople\Modules\Events\ManageAlbumEventController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageSponsorEventController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageWinnerCategoryController;
 use Modules\Event\App\Http\Controllers\EventController;
+use Modules\News\App\Http\Controllers\NewsController;
 use Modules\NewsAdmin\App\Http\Controllers\NewsAdminController;
 use Modules\Regions\App\Http\Controllers\RegionsController;
 use Modules\SocialMedia\App\Http\Controllers\ModeratorController;
@@ -60,6 +61,7 @@ Route::middleware(['guest'])->group(function(){
 });
 Route::get('logout', [AuthWebController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
+
     Route::prefix('admin')->middleware('userAkses:1')->group(function () {
         Route::prefix("regions")->group(function () {
             Route::get('' , [RegionsController::class , 'index'])->name('regions.index');
@@ -71,15 +73,15 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::prefix('events')->group(function () {
 
-            Route::get('', [EventController::class, 'index'])->name('events.index');
-            Route::get('tambah', [EventController::class, 'create'])->name('events.tambah');
-            Route::post('tambah', [EventController::class, 'store'])->name('events.tambah');
-            Route::get('{id}/ubah', [EventController::class, 'edit'])->name('events.ubah');
-            Route::patch('{id}/ubah', [EventController::class, 'update'])->name('events.ubah');  
-            Route::delete('{id}/hapus', [EventController::class, 'destroy'])->name('events.hapus');
-            Route::get('{id}/lihat', [EventController::class, 'show'])->name('events.detail');
+            Route::get('', [EventController::class, 'index'])->name('events.admin.index');
+            Route::get('tambah', [EventController::class, 'create'])->name('events.admin.tambah');
+            Route::post('tambah', [EventController::class, 'store'])->name('events.admin.tambah');
+            Route::get('{id}/ubah', [EventController::class, 'edit'])->name('events.admin.ubah');
+            Route::put('{id}/ubah', [EventController::class, 'update'])->name('events.admin.ubah');  
+            Route::delete('{id}/hapus', [EventController::class, 'destroy'])->name('events.admin.hapus');
+            Route::get('{id}/lihat', [EventController::class, 'show'])->name('events.admin.detail');
             //bukutamu
-            Route::get('{id}/bukutamu', [EventController::class, 'bukutamu'])->name('events.bukutamu');
+            Route::get('{id}/bukutamu', [EventController::class, 'bukutamu'])->name('events.admin.bukutamu');
         });
         Route::get('home', [AuthWebController::class, 'home'])->name('admin.home');
 
@@ -103,7 +105,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{id}/handicap-index', [UserManageController::class, 'hcp_index'])->name('users.hcpindex');
             Route::get('index-admin', [UserManageController::class, 'index_admin'])->name('users.admin.semua');
             Route::patch('{id}/index-admin', [UserManageController::class, 'update_admin'])->name('users.admin.edit');
-            Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');
+            Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');     // reset password
+            Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');
+            Route::delete('{id}/hapus', [UserManageController::class, 'delete_soft'])->name('users.hapus');
+
+            Route::post('lists/{scope}', [UserManageController::class, 'lists'])->name('lists');
+            Route::post('{id}', [UserManageController::class, 'user_by_id']);
         });
 
         Route::prefix('community')->group(function () {
@@ -276,6 +283,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('delete/{golf_course_id}/hole', [MasterGolfCourseController::class, 'delete_hole'])->name('golf-course.hole.delete');
             Route::resources(['golf-course' => MasterGolfCourseController::class]);
             Route::resources(['banner-slide' => MasterBannerSlideController::class]);
+            Route::post('banner-slide/activate/{desc}', [MasterBannerSlideController::class, 'activate']);
             Route::resources(['winner-category' => MasterWinnerCategoryController::class]);
             Route::resources(['rules-score' => MasterRulesScoreController::class]);
         });
