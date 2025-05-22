@@ -102,14 +102,18 @@ class AuthController extends Controller
             $datas = $request->validated();
 
             
-            $userCheck = $this->model->where('phone', $request->phone)->first();
+            $userCheckPhone = $this->model->where('phone', $request->phone)->first();
+            $userCheckEmail = $this->model->where('email', $request->email)->first();
 
-            if($userCheck && $userCheck->flag_done_profile != '1'){
-                $userCheck->delete();
+            if($userCheckPhone && $userCheckPhone->flag_done_profile != '1'){
+                $userCheckPhone->delete();
             }
             
-            if($userCheck && $userCheck->flag_done_profile == '1'){
+            if($userCheckPhone){
                 return  $this->api->error("Phone Number Has Already Been Registered");
+            }
+            if($userCheckEmail){
+                return  $this->api->error("Email Has Already Been Registered");
             }
 
             // if numbers starts with 0. change to 62
