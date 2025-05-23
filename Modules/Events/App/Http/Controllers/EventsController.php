@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Modules\SocialMedia\App\Models\UserBlock;
-use Modules\Community\App\Models\EventCommonity;
+use Modules\Events\App\Models\EventCommonity;
 
 class EventsController extends Controller
 {
