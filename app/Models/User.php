@@ -108,6 +108,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Event::class, 't_member_event', 't_user_id', 't_event_id');
     }
 
+    public function myEventGolfList(){ // untuk module my games
+        return $this->belongsToMany(EventCommonity::class, 't_member_eventgolf', 't_user_id', 't_event_id');
+    }
+
     public function myLetsPlayList(){ // untuk module my games
         return $this->belongsToMany(LetsPlay::class, 't_member_lets_play', 't_user_id', 't_lets_play_id');
     }
