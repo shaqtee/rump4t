@@ -100,21 +100,30 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
             $datas = $request->validated();
-
             
-            $userCheck = $this->model->where('phone', $request->phone)->first();
-
-            if($userCheck && $userCheck->flag_done_profile != '1'){
-                $userCheck->delete();
+            $userCheckPhone = $this->model->where('phone', $request->phone)->first();
+            $userCheckEmail = $this->model->where('email', $request->email)->first();
+            
+            if($userCheckPhone && $userCheckPhone->flag_done_profile != '1'){
+                $userCheckPhone->delete();
             }
             
-            if($userCheck && $userCheck->flag_done_profile == '1'){
+            if($userCheckPhone && $userCheckPhone->phone == $request->phone){
                 return  $this->api->error("Phone Number Has Already Been Registered");
             }
-
+            
+            if(!empty($request->email) && $userCheckEmail?->email == $request->email){
+                return  $this->api->error("Email Has Already Been Registered");
+            }
+            
             // if numbers starts with 0. change to 62
             if(substr($request->phone, 0, 1) == '0'){
                 $datas['phone'] = '62'.substr($request->phone, 1);
+                
+                $userCheckPhone = $this->model->where('phone', $datas['phone'])->first();
+                if($userCheckPhone && $userCheckPhone->phone == $datas['phone']){
+                    return  $this->api->error("Phone Number Has Already Been Registered");
+                }
             }
             
             $datas['active'] = 1;
