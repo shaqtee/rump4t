@@ -47,7 +47,7 @@ class EventCommonity extends Model
     }
 
     public function membersEvent(){
-        return $this->belongsToMany(User::class, 't_member_eventgolf', 't_eventgolf_id', 't_user_id')->withPivot('data_input');//->where('approve', 2);
+        return $this->belongsToMany(User::class, 't_member_eventgolf', 't_event_id', 't_user_id');//->withPivot('data_input')->where('approve', 2);
     }
 
     public function joinBy($userId)
