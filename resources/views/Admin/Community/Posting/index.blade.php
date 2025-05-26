@@ -51,9 +51,9 @@
                         @foreach ($posting as $key => $post)
                             <tr>
                                 <th scope="row">{{ $posting->firstItem() + $key }}</th>
-                                <td>{{ $post->postingCommonity->title }}</td>
+                                <td>{{ $post->postingCommonity->title ?? "" }}</td>
                                 <td>{{ $post->title }}</td>
-                                <td><img class="img-thumbnail" style="width: 100px; height: 100px; object-fit: fill;" src="{{ $post->image }}" alt=""></td>
+                                <td><img class="img-thumbnail" style="width: 100px; height: 100px; object-fit: fill;" src="{{ $post->image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" alt=""></td>
                                 {{-- <td>{{ $post->content }}</td> --}}
                                 {{-- <td>{{ ($post->active == '1') ? 'Active' : 'Deactivate' }}</td> --}}
                                 <td>

@@ -470,6 +470,7 @@
                             </label>
                         </div>
 
+                        {{-- Privilege --}}
                         <div class="form-group">
                             <label for="status_anggota">Status Anggota</label>
                             @error('status_anggota')
@@ -483,6 +484,7 @@
                             </div>
                         </div>
 
+                        {{-- Activate --}}
                         <div class="form-group">
                             <label for="active">Status Akun</label>
                             @error('active')
@@ -492,6 +494,20 @@
                                 <div class="col">
                                     <label class="rdiobox"><input value="1" name="active" type="radio" {{ old('active', isset($users) && $users->active) == '1' ? 'checked' : '' }} required autofocus> <span>Aktifkan</span></label>
                                     <label class="rdiobox"><input value="0" name="active" type="radio" {{ old('active', isset($users) && $users->active) == '0' ? 'checked' : '' }} required autofocus> <span>Non-Aktifkan</span></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Verified --}}
+                        <div class="form-group">
+                            <label for="flag_verified">Akun Terverifikasi</label>
+                            @error('flag_verified')
+                                <small style="color: red">{{ $message }}</small>
+                            @enderror
+                            <div class="row">
+                                <div class="col">
+                                    <label class="rdiobox"><input value="1" name="flag_verified" type="radio" {{ old('flag_verified', isset($users) && $users->flag_verified) == '1' ? 'checked' : '' }} required autofocus> <span>Ya</span></label>
+                                    <label class="rdiobox"><input value="0" name="flag_verified" type="radio" {{ old('flag_verified', isset($users) && $users->flag_verified) == '0' ? 'checked' : '' }} required autofocus> <span>Belum</span></label>
                                 </div>
                             </div>
                         </div>

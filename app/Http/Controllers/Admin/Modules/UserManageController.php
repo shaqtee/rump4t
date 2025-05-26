@@ -199,11 +199,13 @@ class UserManageController extends Controller
                 'pass_away_status' => 'nullable',
                 'status_anggota' => 'required|in:1,2',
                 'active' => 'required|in:1,0',
+                'flag_verified' => 'nullable',
             ]);
             
             $folder = "rump4t/user-profile";
             $column = "image";
-
+            
+            $datas['flag_verified'] = empty($datas['flag_verified']) ? false : true;
             $datas['pass_away_status'] = empty($datas['pass_away_status']) ? false : true;
             $datas['status_anggota'] = empty($datas['status_anggota']) ? 1 : $datas['status_anggota'];
             $datas['flag_done_profile'] = '1';
@@ -365,6 +367,7 @@ class UserManageController extends Controller
                 'pass_away_status' => 'nullable',
                 'status_anggota' => 'required|in:1,2',
                 'active' => 'required|in:1,0',
+                'flag_verified' => 'nullable',
             ]);
             // dd($datas);
             $folder = "rump4t/user-profile";
@@ -568,10 +571,16 @@ class UserManageController extends Controller
     {
         DB::beginTransaction();
         try{
+            $model = $this->model->findOrfail($request->id_user);
             $datas = $request->validate([
                 'is_admin' => 'required',
                 't_group_id' => 'required',
-                'email' => 'required',
+                'email' => [
+                    'nullable',
+                    // 'required',
+                    'email',
+                    Rule::unique('users')->ignore($model->id),
+                ],
             ]);
             
             $model = $this->model->findOrfail($request->id);
