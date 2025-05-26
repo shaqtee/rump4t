@@ -130,7 +130,7 @@ class ScoreHandicapController extends Controller
                 if(isset($request->t_event_id) || $request->t_event_id != null){
                     $event = $this->event->with([
                         'membersEvent' => function($q) {
-                            $q->where('t_member_event.approve', 'PAID')->whereNotNull('users.fcm_token');
+                            $q->where('t_member_eventgolf.approve', 'PAID')->whereNotNull('users.fcm_token');
                         }
                     ])->find($request->t_event_id);
 
@@ -602,6 +602,17 @@ class ScoreHandicapController extends Controller
 
                         ])
                         ->findOrfail($userId);
+
+            // Tambahkan flag_data secara manual
+            $eventList = $index->myEventGolfList->map(function ($item) {
+                $item['flag_data'] = 't_event';
+                return $item;
+            });
+
+            $letsPlayList = $index->myLetsPlayList->map(function ($item) {
+                $item['flag_data'] = 't_lets_play';
+                return $item;
+            });
 
             $dataListGames = array_merge($index->myEventGolfList->toArray(),$index->myLetsPlayList->toArray());
             unset($index->myEventGolfList,$index->myLetsPlayList);
