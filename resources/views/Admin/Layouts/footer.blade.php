@@ -122,8 +122,24 @@
     });
 
     $(document).ready(function() {
+        let role;
+        $('select[name="t_group_id"]').on('change', function(){
+            
+            let role = $(this).val();
+            
+            if(role.includes(4) || role.includes(5) || role.includes(8)){
+                $('#email').removeAttr('required');
+                $('#is_admin').val("0");
+            }else{
+                $('#email').prop('required',true);
+            }
+        });
+
         $('select[name="id"]').on('change', function(){
             let selected_id = $(this).find(':selected').val();
+
+            $('#id_user').val(selected_id);
+            
             $('.loader-email').removeClass('d-none');
             
             $.post(
@@ -140,6 +156,7 @@
                     }
                 }
             )
+            
         });
 
         $('#provinsi').on('change', function(){

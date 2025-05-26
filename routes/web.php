@@ -183,8 +183,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('add-manage-people', [CommunityController::class, 'add_member'])->name('community.addmanagepeople');
             Route::get('{community_id}/member', [CommunityController::class, 'user_member'])->name('community.member');
             Route::get('{community_id}/leaderboard', [CommunityController::class, 'leaderboard'])->name('community.leaderboard');
-            // Route::get('event/index', [EventCommunityController::class, 'index_community'])->name('community.event.semua');
-            // Route::get('event/{event_id}/lihat', [EventCommunityController::class, 'show_community'])->name('community.event.lihat');
+            Route::get('event/index', [EventCommunityController::class, 'index_community'])->name('community.event.semua'); // off
+            Route::get('event/{event_id}/lihat', [EventCommunityController::class, 'show_community'])->name('community.event.lihat'); // off
 
             Route::prefix('posting')->group(function () {
                 Route::get('index', [PostingCommunityController::class, 'index'])->name('community.posting.semua');
