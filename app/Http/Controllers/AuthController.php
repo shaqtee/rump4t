@@ -1411,7 +1411,14 @@ public function accept_eula (Request $req) {
 }
 
 public function user_reset_request(Request $request) {
-    $user = User::where('email', $request->identifier)->orWhere("phone" , $request->identifier)->orWhere("nomor_anggota" , $request->identifier)->first();
+    if(empty($request->identifier)){
+        return $this->api->error(message: "email or phone tidak ada.");
+    }
+    
+    $user = User::where('email', $request->identifier)
+    ->orWhere("phone" , $request->identifier)
+    ->orWhere("nomor_anggota" , $request->identifier)->first();
+
     DB::beginTransaction();
     try {
         $user->update([

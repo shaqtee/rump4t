@@ -56,12 +56,12 @@
                         @foreach ($events as $key => $evt)
                             <tr>
                                 <th scope="row">{{ $events->firstItem() + $key }}</th>
-                                <td>{{ $evt->eventCommonity->title}}</td>
+                                <td>{{ $evt->eventCommonity?->title}}</td>
                                 <td>{{ $evt->title }}</td>
                                 {{-- <td> <img class="img-thumbnail" src="{{ $evt->image }}" alt=""></td> --}}
                                 {{-- <td>{{ $evt->description }}</td> --}}
-                                <td>{{ $evt->golfCourseEvent->name }}</td>
-                                <td>{{ $evt->golfCourseEvent->address }}</td>
+                                <td>{{ $evt->golfCourseEvent?->name }}</td>
+                                <td>{{ $evt->golfCourseEvent?->address }}</td>
                                 {{-- <td>{{ $evt->city->name ?? '-'}}</td> --}}
                                 {{-- <td>{{ $evt->location }}</td> --}}
                                 {{-- <td>{{ $evt->type_scor }}</td> --}}
@@ -82,7 +82,7 @@
             <div class="row">
                 <div class="col-12">
                     <ul class="pagination pagination-success justify-content-center mt-3">
-                        @if ($event->onFirstPage())
+                        {{-- @if ($event->onFirstPage())
                             <li class="page-item disabled">
                                 <span class="page-link"><i class="icon ion-ios-arrow-back"></i></span>
                             </li>
@@ -90,18 +90,18 @@
                             <li class="page-item">
                                 <a class="page-link" href="{{ $event->previousPageUrl() }}" rel="prev"><i class="icon ion-ios-arrow-back"></i></a>
                             </li>
-                        @endif
+                        @endif --}}
             
-                        @if ($event->currentPage() > 3)
+                        {{-- @if ($event->currentPage() > 3)
                             <li class="page-item">
                                 <a class="page-link" href="{{ $event->url(1) }}">1</a>
                             </li>
                             @if ($event->currentPage() > 4)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
-                        @endif
+                        @endif --}}
             
-                        @foreach(range(1, $event->lastPage()) as $i)
+                        {{-- @foreach(range(1, $event->lastPage()) as $i)
                             @if ($i >= $event->currentPage() - 2 && $i <= $event->currentPage() + 2)
                                 @if ($i == $event->currentPage())
                                     <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
@@ -109,9 +109,9 @@
                                     <li class="page-item"><a class="page-link" href="{{ $event->url($i) }}">{{ $i }}</a></li>
                                 @endif
                             @endif
-                        @endforeach
+                        @endforeach --}}
             
-                        @if ($event->currentPage() < $event->lastPage() - 2)
+                        {{-- @if ($event->currentPage() < $event->lastPage() - 2)
                             @if ($event->currentPage() < $event->lastPage() - 3)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
@@ -128,7 +128,7 @@
                             <li class="page-item disabled">
                                 <span class="page-link"><i class="icon ion-ios-arrow-forward"></i></span>
                             </li>
-                        @endif
+                        @endif --}}
                     </ul>
                 </div>
             </div>
