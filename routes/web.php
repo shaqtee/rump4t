@@ -221,6 +221,14 @@ Route::middleware(['auth'])->group(function () {
                 Route::patch('{id}/ubah', [SponsorCommunityController::class, 'update'])->name('community.sponsor.ubah');
                 Route::delete('{id}/hapus', [SponsorCommunityController::class, 'destroy'])->name('community.sponsor.hapus');
             });
+
+            Route::prefix('polling')->group(function () {
+                Route::get('index-admin', [UserManageController::class, 'index_admin'])->name('users.admin.semua');
+                // Route::patch('{id}/index-admin', [UserManageController::class, 'update_admin'])->name('users.admin.edit');
+                // Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');    
+                // Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');
+                // Route::delete('{id}/hapus', [UserManageController::class, 'delete_soft'])->name('users.hapus');
+            });
         });
 
         Route::prefix('lets-play')->group(function () {
