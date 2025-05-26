@@ -500,14 +500,14 @@
 
                         {{-- Verified --}}
                         <div class="form-group">
-                            <label for="flag_verified">Verifikasi</label>
+                            <label for="flag_verified">Akun Terverifikasi</label>
                             @error('flag_verified')
                                 <small style="color: red">{{ $message }}</small>
                             @enderror
                             <div class="row">
                                 <div class="col">
-                                    <label class="rdiobox"><input value="1" name="flag_verified" type="radio" {{ old('flag_verified', isset($users) && $users->flag_verified) == '1' ? 'checked' : '' }} required autofocus> <span>Aktifkan</span></label>
-                                    <label class="rdiobox"><input value="0" name="flag_verified" type="radio" {{ old('flag_verified', isset($users) && $users->flag_verified) == '0' ? 'checked' : '' }} required autofocus> <span>Non-Aktifkan</span></label>
+                                    <label class="rdiobox"><input value="1" name="flag_verified" type="radio" {{ old('flag_verified', isset($users) && $users->flag_verified) == '1' ? 'checked' : '' }} required autofocus> <span>Ya</span></label>
+                                    <label class="rdiobox"><input value="0" name="flag_verified" type="radio" {{ old('flag_verified', isset($users) && $users->flag_verified) == '0' ? 'checked' : '' }} required autofocus> <span>Belum</span></label>
                                 </div>
                             </div>
                         </div>
