@@ -18,7 +18,8 @@
                                     <div class="card-body pt-0">
                                         <form action="{{ route('users.admin.tambah') }}" method="POST">
                                             @csrf
-                                            <input type="hidden" name="is_admin" value="1">
+                                            <input type="hidden" id="is_admin" name="is_admin" value="1">
+                                            <input type="hidden" id="id_user" name="id_user">
                                             <div class="form-group">
                                                 <label for="id">User</label>
                                                 @error('id')
@@ -39,6 +40,9 @@
                                                     <option label="Choose Role"></option>
                                                     <option value="1">ADMINISTRATOR</option>
                                                     <option value="3">PENGURUS</option>
+                                                    <option value="4">PENGAWAS</option>
+                                                    <option value="5">PEMBINA</option>
+                                                    <option value="8">KETUA PEMBINA</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">

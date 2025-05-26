@@ -57,15 +57,15 @@
                         @foreach ($letsPlay as $key => $lp)
                             <tr>
                                 <th scope="row">{{ $letsPlay->firstItem() + $key }}</th>
-                                <td>{{ $lp->title }}</td>
+                                <td>{{ $lp->title ?? '-' }}</td>
                                 <td><img class="img-thumbnail" style="width: 100px; height: 100px; object-fit: fill;" src="{{ $lp->image }}" alt=""></td>
-                                <td>{{ $lp->organized?->name }}</td>
-                                <td>{{ $lp->golfCourse->name }}</td>
-                                <td>{{ $lp->play_date }}</td>
-                                <td>{{ $lp->type_scor }}</td>
-                                <td>Max {{ $lp->max_flight }} Flight</td>
-                                <td>{{ $lp->teeBox->tee_type }}</td>
-                                <td>{{ $lp->roundType->value1 }}</td>
+                                <td>{{ $lp->organized?->name ?? '-'}}</td>
+                                <td>{{ $lp->golfCourse->name ?? '-'}}</td>
+                                <td>{{ $lp->play_date ?? '-'}}</td>
+                                <td>{{ $lp->type_scor ?? '-'}}</td>
+                                <td>Max {{ $lp->max_flight ?? '-'}} Flight</td>
+                                <td>{{ $lp->teeBox->tee_type ?? '-'}}</td>
+                                <td>{{ $lp->roundType->value1 ?? '-'}}</td>
                                 <td>{{ ($lp->is_private == '1') ? 'Private' : 'Public' }}</td>
                                 <td>{{ ($lp->active == '1') ? 'Active' : 'Deactivate' }}</td>
                                 <td>

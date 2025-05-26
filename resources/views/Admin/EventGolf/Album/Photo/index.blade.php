@@ -4,9 +4,9 @@
             <div class="d-flex justify-content-between">
                 <h4 class="card-title mg-b-0">{{ $title }}</h4>
             </div>
-            <div class="row justify-content-start mt-3">
+            <div class="row justify-content-start">
                 <div class="col-auto">
-                    <a href="{{ route('community.posting.tambah') }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
+                    <a href="{{ route('event.album.photo.viewtambah', ['album_id' => $albums->id]) }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
                 </div>
             </div>
         </div>
@@ -21,8 +21,8 @@
                     </select>
                 </div>
                 <div class="col-auto">
-                    <form action="{{ route('community.posting.semua') }}" method="GET" class="d-flex">
-                            <select id="searchIndex" class="form-control" style="margin-right: 10px;">
+                    <form action="{{ route('event.album.photo.semua', ['album_id' => $album_id]) }}" method="GET" class="d-flex">
+                            <select id="searchIndex" class="form-control">
                                 @foreach ($columns as $items => $values)
                                     @foreach ($values as $item => $value)
                                         <option value="{{ $item }}" data-placeholder="{{ $value['Label'] }}"> {{ $value['Label'] }}</option>
@@ -39,28 +39,26 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Community</th>
-                            <th>Title</th>
+                            <th>Albums</th>
                             <th>Image</th>
-                            {{-- <th>Content</th> --}}
-                            {{-- <th>Active</th> --}}
+                            <th>Name</th>
+                            <th>Active</th>
                             <th colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($posting as $key => $post)
+                        @foreach ($photos as $key => $ph)
                             <tr>
-                                <th scope="row">{{ $posting->firstItem() + $key }}</th>
-                                <td>{{ $post->postingCommonity->title ?? "" }}</td>
-                                <td>{{ $post->title }}</td>
-                                <td><img class="img-thumbnail" style="width: 100px; height: 100px; object-fit: fill;" src="{{ $post->image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" alt=""></td>
-                                {{-- <td>{{ $post->content }}</td> --}}
-                                {{-- <td>{{ ($post->active == '1') ? 'Active' : 'Deactivate' }}</td> --}}
+                                <th scope="row">{{ $photos->firstItem() + $key }}</th>
+                                <td>{{ $ph->photoEvent->name ?? '-' }}</td>
+                                <td><img class="img-thumbnail" style="width: 100px; height: 100px; object-fit: fill;" src="{{ $ph->image }}" alt=""></td>
+                                <td>{{ $ph->name }}</td>
+                                <td>{{ ($ph->active == '1') ? 'Active' : 'Deactivate' }}</td>
                                 <td>
-                                    <a class="btn btn-info" href="{{ route('community.posting.ubah', ['id' => $post->id]) }}">EDIT</a>
+                                    <a class="btn btn-info" href="{{ route('event.album.photo.ubah', ['id' => $ph->id]) }}">EDIT</a>
                                 </td>
-                                <td>
-                                    <form action="{{ route('community.posting.hapus', ['id' => $post->id]) }}" method="POST">
+                                <td> 
+                                    <form action="{{ route('event.album.photo.hapus', ['id' => $ph->id]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">DELETE</button>
@@ -74,47 +72,47 @@
             <div class="row">
                 <div class="col-12">
                     <ul class="pagination pagination-success justify-content-center mt-3">
-                        @if ($posting->onFirstPage())
+                        @if ($photos->onFirstPage())
                             <li class="page-item disabled">
                                 <span class="page-link"><i class="icon ion-ios-arrow-back"></i></span>
                             </li>
                         @else
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->previousPageUrl() }}" rel="prev"><i class="icon ion-ios-arrow-back"></i></a>
+                                <a class="page-link" href="{{ $photos->previousPageUrl() }}" rel="prev"><i class="icon ion-ios-arrow-back"></i></a>
                             </li>
                         @endif
             
-                        @if ($posting->currentPage() > 3)
+                        @if ($photos->currentPage() > 3)
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->url(1) }}">1</a>
+                                <a class="page-link" href="{{ $photos->url(1) }}">1</a>
                             </li>
-                            @if ($posting->currentPage() > 4)
+                            @if ($photos->currentPage() > 4)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                         @endif
             
-                        @foreach(range(1, $posting->lastPage()) as $i)
-                            @if ($i >= $posting->currentPage() - 2 && $i <= $posting->currentPage() + 2)
-                                @if ($i == $posting->currentPage())
+                        @foreach(range(1, $photos->lastPage()) as $i)
+                            @if ($i >= $photos->currentPage() - 2 && $i <= $photos->currentPage() + 2)
+                                @if ($i == $photos->currentPage())
                                     <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
                                 @else
-                                    <li class="page-item"><a class="page-link" href="{{ $posting->url($i) }}">{{ $i }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="{{ $photos->url($i) }}">{{ $i }}</a></li>
                                 @endif
                             @endif
                         @endforeach
             
-                        @if ($posting->currentPage() < $posting->lastPage() - 2)
-                            @if ($posting->currentPage() < $posting->lastPage() - 3)
+                        @if ($photos->currentPage() < $photos->lastPage() - 2)
+                            @if ($photos->currentPage() < $photos->lastPage() - 3)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->url($posting->lastPage()) }}">{{ $posting->lastPage() }}</a>
+                                <a class="page-link" href="{{ $photos->url($photos->lastPage()) }}">{{ $photos->lastPage() }}</a>
                             </li>
                         @endif
             
-                        @if ($posting->hasMorePages())
+                        @if ($photos->hasMorePages())
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->nextPageUrl() }}" rel="next"><i class="icon ion-ios-arrow-forward"></i></a>
+                                <a class="page-link" href="{{ $photos->nextPageUrl() }}" rel="next"><i class="icon ion-ios-arrow-forward"></i></a>
                             </li>
                         @else
                             <li class="page-item disabled">

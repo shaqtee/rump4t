@@ -72,8 +72,8 @@ class EventCommunityController extends Controller
         try{
             $page = $request->size ?? 10;
             $data = [
-                'content' => 'Admin/Event/index',
-                'title' => 'Data Event',
+                'content' => 'Admin/EventGolf/index',
+                'title' => 'Data Event Golf',
                 'event' =>  $this->model->with(['eventCommonity', 'golfCourseEvent'])->filterWeb($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
                 'columns' => $this->model->columnsWeb(),
             ];
@@ -129,8 +129,8 @@ class EventCommunityController extends Controller
     {
         try{
             $data = [
-                'content' => 'Admin/Event/addEdit',
-                'title' => 'Create Event',
+                'content' => 'Admin/EventGolf/addEdit',
+                'title' => 'Create Event Golf',
                 'event' => null,
                 'community' => $this->community->get(),
                 // 'type_scoring' => $this->config->where('parameter', 'm_type_scor')->get(),
@@ -156,7 +156,6 @@ class EventCommunityController extends Controller
     {
         DB::beginTransaction();
         try{
-            $selectedFields = $request->input('fields'); 
 
             if($request->auto_scoring !== 'on')
             {
@@ -192,8 +191,6 @@ class EventCommunityController extends Controller
             $datas['period'] = 1;
 
             $datas['auto_scoring'] = isset($request->auto_scoring) && $request->auto_scoring == 'on' ? true : false;
-
-            $datas['selected_fields'] = $selectedFields;
 
             //convert location to longitude & latitude
             // $latlng = $this->helper->gMaps($datas['location']);

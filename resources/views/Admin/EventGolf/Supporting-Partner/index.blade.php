@@ -6,7 +6,7 @@
             </div>
             <div class="row justify-content-start mt-3">
                 <div class="col-auto">
-                    <a href="{{ route('community.posting.tambah') }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
+                    <a href="{{ route('event.sponsor.tambah') }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@
                     </select>
                 </div>
                 <div class="col-auto">
-                    <form action="{{ route('community.posting.semua') }}" method="GET" class="d-flex">
+                    <form action="{{ route('event.sponsor.semua') }}" method="GET" class="d-flex">
                             <select id="searchIndex" class="form-control" style="margin-right: 10px;">
                                 @foreach ($columns as $items => $values)
                                     @foreach ($values as $item => $value)
@@ -39,32 +39,30 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Community</th>
-                            <th>Title</th>
+                            <th>Event</th>
+                            <th>Name</th>
                             <th>Image</th>
-                            {{-- <th>Content</th> --}}
-                            {{-- <th>Active</th> --}}
-                            <th colspan="2">Action</th>
+                            <th>Description</th>
+                            <th>Active</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($posting as $key => $post)
+                        @foreach ($sponsors as $key => $spsr)
                             <tr>
-                                <th scope="row">{{ $posting->firstItem() + $key }}</th>
-                                <td>{{ $post->postingCommonity->title ?? "" }}</td>
-                                <td>{{ $post->title }}</td>
-                                <td><img class="img-thumbnail" style="width: 100px; height: 100px; object-fit: fill;" src="{{ $post->image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" alt=""></td>
-                                {{-- <td>{{ $post->content }}</td> --}}
-                                {{-- <td>{{ ($post->active == '1') ? 'Active' : 'Deactivate' }}</td> --}}
+                                <th scope="row">{{ $sponsors->firstItem() + $key }}</th>
+                                <td>{{ $spsr->sponsorEvent->title }}</td>
+                                <td>{{ $spsr->name }}</td>
+                                <td><img class="img-thumbnail" style="width: 100px; height: 100px; object-fit: fill;" src="{{ $spsr->image }}" alt=""></td>
+                                <td>{{ $spsr->description }}</td>
+                                <td>{{ ($spsr->active == '1') ? 'Active' : 'Deactivate'}}</td>
                                 <td>
-                                    <a class="btn btn-info" href="{{ route('community.posting.ubah', ['id' => $post->id]) }}">EDIT</a>
-                                </td>
-                                <td>
-                                    <form action="{{ route('community.posting.hapus', ['id' => $post->id]) }}" method="POST">
+                                    <a class="btn btn-info" href="{{ route('event.sponsor.ubah', ['id' => $spsr->id]) }}">EDIT</a>
+                                    {{-- <form action="{{ route('event.sponsor.hapus', ['id' => $spsr->id]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">DELETE</button>
-                                    </form>
+                                        <button type="submit" class="btn btn-danger ">DELETE</button>
+                                    </form> --}}
                                 </td>
                             </tr>
                         @endforeach
@@ -74,47 +72,47 @@
             <div class="row">
                 <div class="col-12">
                     <ul class="pagination pagination-success justify-content-center mt-3">
-                        @if ($posting->onFirstPage())
+                        @if ($sponsors->onFirstPage())
                             <li class="page-item disabled">
                                 <span class="page-link"><i class="icon ion-ios-arrow-back"></i></span>
                             </li>
                         @else
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->previousPageUrl() }}" rel="prev"><i class="icon ion-ios-arrow-back"></i></a>
+                                <a class="page-link" href="{{ $sponsors->previousPageUrl() }}" rel="prev"><i class="icon ion-ios-arrow-back"></i></a>
                             </li>
                         @endif
             
-                        @if ($posting->currentPage() > 3)
+                        @if ($sponsors->currentPage() > 3)
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->url(1) }}">1</a>
+                                <a class="page-link" href="{{ $sponsors->url(1) }}">1</a>
                             </li>
-                            @if ($posting->currentPage() > 4)
+                            @if ($sponsors->currentPage() > 4)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                         @endif
             
-                        @foreach(range(1, $posting->lastPage()) as $i)
-                            @if ($i >= $posting->currentPage() - 2 && $i <= $posting->currentPage() + 2)
-                                @if ($i == $posting->currentPage())
+                        @foreach(range(1, $sponsors->lastPage()) as $i)
+                            @if ($i >= $sponsors->currentPage() - 2 && $i <= $sponsors->currentPage() + 2)
+                                @if ($i == $sponsors->currentPage())
                                     <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
                                 @else
-                                    <li class="page-item"><a class="page-link" href="{{ $posting->url($i) }}">{{ $i }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="{{ $sponsors->url($i) }}">{{ $i }}</a></li>
                                 @endif
                             @endif
                         @endforeach
             
-                        @if ($posting->currentPage() < $posting->lastPage() - 2)
-                            @if ($posting->currentPage() < $posting->lastPage() - 3)
+                        @if ($sponsors->currentPage() < $sponsors->lastPage() - 2)
+                            @if ($sponsors->currentPage() < $sponsors->lastPage() - 3)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->url($posting->lastPage()) }}">{{ $posting->lastPage() }}</a>
+                                <a class="page-link" href="{{ $sponsors->url($sponsors->lastPage()) }}">{{ $sponsors->lastPage() }}</a>
                             </li>
                         @endif
             
-                        @if ($posting->hasMorePages())
+                        @if ($sponsors->hasMorePages())
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->nextPageUrl() }}" rel="next"><i class="icon ion-ios-arrow-forward"></i></a>
+                                <a class="page-link" href="{{ $sponsors->nextPageUrl() }}" rel="next"><i class="icon ion-ios-arrow-forward"></i></a>
                             </li>
                         @else
                             <li class="page-item disabled">

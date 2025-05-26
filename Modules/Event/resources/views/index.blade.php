@@ -16,7 +16,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Judul Acara</th>
-                        <th>Tangga Peaksanaan</th>
+                        <th>Tangga Pelaksanaan</th>
                         <th>Lokasi</th>
                         <th>Aksi</th>
                     </tr>
