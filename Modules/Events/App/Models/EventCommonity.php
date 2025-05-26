@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Community\App\Models;
+namespace Modules\Events\App\Models;
 
 use Carbon\Carbon;
 use App\Models\User;
@@ -24,7 +24,7 @@ class EventCommonity extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $table = "t_eventgolf";
+    protected $table = "t_event";
     const CREATE_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -47,7 +47,7 @@ class EventCommonity extends Model
     }
 
     public function membersEvent(){
-        return $this->belongsToMany(User::class, 't_member_eventgolf', 't_event_id', 't_user_id');//->withPivot('data_input')->where('approve', 2);
+        return $this->belongsToMany(User::class, 't_member_event', 't_event_id', 't_user_id')->withPivot('data_input');//->where('approve', 2);
     }
 
     public function joinBy($userId)
@@ -137,22 +137,22 @@ class EventCommonity extends Model
         try {
             $now = Carbon::now()->format('Y-m-d');
             // Chunking for ongoing events
-            DB::table('t_eventgolf')
+            DB::table('t_event')
                 ->whereDate('play_date_start', '=', $now)->where('period', 1)->whereNotIn('period', [3, 4])
                 ->chunkById(100, function ($events) {
                     foreach ($events as $event) {
-                        DB::table('t_eventgolf')
+                        DB::table('t_event')
                             ->where('id', $event->id)
                             ->update(['period' => 2]);
                     }
                 });
 
             // Chunking for passed events
-            DB::table('t_eventgolf')
+            DB::table('t_event')
                 ->whereDate('play_date_end', '<', $now)->where('period', 2)->whereNotIn('period', [3, 4])
                 ->chunkById(100, function ($events) {
                     foreach ($events as $event) {
-                        DB::table('t_eventgolf')
+                        DB::table('t_event')
                             ->where('id', $event->id)
                             ->update(['period' => 3]);
                     }

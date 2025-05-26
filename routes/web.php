@@ -113,6 +113,65 @@ Route::middleware(['auth'])->group(function () {
             Route::post('{id}', [UserManageController::class, 'user_by_id']);
         });
 
+        Route::prefix('event')->group(function(){
+            Route::get('index', [EventCommunityController::class, 'index'])->name('event.semua');
+            Route::get('tambah', [EventCommunityController::class, 'create'])->name('event.tambah');
+            Route::post('tambah', [EventCommunityController::class, 'store'])->name('event.tambah');
+            Route::get('{id}/ubah', [EventCommunityController::class, 'edit'])->name('event.ubah');
+            Route::patch('{id}/ubah', [EventCommunityController::class, 'update'])->name('event.ubah');
+            Route::delete('{id}/hapus', [EventCommunityController::class, 'destroy'])->name('event.hapus');
+            Route::get('{id}/leaderboard', [EventCommunityController::class, 'leaderboard'])->name('event.leaderboard');
+            Route::get('{id}/winner-category', [EventCommunityController::class, 'create_winner_category'])->name('event.winner-category');
+            Route::post('tambah-winner-category', [EventCommunityController::class, 'store_winner_category'])->name('event.tambah.winner-category');
+            Route::get('{id}/view-input-score', [EventCommunityController::class, 'create_input_score'])->name('event.viewInputScore');
+            Route::post('input-score', [EventCommunityController::class, 'store_input_score'])->name('event.inputScore');
+            Route::get('/get-user-scores', [EventCommunityController::class, 'getUserScores'])->name('event.getUserScore');
+
+
+            Route::prefix('registrant')->group(function(){
+                Route::get('{event_id}/index', [EventCommunityController::class, 'index_registrant'])->name('event.registrant.semua');
+                Route::patch('{id}/ubah', [EventCommunityController::class, 'update_registrant'])->name('event.registrant.ubah');
+                Route::post('tambah', [EventCommunityController::class, 'store_user_join'])->name('event.registrant.tambah');
+            });
+
+            Route::prefix('supporting-partner')->group(function(){
+                Route::get('index', [SponsorEventController::class, 'index'])->name('event.sponsor.semua');
+                Route::get('tambah', [SponsorEventController::class, 'create'])->name('event.sponsor.tambah');
+                Route::post('tambah', [SponsorEventController::class, 'store'])->name('event.sponsor.tambah');
+                Route::get('{id}/ubah', [SponsorEventController::class, 'edit'])->name('event.sponsor.ubah');
+                Route::patch('{id}/ubah', [SponsorEventController::class, 'update'])->name('event.sponsor.ubah');
+                Route::delete('{id}/hapus', [SponsorEventController::class, 'destroy'])->name('event.sponsor.hapus');
+            });
+
+            Route::prefix('winner-category')->group(function(){
+                Route::get('{id}/index', [WinnerCategoryController::class, 'index'])->name('event.winners.semua');
+                Route::get('tambah', [WinnerCategoryController::class, 'create'])->name('event.winners.tambah');
+                Route::post('tambah', [WinnerCategoryController::class, 'store'])->name('event.winners.tambah');
+                Route::get('{id}/ubah', [WinnerCategoryController::class, 'edit'])->name('event.winners.ubah');
+                Route::patch('{id}/ubah', [WinnerCategoryController::class, 'update'])->name('event.winners.ubah');
+                Route::delete('{id}/hapus', [WinnerCategoryController::class, 'destroy'])->name('event.winners.hapus');
+            });
+
+            Route::prefix('album')->group(function(){
+                Route::get('index', [AlbumEventController::class, 'index'])->name('event.album.semua');
+                Route::get('tambah', [AlbumEventController::class, 'create'])->name('event.album.tambah');
+                Route::post('tambah', [AlbumEventController::class, 'store'])->name('event.album.tambah');
+                Route::get('{id}/ubah', [AlbumEventController::class, 'edit'])->name('event.album.ubah');
+                Route::patch('{id}/ubah', [AlbumEventController::class, 'update'])->name('event.album.ubah');
+                Route::delete('{id}/hapus', [AlbumEventController::class, 'destroy'])->name('event.album.hapus');
+
+                Route::prefix('photo')->group(function(){
+                    Route::get('{album_id}/index', [AlbumEventController::class, 'photo_index'])->name('event.album.photo.semua');
+                    Route::get('{album_id}/tambah', [AlbumEventController::class, 'photo_create'])->name('event.album.photo.viewtambah');
+                    Route::post('tambah', [AlbumEventController::class, 'photo_store'])->name('event.album.photo.tambah');
+                    Route::get('{id}/ubah', [AlbumEventController::class, 'photo_edit'])->name('event.album.photo.ubah');
+                    Route::patch('{id}/ubah', [AlbumEventController::class, 'photo_update'])->name('event.album.photo.ubah');
+                    Route::delete('{id}/hapus', [AlbumEventController::class, 'photo_destroy'])->name('event.album.photo.hapus');
+                });
+            });
+
+        });
+
         Route::prefix('community')->group(function () {
             Route::get('index', [CommunityController::class, 'index'])->name('community.semua');
             Route::get('tambah', [CommunityController::class, 'create'])->name('community.tambah');
@@ -161,64 +220,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('{id}/ubah', [SponsorCommunityController::class, 'edit'])->name('community.sponsor.ubah');
                 Route::patch('{id}/ubah', [SponsorCommunityController::class, 'update'])->name('community.sponsor.ubah');
                 Route::delete('{id}/hapus', [SponsorCommunityController::class, 'destroy'])->name('community.sponsor.hapus');
-            });
-        });
-
-        Route::prefix('event')->group(function () {
-            Route::get('index', [EventCommunityController::class, 'index'])->name('event.semua');
-            Route::get('tambah', [EventCommunityController::class, 'create'])->name('event.tambah');
-            Route::post('tambah', [EventCommunityController::class, 'store'])->name('event.tambah');
-            Route::get('{id}/ubah', [EventCommunityController::class, 'edit'])->name('event.ubah');
-            Route::patch('{id}/ubah', [EventCommunityController::class, 'update'])->name('event.ubah');
-            Route::delete('{id}/hapus', [EventCommunityController::class, 'destroy'])->name('event.hapus');
-            Route::get('{id}/leaderboard', [EventCommunityController::class, 'leaderboard'])->name('event.leaderboard');
-            Route::get('{id}/winner-category', [EventCommunityController::class, 'create_winner_category'])->name('event.winner-category');
-            Route::post('tambah-winner-category', [EventCommunityController::class, 'store_winner_category'])->name('event.tambah.winner-category');
-            Route::get('{id}/view-input-score', [EventCommunityController::class, 'create_input_score'])->name('event.viewInputScore');
-            Route::post('input-score', [EventCommunityController::class, 'store_input_score'])->name('event.inputScore');
-            Route::get('/get-user-scores', [EventCommunityController::class, 'getUserScores'])->name('event.getUserScore');
-
-
-            Route::prefix('registrant')->group(function () {
-                Route::get('{event_id}/index', [EventCommunityController::class, 'index_registrant'])->name('event.registrant.semua');
-                Route::patch('{id}/ubah', [EventCommunityController::class, 'update_registrant'])->name('event.registrant.ubah');
-                Route::post('tambah', [EventCommunityController::class, 'store_user_join'])->name('event.registrant.tambah');
-            });
-
-            Route::prefix('supporting-partner')->group(function () {
-                Route::get('index', [SponsorEventController::class, 'index'])->name('event.sponsor.semua');
-                Route::get('tambah', [SponsorEventController::class, 'create'])->name('event.sponsor.tambah');
-                Route::post('tambah', [SponsorEventController::class, 'store'])->name('event.sponsor.tambah');
-                Route::get('{id}/ubah', [SponsorEventController::class, 'edit'])->name('event.sponsor.ubah');
-                Route::patch('{id}/ubah', [SponsorEventController::class, 'update'])->name('event.sponsor.ubah');
-                Route::delete('{id}/hapus', [SponsorEventController::class, 'destroy'])->name('event.sponsor.hapus');
-            });
-
-            Route::prefix('winner-category')->group(function () {
-                Route::get('{id}/index', [WinnerCategoryController::class, 'index'])->name('event.winners.semua');
-                Route::get('tambah', [WinnerCategoryController::class, 'create'])->name('event.winners.tambah');
-                Route::post('tambah', [WinnerCategoryController::class, 'store'])->name('event.winners.tambah');
-                Route::get('{id}/ubah', [WinnerCategoryController::class, 'edit'])->name('event.winners.ubah');
-                Route::patch('{id}/ubah', [WinnerCategoryController::class, 'update'])->name('event.winners.ubah');
-                Route::delete('{id}/hapus', [WinnerCategoryController::class, 'destroy'])->name('event.winners.hapus');
-            });
-
-            Route::prefix('album')->group(function () {
-                Route::get('index', [AlbumEventController::class, 'index'])->name('event.album.semua');
-                Route::get('tambah', [AlbumEventController::class, 'create'])->name('event.album.tambah');
-                Route::post('tambah', [AlbumEventController::class, 'store'])->name('event.album.tambah');
-                Route::get('{id}/ubah', [AlbumEventController::class, 'edit'])->name('event.album.ubah');
-                Route::patch('{id}/ubah', [AlbumEventController::class, 'update'])->name('event.album.ubah');
-                Route::delete('{id}/hapus', [AlbumEventController::class, 'destroy'])->name('event.album.hapus');
-
-                Route::prefix('photo')->group(function () {
-                    Route::get('{album_id}/index', [AlbumEventController::class, 'photo_index'])->name('event.album.photo.semua');
-                    Route::get('{album_id}/tambah', [AlbumEventController::class, 'photo_create'])->name('event.album.photo.viewtambah');
-                    Route::post('tambah', [AlbumEventController::class, 'photo_store'])->name('event.album.photo.tambah');
-                    Route::get('{id}/ubah', [AlbumEventController::class, 'photo_edit'])->name('event.album.photo.ubah');
-                    Route::patch('{id}/ubah', [AlbumEventController::class, 'photo_update'])->name('event.album.photo.ubah');
-                    Route::delete('{id}/hapus', [AlbumEventController::class, 'photo_destroy'])->name('event.album.photo.hapus');
-                });
             });
         });
 
