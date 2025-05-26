@@ -582,7 +582,7 @@ class UserManageController extends Controller
                     Rule::unique('users')->ignore($model->id),
                 ],
             ]);
-            dd($model->id);
+            
             $model = $this->model->findOrfail($request->id);
 
             $model->update($datas);
