@@ -22,7 +22,7 @@ class Event extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $table = "t_event";
+    protected $table = "t_eventgolf";
     const CREATE_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -39,11 +39,11 @@ class Event extends Model
     }
 
     public function eventCommonity(){
-        return $this->belongsTo(Community   ::class, 't_community_id');
+        return $this->belongsTo(Community::class, 't_community_id');
     }
 
     public function membersEvent(){
-        return $this->belongsToMany(User::class, 't_member_event', 't_event_id', 't_user_id');
+        return $this->belongsToMany(User::class, 't_member_eventgolf', 't_event_id', 't_user_id');
     }
 
     public function teeMan(){
