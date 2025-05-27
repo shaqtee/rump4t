@@ -43,6 +43,7 @@ class CommunityController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request){
+        // dd('community');
         try{
             $page = $request->size ?? 10;
             $data = [
