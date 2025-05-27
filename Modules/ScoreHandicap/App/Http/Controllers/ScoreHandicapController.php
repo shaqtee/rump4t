@@ -182,14 +182,16 @@ class ScoreHandicapController extends Controller
                             $holeNumber = $score['hole_id'] ?? null;
 
                             // pakai ini jika ga ada course_idnya kalo ada langsung pakai
-                            $course = DB::table('t_event')
-                            ->join('m_golf_course', 't_event.m_golf_course_id', '=', 'm_golf_course.id')
-                            ->where('t_event.id', $request->event_id)
+                            $course = DB::table('t_eventgolf')
+                            ->join('m_golf_course', 't_eventgolf.m_golf_course_id', '=', 'm_golf_course.id')
+                            ->where('t_eventgolf.id', $request->event_id)
                             ->select('m_golf_course.id as course_id', 'm_golf_course.name as course_name')
                             ->first();
 
+                            $courseIdToUse = $course->course_id ?? $course_id;
+
                             $holeId = Hole::where('hole_number', $holeNumber)
-                            ->where('course_id', $course->course_id)
+                            ->where('course_id', $courseIdToUse)
                             ->value('id');
 
                             $createdScore = $this->scoresDetail->create([
@@ -209,7 +211,7 @@ class ScoreHandicapController extends Controller
                         }
 
                         $model->update(['gross_score' => $totalStroke]);
-                        $model->update(['image_score' => $request->image_score]);
+                        $model->update(['image_score' => $request->image_score ?? null]);
 
             }elseif ($request->flag_data == 't_lets_play') {
 
