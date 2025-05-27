@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\Modules\Masters\MasterRulesScoreController;
 use App\Http\Controllers\ManagePeople\Modules\ManageAlbumCommunityController;
 use App\Http\Controllers\ManagePeople\Modules\ManageEventCommunityController;
 use App\Http\Controllers\Admin\Modules\Masters\MasterWinnerCategoryController;
+use App\Http\Controllers\Admin\Modules\PollingManageController;
 use App\Http\Controllers\Admin\Modules\SocialMedia\ElectionsController;
 use App\Http\Controllers\Admin\Modules\SocialMedia\InformationController;
 use App\Http\Controllers\Admin\Modules\SocialMedia\SocialMediaController;
@@ -223,7 +224,9 @@ Route::middleware(['auth'])->group(function () {
             });
 
             Route::prefix('polling')->group(function () {
-                Route::get('index-admin', [UserManageController::class, 'index_admin'])->name('users.admin.semua');
+                Route::get('index-admin', [PollingManageController::class, 'index_admin'])->name('polling.admin');
+                Route::get('tambah', [PollingManageController::class, 'create'])->name('polling.create');
+                Route::post('tambah', [PollingManageController::class, 'store'])->name('polling.store');
                 // Route::patch('{id}/index-admin', [UserManageController::class, 'update_admin'])->name('users.admin.edit');
                 // Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');    
                 // Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');
