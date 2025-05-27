@@ -189,7 +189,6 @@ class ScoreHandicapController extends Controller
                             ->first();
 
                             $courseIdToUse = $course->course_id ?? $course_id;
-
                             $holeId = Hole::where('hole_number', $holeNumber)
                             ->where('course_id', $courseIdToUse)
                             ->value('id');
