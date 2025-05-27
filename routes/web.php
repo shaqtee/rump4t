@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthWebController;
 use App\Http\Controllers\Admin\Modules\CommunityController;
+use App\Http\Controllers\Admin\Modules\Groups\GroupsController;
 use App\Http\Controllers\ManageEvent\ManageEventController;
 use App\Http\Controllers\Admin\Modules\UserManageController;
 use App\Http\Controllers\Admin\Modules\AlbumCommunityController;
@@ -170,6 +171,15 @@ Route::middleware(['auth'])->group(function () {
                 });
             });
 
+        });
+
+        Route::prefix('groups')->group(function () {
+            Route::get('index', [GroupsController::class, 'index'])->name('groups.semua');
+            Route::get('tambah', [GroupsController::class, 'create'])->name('groups.tambah');
+            Route::post('tambah', [GroupsController::class, 'store'])->name('groups.tambah');
+            Route::get('{id}/ubah', [GroupsController::class, 'edit'])->name('groups.ubah');
+            Route::patch('{id}/ubah', [GroupsController::class, 'update'])->name('groups.ubah');
+            Route::delete('{id}/hapus', [GroupsController::class, 'destroy'])->name('groups.hapus');
         });
 
         Route::prefix('community')->group(function () {
