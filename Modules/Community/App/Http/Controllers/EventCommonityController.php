@@ -329,8 +329,8 @@ class EventCommonityController extends Controller
                                         }
                                     ])->findOrfail($joinEvent->id);
 
-            $email = new EVoucher($datasEmail);
-            Mail::to($joinEvent->user->email)->send($email);
+            // $email = new EVoucher($datasEmail);
+            // Mail::to($joinEvent->user->email)->send($email);
 
             DB::commit();
             return $this->api->success($joinEvent, "Success Joined Event ". $joinEvent['event']['title']);

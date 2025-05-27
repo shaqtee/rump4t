@@ -136,8 +136,8 @@ class MyGamesController extends Controller
             $userId = Auth::id();
             $index = $this->users->select('id', 'name')
                 ->with([
-                    'myEventList' => function ($q) {
-                        $q->select('t_event.id', 't_event.t_community_id', 't_event.title', 't_event.play_date_start', 't_event.play_date_end', 't_member_event.t_event_id', 't_member_event.t_user_id', 't_event.type_scoring', 't_member_event.approve', 't_event.m_golf_course_id')
+                    'myEventGolfList' => function ($q) {
+                        $q->select('t_eventgolf.id', 't_eventgolf.t_community_id', 't_eventgolf.title', 't_eventgolf.play_date_start', 't_eventgolf.play_date_end', 't_member_eventgolf.t_event_id', 't_member_eventgolf.t_user_id', 't_eventgolf.type_scoring', 't_member_eventgolf.approve', 't_eventgolf.m_golf_course_id')
                             ->with(['eventCommonity:id,title', 'golfCourseEvent:id,name,address']);
                     },
                     'myLetsPlayList' => function ($q) {
@@ -240,7 +240,6 @@ class MyGamesController extends Controller
             };
         }
     }
-
     public function show($id)
     {
         try {
