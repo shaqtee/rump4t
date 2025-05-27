@@ -130,7 +130,7 @@ class ScoreHandicapController extends Controller
                 if(isset($request->t_event_id) || $request->t_event_id != null){
                     $event = $this->event->with([
                         'membersEvent' => function($q) {
-                            $q->where('t_member_event.approve', 'PAID')->whereNotNull('users.fcm_token');
+                            $q->where('t_member_eventgolf.approve', 'PAID')->whereNotNull('users.fcm_token');
                         }
                     ])->find($request->t_event_id);
 
@@ -182,14 +182,16 @@ class ScoreHandicapController extends Controller
                             $holeNumber = $score['hole_id'] ?? null;
 
                             // pakai ini jika ga ada course_idnya kalo ada langsung pakai
-                            $course = DB::table('t_event')
-                            ->join('m_golf_course', 't_event.m_golf_course_id', '=', 'm_golf_course.id')
-                            ->where('t_event.id', $request->event_id)
+                            $course = DB::table('t_eventgolf')
+                            ->join('m_golf_course', 't_eventgolf.m_golf_course_id', '=', 'm_golf_course.id')
+                            ->where('t_eventgolf.id', $request->event_id)
                             ->select('m_golf_course.id as course_id', 'm_golf_course.name as course_name')
                             ->first();
 
+                            $courseIdToUse = $course->course_id ?? $course_id;
+
                             $holeId = Hole::where('hole_number', $holeNumber)
-                            ->where('course_id', $course->course_id)
+                            ->where('course_id', $courseIdToUse)
                             ->value('id');
 
                             $createdScore = $this->scoresDetail->create([
@@ -209,7 +211,7 @@ class ScoreHandicapController extends Controller
                         }
 
                         $model->update(['gross_score' => $totalStroke]);
-                        $model->update(['image_score' => $request->image_score]);
+                        $model->update(['image_score' => $request->image_score ?? null]);
 
             }elseif ($request->flag_data == 't_lets_play') {
 
@@ -602,6 +604,17 @@ class ScoreHandicapController extends Controller
 
                         ])
                         ->findOrfail($userId);
+
+            // Tambahkan flag_data secara manual
+            $eventList = $index->myEventGolfList->map(function ($item) {
+                $item['flag_data'] = 't_event';
+                return $item;
+            });
+
+            $letsPlayList = $index->myLetsPlayList->map(function ($item) {
+                $item['flag_data'] = 't_lets_play';
+                return $item;
+            });
 
             $dataListGames = array_merge($index->myEventGolfList->toArray(),$index->myLetsPlayList->toArray());
             unset($index->myEventGolfList,$index->myLetsPlayList);

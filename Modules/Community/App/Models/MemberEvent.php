@@ -16,7 +16,7 @@ class MemberEvent extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $table = "t_member_event";
+    protected $table = "t_member_eventgolf";
     protected $guarded = ['id'];
 
     public function user(){

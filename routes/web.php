@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthWebController;
 use App\Http\Controllers\Admin\Modules\CommunityController;
+use App\Http\Controllers\Admin\Modules\Groups\GroupsController;
 use App\Http\Controllers\ManageEvent\ManageEventController;
 use App\Http\Controllers\Admin\Modules\UserManageController;
 use App\Http\Controllers\Admin\Modules\AlbumCommunityController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Admin\Modules\Masters\MasterRulesScoreController;
 use App\Http\Controllers\ManagePeople\Modules\ManageAlbumCommunityController;
 use App\Http\Controllers\ManagePeople\Modules\ManageEventCommunityController;
 use App\Http\Controllers\Admin\Modules\Masters\MasterWinnerCategoryController;
+use App\Http\Controllers\Admin\Modules\PollingManageController;
 use App\Http\Controllers\Admin\Modules\SocialMedia\ElectionsController;
 use App\Http\Controllers\Admin\Modules\SocialMedia\InformationController;
 use App\Http\Controllers\Admin\Modules\SocialMedia\SocialMediaController;
@@ -172,6 +174,15 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
+        Route::prefix('groups')->group(function () {
+            Route::get('index', [GroupsController::class, 'index'])->name('groups.semua');
+            Route::get('tambah', [GroupsController::class, 'create'])->name('groups.tambah');
+            Route::post('tambah', [GroupsController::class, 'store'])->name('groups.tambah');
+            Route::get('{id}/ubah', [GroupsController::class, 'edit'])->name('groups.ubah');
+            Route::patch('{id}/ubah', [GroupsController::class, 'update'])->name('groups.ubah');
+            Route::delete('{id}/hapus', [GroupsController::class, 'destroy'])->name('groups.hapus');
+        });
+
         Route::prefix('community')->group(function () {
             Route::get('index', [CommunityController::class, 'index'])->name('community.semua');
             Route::get('tambah', [CommunityController::class, 'create'])->name('community.tambah');
@@ -220,6 +231,16 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('{id}/ubah', [SponsorCommunityController::class, 'edit'])->name('community.sponsor.ubah');
                 Route::patch('{id}/ubah', [SponsorCommunityController::class, 'update'])->name('community.sponsor.ubah');
                 Route::delete('{id}/hapus', [SponsorCommunityController::class, 'destroy'])->name('community.sponsor.hapus');
+            });
+
+            Route::prefix('polling')->group(function () {
+                Route::get('index-admin', [PollingManageController::class, 'index_admin'])->name('polling.admin');
+                Route::get('tambah', [PollingManageController::class, 'create'])->name('polling.create');
+                Route::post('tambah', [PollingManageController::class, 'store'])->name('polling.store');
+                // Route::patch('{id}/index-admin', [UserManageController::class, 'update_admin'])->name('users.admin.edit');
+                // Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');    
+                // Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');
+                // Route::delete('{id}/hapus', [UserManageController::class, 'delete_soft'])->name('users.hapus');
             });
         });
 

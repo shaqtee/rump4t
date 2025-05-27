@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Models;
+
+use App\Services\Helpers\Helper;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class PollingVote extends Model
+{
+    use HasFactory;
+
+    protected $guarded = ['id'];
+    protected $table = 't_polling_options';
+
+    public function option()
+    {
+        return $this->belongsTo(PollingOption::class);
+    }
+
+    public function polling()
+    {
+        return $this->belongsTo(Polling::class);
+    }
+
+    public function scopeFilter($query, $request)
+    {
+        foreach ($request->all() as $key => $val) {
+            if ($val !== null) {
+                switch ($key) {
+                    case 'search':
+                        $query->where('name', 'ilike', '%' . $val . '%');
+                        break;
+                    default:
+                        $query->where($key, 'ilike', '%' . $val . '%');
+                        break;
+                }
+            }
+        }
+
+        return $query;
+    }
+
+    public static function columns()
+    {
+        return Helper::columns([
+            'Name' => 'string',
+        ]);
+    }
+
+    public static function columnsWeb()
+    {
+        return Helper::columns([
+            'Name' => 'string',
+        ]);
+    }
+}

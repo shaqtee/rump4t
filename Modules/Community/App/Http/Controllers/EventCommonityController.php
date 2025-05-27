@@ -97,7 +97,7 @@ class EventCommonityController extends Controller
             $show = $shows->with([
                         'eventCommonity:id,title',
                         'membersEvent' => function($q){
-                            $q->select('users.id', 'users.player_id', 'users.name', 'users.nickname', 'users.image', 't_member_event.image as proof_payment', 't_member_event.approve', 't_member_event.voucher')->where('approve', 'PAID')->orderBy('users.name', 'ASC')->get();
+                            $q->select('users.id', 'users.player_id', 'users.name', 'users.nickname', 'users.image', 't_member_eventgolf.image as proof_payment', 't_member_eventgolf.approve', 't_member_eventgolf.voucher')->where('approve', 'PAID')->orderBy('users.name', 'ASC')->get();
                         },
                         'albumEvent' => function($q){
                             $q->select('id', 't_event_id', 'name', 'cover')->with(['photoAlbum:id,t_album_id,name,image'])->orderByDesc('id')->get();
@@ -116,7 +116,7 @@ class EventCommonityController extends Controller
 
             $statusUser = $shows->with([
                                 'membersEvent' => function($q){
-                                    $q->select('users.id', 'users.name', 'users.image', 't_member_event.image as proof_payment', 't_member_event.approve', 't_member_event.voucher')->orderByDesc('users.id')->get();
+                                    $q->select('users.id', 'users.name', 'users.image', 't_member_eventgolf.image as proof_payment', 't_member_eventgolf.approve', 't_member_eventgolf.voucher')->orderByDesc('users.id')->get();
                                 },
                             ])->find($id)->toArray();
 
