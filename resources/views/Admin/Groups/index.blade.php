@@ -6,7 +6,7 @@
             </div>
             <div class="row justify-content-start">
                 <div class="col-auto">
-                    <a href="{{ route('community.tambah') }}" class="btn btn-success d-flex align-items-center justify-content-center mt-3"> <i class="fa fa-plus mr-2"></i> ADD</a>
+                    <a href="{{ route('groups.tambah') }}" class="btn btn-success d-flex align-items-center justify-content-center mt-3"> <i class="fa fa-plus mr-2"></i> ADD</a>
                 </div>
             </div>
         </div>
@@ -32,9 +32,9 @@
                                 <td>{{ $com->description }}</td>
                                 <td>{{ $com->location }}</td>
                                 <td> 
-                                    <a class="btn btn-info " href="{{ route('community.ubah', ['id' => $com->id]) }}">Edit</a>
+                                    <a class="btn btn-info " href="{{ route('groups.ubah', ['id' => $com->id]) }}">Edit</a>
                                 </td>
-                                <td> 
+                                {{-- <td> 
                                     <a class="btn btn-info " href="{{ route('community.addmanagepeopleview', ['community_id' => $com->id]) }}">Organizer</a>
                                 </td>
                                 <td> 
@@ -42,11 +42,11 @@
                                 </td>
                                 <td> 
                                     <a class="btn btn-info " href="{{ route('community.leaderboard', ['community_id' => $com->id]) }}">Leaderboard</a>
-                                </td>
+                                </td> --}}
                                 <td>
                                     <div class="row">
                                         <div class="col">
-                                            <form action="{{ route('community.hapus', ['id' => $com->id]) }}" method="POST">
+                                            <form action="{{ route('groups.hapus', ['id' => $com->id]) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger ">DELETE</button>
