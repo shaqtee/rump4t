@@ -10,5 +10,6 @@
     "Event": true,
     "Regions": true,
     "Events": true,
-    "Groups": true
+    "Groups": true,
+    "Polling": true
 }
