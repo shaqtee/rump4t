@@ -11,16 +11,16 @@ class PollingVote extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $table = 't_polling_options';
+    protected $table = 't_polling_votes';
 
     public function option()
     {
-        return $this->belongsTo(PollingOption::class);
+        return $this->belongsTo(PollingOption::class, 'polling_option_id');
     }
 
     public function polling()
     {
-        return $this->belongsTo(Polling::class);
+        return $this->belongsTo(Polling::class, 'polling_id');
     }
 
     public function scopeFilter($query, $request)

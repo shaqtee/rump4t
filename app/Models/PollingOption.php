@@ -15,12 +15,12 @@ class PollingOption extends Model
 
     public function polling()
     {
-        return $this->belongsTo(Polling::class);
+        return $this->belongsTo(Polling::class, 'polling_id');
     }
 
     public function votes()
     {
-        return $this->hasMany(PollingVote::class);
+        return $this->hasMany(PollingVote::class, 'id');
     }
 
     public function scopeFilter($query, $request)
