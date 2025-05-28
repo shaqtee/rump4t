@@ -118,7 +118,6 @@ class PollingController extends Controller
             ]);
 
             $userId = Auth::id(); 
-            dd($userId);
 
             $option = $this->option->findOrFail($request->polling_option_id);
             $pollingId = $option->polling_id;

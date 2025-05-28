@@ -21,7 +21,5 @@ use Modules\Polling\App\Http\Controllers\PollingController;
 //     Route::post('/vote', [PollingController::class, 'submit_vote']); 
 // });
 
-Route::prefix('polling')->group(function () {
-    Route::get('/', [PollingController::class, 'index']); // untuk list polling (aktif, tidak aktif, atau detail)
-    Route::post('/vote', [PollingController::class, 'submit_vote']); 
-});
+Route::get('/', [PollingController::class, 'index']); // untuk list polling (aktif, tidak aktif, atau detail)
+Route::post('/vote', [PollingController::class, 'submit_vote']); 
