@@ -34,15 +34,9 @@
                                 <td> 
                                     <a class="btn btn-info " href="{{ route('groups.ubah', ['id' => $com->id]) }}">Edit</a>
                                 </td>
-                                {{-- <td> 
-                                    <a class="btn btn-info " href="{{ route('community.addmanagepeopleview', ['community_id' => $com->id]) }}">Organizer</a>
-                                </td>
                                 <td> 
-                                    <a class="btn btn-info " href="{{ route('community.member', ['community_id' => $com->id]) }}">Member</a>
+                                    <a class="btn btn-info " href="{{ route('groups.member', ['groups_id' => $com->id]) }}">Member</a>
                                 </td>
-                                <td> 
-                                    <a class="btn btn-info " href="{{ route('community.leaderboard', ['community_id' => $com->id]) }}">Leaderboard</a>
-                                </td> --}}
                                 <td>
                                     <div class="row">
                                         <div class="col">
