@@ -44,7 +44,7 @@ class PerformaceController extends Controller
                             ])
                             ->get();
 
-            if($datas->count() != 0 || $datas->count() != null) {
+            if($datas->count() > 0){
                 $minTotRounds = 5;
                 $hdConst = 113; // menghitung handicap diff
                 $hdConst2 = 0.96; // menghitung handicap index
@@ -53,11 +53,16 @@ class PerformaceController extends Controller
                 $ags = floor(($sumScore / $totRounds) * 10) / 10; //Adjusted Gross Score
                 $handicapDiff = collect();
                 foreach($datas as $d) {
+                    // // $nilai = ($ags - round($d->golfCourse->course_rating, 1)) * $hdConst / intval($d->golfCourse->slope_rating);
                     // $nilai = ($ags - round($d->golfCourse->course_rating, 1)) * $hdConst / intval($d->golfCourse->slope_rating);
-                    $nilai = ($ags - round($d->course_rating, 1)) * $hdConst / intval($d->slope_rating);
-                    $handicapDiff->push($nilai);
+                    // $handicapDiff->push($nilai);
+                    if ($d->golfCourse && $d->golfCourse->course_rating !== null && $d->golfCourse->slope_rating != 0) {
+                        $courseRating = round((float)$d->golfCourse->course_rating, 1);
+                        $slopeRating = intval($d->golfCourse->slope_rating);
+                        $nilai = ($ags - $courseRating) * $hdConst / $slopeRating;
+                        $handicapDiff->push($nilai);
+                    }
                 }
-
                 $nilaiSortDesc = $handicapDiff->sort();
                 $totNilaiHandicapDiff = null; //total nilai hadicap yg diambil
                 if($totRounds == 5){
@@ -125,8 +130,13 @@ class PerformaceController extends Controller
                 ])->orderByDesc('id')->findOrfail($user->id);
 
             $data = $datas['MyScore'];
+            // dd($data);
             $data->transform(function ($item) {
-                $item->to_par = $item->gross_score - $item->golfCourse->number_par;
+                if ($item->golfCourse && $item->golfCourse->number_par) {
+                    $item->to_par = $item->gross_score - $item->golfCourse->number_par;
+                } else {
+                    $item->to_par = null;
+                }
                 return $item;
             });
 
@@ -162,7 +172,11 @@ class PerformaceController extends Controller
             $data = $datas['MyScore'];
 
             $data->transform(function ($item) {
-                $item->to_par = $item->gross_score - $item->golfCourse->number_par;
+                if ($item->golfCourse && $item->golfCourse->number_par) {
+                    $item->to_par = $item->gross_score - $item->golfCourse->number_par;
+                } else {
+                    $item->to_par = null;
+                }
                 return $item;
             });
 

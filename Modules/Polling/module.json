@@ -1,0 +1,11 @@
+{
+    "name": "Polling",
+    "alias": "polling",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Polling\\App\\Providers\\PollingServiceProvider"
+    ],
+    "files": []
+}

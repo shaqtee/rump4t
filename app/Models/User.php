@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
+use Modules\Groups\App\Models\Group as SmallGroup;
 use Modules\MyGames\App\Models\Event;
 use Illuminate\Notifications\Notifiable;
 use Modules\MyGames\App\Models\LetsPlay;
@@ -71,6 +72,12 @@ class User extends Authenticatable
         'password' => 'hashed',
         'reset_request' => 'boolean',
     ];
+
+    public function small_groups()
+    {
+        return $this->belongsToMany(SmallGroup::class, 't_small_groups_user', 'user_id', 't_small_groups_id')
+            ->withPivot(['id', 'is_admin', 'created_at', 'updated_at']);
+    }
 
     public function group(){
         return $this->belongsTo(Group::class, 't_group_id');

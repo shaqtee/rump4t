@@ -129,7 +129,7 @@
                             <tr>
                                 <th scope="row">{{ $users->firstItem() + $key }}</th>
                                 <td>{{ $usr->name }}</td>
-                                <td><img class="img-thumbnail" src="{{ $usr->image }}" style="width: 100px; height: 100px; object-fit: fill;" alt="Profil User"></td>
+                                <td><img class="img-thumbnail" src="{{ $usr->image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" style="width: 100px; height: 100px; object-fit: cover;" alt="Profil User"></td>
                                 <td>{{ $usr->email }}</td>
                                 <td>{{ $usr->phone }}</td>
                                 {{-- <td>{{ ($usr->gender == 'L') ? 'Laki-Laki' : 'Perempuan' }}</td> --}}
