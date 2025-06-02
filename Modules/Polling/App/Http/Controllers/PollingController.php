@@ -43,6 +43,10 @@ class PollingController extends Controller
                 $polling = Polling::with(['options.votes.created_by'])->findOrFail($id);
                 $totalVotes = $polling->options->sum(fn($opt) => $opt->votes->count());
     
+                $userId = auth()->id();
+                $hasVoted = $polling->options->flatMap->votes
+                    ->contains('user_id', $userId);
+
                 $options = $polling->options->map(fn($option) => [
                     'id' => $option->id,
                     'text' => $option->option_text,
@@ -60,6 +64,7 @@ class PollingController extends Controller
                     'deadline' => $polling->deadline,
                     'created_at' => $polling->created_at,
                     'total_votes' => $totalVotes,
+                    'is_votes' => $hasVoted,
                     'options' => $options,
                 ];
     
@@ -76,6 +81,10 @@ class PollingController extends Controller
     
             $pollings = $query->get()->map(function ($polling) {
                 $totalVotes = $polling->options->sum(fn($opt) => $opt->votes->count());
+
+                $userId = auth()->id();
+                $hasVoted = $polling->options->flatMap->votes
+                    ->contains('user_id', $userId);
     
                 $options = $polling->options->map(fn($option) => [
                     'id' => $option->id,
@@ -94,6 +103,7 @@ class PollingController extends Controller
                     'deadline' => $polling->deadline,
                     'created_at' => $polling->created_at,
                     'total_votes' => $totalVotes,
+                    'is_votes' => $hasVoted,
                     'options' => $options,
                 ];
             });    
