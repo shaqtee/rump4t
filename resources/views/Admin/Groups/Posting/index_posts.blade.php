@@ -1,7 +1,3 @@
-@include('Admin.Layouts.head')
-@include('Admin.Layouts.sidebar')
-@include('Admin.Layouts.header')
-
 <div class="container mt-4">
     <div class="row">
         <div class="col-12">
@@ -16,7 +12,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body text-center">
-                    <a href="{{ route('socialmedia.moderation.tambah') }}" class="btn btn-success">Buat Postingan Baru</a>
+                    <a href="{{ route('groups.posting.create', ['groups_id' => $groups_id]) }}" class="btn btn-success">Buat Postingan Baru</a>
                 </div>
             </div>
         </div>
@@ -71,6 +67,3 @@
         </div>
     </div>
 </div>
-
-
-@include('Admin.Layouts.footer')

@@ -127,7 +127,7 @@
                             <a class="sub-side-menu__item" href="{{ route('groups.semua') }}"><span class="sub-side-menu__label">List Grup</span></a>
                         </li>
                         <li class="sub-slide">
-                            <a class="sub-side-menu__item" href="#posting"><span class="sub-side-menu__label">Posting</span></a>
+                            <a class="sub-side-menu__item" href="{{ route('groups.posting.semua') }}"><span class="sub-side-menu__label">Posting</span></a>
                         </li>
                     </ul>
                 </li>
