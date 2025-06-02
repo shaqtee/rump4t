@@ -1,8 +1,3 @@
-@include('Admin.Layouts.head')
-@include('Admin.Layouts.sidebar')
-@include('Admin.Layouts.header')
-
-
 {{-- // content section  --}}
 <style>
     .container {
@@ -35,7 +30,7 @@
             <h3>Create a New Post</h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('socialmedia.moderation.tambah') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('groups.posting.store', ['groups_id' => $groups_id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="title">Post Title</label>
@@ -54,6 +49,3 @@
         </div>
     </div>
 </div>
-
-
-@include('Admin.Layouts.footer')
