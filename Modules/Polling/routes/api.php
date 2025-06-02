@@ -24,3 +24,4 @@ use Modules\Polling\App\Http\Controllers\PollingController;
 Route::get('/', [PollingController::class, 'index']); // untuk list polling (aktif, tidak aktif, atau detail)
 Route::post('/vote', [PollingController::class, 'submit_vote']);
 Route::post('/polling_report', [PollingController::class, 'polling_report']); 
+

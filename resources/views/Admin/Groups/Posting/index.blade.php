@@ -2,12 +2,7 @@
     <div class="card mg-b-20">
         <div class="card-header pb-0">
             <div class="d-flex justify-content-between">
-                <h4 class="card-title mg-b-0">{{ $title }}</h4>
-            </div>
-            <div class="row justify-content-start mt-3">
-                <div class="col-auto">
-                    <a href="{{ route('community.posting.tambah') }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
-                </div>
+                <h4 class="card-title mg-b-0">Data Grid</h4>
             </div>
         </div>
         <div class="card-body">
@@ -21,11 +16,13 @@
                     </select>
                 </div>
                 <div class="col-auto">
-                    <form action="{{ route('community.posting.semua') }}" method="GET" class="d-flex">
+                    <form action="#" method="GET" class="d-flex">
                             <select id="searchIndex" class="form-control" style="margin-right: 10px;">
                                 @foreach ($columns as $items => $values)
                                     @foreach ($values as $item => $value)
+                                        @if($items != 1) {{-- hiding description search --}}
                                         <option value="{{ $item }}" data-placeholder="{{ $value['Label'] }}"> {{ $value['Label'] }}</option>
+                                        @endif
                                     @endforeach
                                 @endforeach
                             </select>
@@ -35,36 +32,27 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered mg-b-0 text-md-nowrap text-center">
-                    <thead>
+                <table class="table table-bordered mg-b-0 text-md-nowrap">
+                    <thead class="text-center">
                         <tr>
                             <th>No</th>
-                            <th>Community</th>
                             <th>Title</th>
                             <th>Image</th>
-                            {{-- <th>Content</th> --}}
-                            {{-- <th>Active</th> --}}
-                            <th colspan="2">Action</th>
+                            {{-- <th>Description</th> --}}
+                            <th>Region</th>
+                            <th colspan="5">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($posting as $key => $post)
+                        @foreach ($groups as $key => $com)
                             <tr>
-                                <th scope="row">{{ $posting->firstItem() + $key }}</th>
-                                <td>{{ $post?->postingCommonity?->title ?? "" }}</td>
-                                <td>{{ $post->title }}</td>
-                                <td><img class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" src="{{ $post->image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" alt=""></td>
-                                {{-- <td>{{ $post->content }}</td> --}}
-                                {{-- <td>{{ ($post->active == '1') ? 'Active' : 'Deactivate' }}</td> --}}
-                                <td>
-                                    <a class="btn btn-info" href="{{ route('community.posting.ubah', ['id' => $post->id]) }}">EDIT</a>
-                                </td>
-                                <td>
-                                    <form action="{{ route('community.posting.hapus', ['id' => $post->id]) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">DELETE</button>
-                                    </form>
+                                <th scope="row">{{ $groups->firstItem() + $key }}</th>
+                                <td style="text-align:center;">{{ $com->title }}</td>
+                                <td style="text-align:center;"><img class="img-thumbnail wd-100p wd-sm-200 mb-3" src="{{ $com->image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" alt=""></td>
+                                {{-- <td>{{ $com->description }}</td> --}}
+                                <td style="text-align:center;">{{ $com->location }}</td>
+                                <td style="text-align:center;"> 
+                                    <a class="btn btn-info " href="{{ route('groups.posting.posts', ['groups_id' => $com->id]) }}">Posts</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -74,47 +62,48 @@
             <div class="row">
                 <div class="col-12">
                     <ul class="pagination pagination-success justify-content-center mt-3">
-                        @if ($posting->onFirstPage())
+                        @if ($groups->onFirstPage())
                             <li class="page-item disabled">
                                 <span class="page-link"><i class="icon ion-ios-arrow-back"></i></span>
                             </li>
                         @else
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->previousPageUrl() }}" rel="prev"><i class="icon ion-ios-arrow-back"></i></a>
+                                <a class="page-link" href="{{ $groups->previousPageUrl() }}" rel="prev"><i class="icon ion-ios-arrow-back"></i></a>
                             </li>
                         @endif
             
-                        @if ($posting->currentPage() > 3)
+                        @if ($groups->currentPage() > 3)
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->url(1) }}">1</a>
+                                <a class="page-link" href="{{ $users->url(1) }}">1</a>
                             </li>
-                            @if ($posting->currentPage() > 4)
+                            @if ($groups->currentPage() > 4)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                         @endif
             
-                        @foreach(range(1, $posting->lastPage()) as $i)
-                            @if ($i >= $posting->currentPage() - 2 && $i <= $posting->currentPage() + 2)
-                                @if ($i == $posting->currentPage())
+                        @foreach(range(1, $groups->lastPage()) as $i)
+                            {{-- {{ dump($groups->currentPage()) }} --}}
+                            @if ($i >= $groups->currentPage() - 2 && $i <= $groups->currentPage() + 2)
+                                @if ($i == $groups->currentPage())
                                     <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
                                 @else
-                                    <li class="page-item"><a class="page-link" href="{{ $posting->url($i) }}">{{ $i }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="{{ $groups->url($i) }}">{{ $i }}</a></li>
                                 @endif
                             @endif
                         @endforeach
             
-                        @if ($posting->currentPage() < $posting->lastPage() - 2)
-                            @if ($posting->currentPage() < $posting->lastPage() - 3)
+                        @if ($groups->currentPage() < $groups->lastPage() - 2)
+                            @if ($groups->currentPage() < $groups->lastPage() - 3)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->url($posting->lastPage()) }}">{{ $posting->lastPage() }}</a>
+                                <a class="page-link" href="{{ $groups->url($groups->lastPage()) }}">{{ $groups->lastPage() }}</a>
                             </li>
                         @endif
             
-                        @if ($posting->hasMorePages())
+                        @if ($groups->hasMorePages())
                             <li class="page-item">
-                                <a class="page-link" href="{{ $posting->nextPageUrl() }}" rel="next"><i class="icon ion-ios-arrow-forward"></i></a>
+                                <a class="page-link" href="{{ $groups->nextPageUrl() }}" rel="next"><i class="icon ion-ios-arrow-forward"></i></a>
                             </li>
                         @else
                             <li class="page-item disabled">

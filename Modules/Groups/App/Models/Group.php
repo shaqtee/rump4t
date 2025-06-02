@@ -34,6 +34,12 @@ class Group extends Model
         'upcoming_event',
     ];
 
+    public function small_group_users()
+    {
+        return $this->belongsToMany(User::class, 't_small_groups_user', 't_small_groups_id', 'user_id')
+            ->withPivot(['id','is_admin','created_at']);
+    }
+
     public function eventCommonity(){
         return $this->hasMany(EventCommonity::class, 't_community_id');
     }
