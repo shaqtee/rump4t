@@ -40,7 +40,7 @@ class PollingController extends Controller
     
             if ($id) {
                 // Detail polling
-                $polling = Polling::with(['options.votes'])->findOrFail($id);
+                $polling = Polling::with(['options.votes.created_by'])->findOrFail($id);
                 $totalVotes = $polling->options->sum(fn($opt) => $opt->votes->count());
     
                 $options = $polling->options->map(fn($option) => [
@@ -148,6 +148,53 @@ class PollingController extends Controller
             }
         }
     }
+
+    public function polling_report(Request $request)
+    {
+        try {
+            $id = $request->input('polling_id');
+
+            if (!$id) {
+                return $this->api->error_code("Polling ID is required", 400);
+            }
+
+            $polling = Polling::with(['options.votes'])->findOrFail($id);
+            // dd($polling);
+            $totalVotes = $polling->options->sum(fn($opt) => $opt->votes->count());
+
+            $lastUpdate = collect([
+                $polling->created_at,
+                $polling->votes->max('created_at'),
+                $polling->votes->flatMap(fn($opt) => $opt->votes)->max('created_at'),
+            ])->filter()->max();
+
+            $options = $polling->options->map(function ($option) use ($totalVotes) {
+                $votesCount = $option->votes->count();
+                $percentage = $totalVotes > 0 ? round(($votesCount / $totalVotes) * 100, 1) : 0;
+
+                return [
+                    'text' => $option->option_text,
+                    'votes_count' => $votesCount,
+                    'percentage' => $percentage
+                ];
+            });
+
+            $data = [
+                'title' => $polling->title,
+                'last_update' => $lastUpdate?->format('Y-m-d H:i:s'),
+                'options' => $options
+            ];
+
+            return $this->api->success($data);
+        } catch (\Throwable $e) {
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
+
 
 
     /**

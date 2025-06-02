@@ -12,7 +12,7 @@ class Polling extends Model
 
     protected $guarded = ['id'];
     protected $table = 't_pollings';
-
+    
     public function options()
     {
         return $this->hasMany(PollingOption::class, 'polling_id');
@@ -20,7 +20,12 @@ class Polling extends Model
 
     public function votes()
     {
-        return $this->hasMany(PollingVote::class);
+        return $this->hasMany(PollingVote::class, 'polling_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function scopeFilter($query, $request)
@@ -29,7 +34,11 @@ class Polling extends Model
             if ($val !== null) {
                 switch ($key) {
                     case 'search':
-                        $query->where('name', 'ilike', '%' . $val . '%');
+                        $query->where(function ($q) use ($val) {
+                            $q->where('title', 'ilike', '%' . $val . '%')
+                              ->orWhere('title_description', 'ilike', '%' . $val . '%')
+                              ->orWhere('is_active', 'ilike', '%' . $val . '%');
+                        });
                         break;
                     default:
                         $query->where($key, 'ilike', '%' . $val . '%');
