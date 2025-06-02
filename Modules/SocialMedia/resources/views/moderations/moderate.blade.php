@@ -9,7 +9,7 @@
         </div>
         <div class="card-body">
             @if ($post->url_cover_image !== null)
-                <img src="{{ $post->url_cover_image }}" class="card-img-top" alt="Post Image"
+                <img src="{{ $post->url_cover_image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" class="card-img-top" alt="Post Image"
                     style="object-fit: cover; height: 200px; width: 100%;">
 
             @endif
@@ -29,7 +29,7 @@
                         rows="3"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Submit</button>
-                <a href="{{ route('socialmedia.moderation.index') }}" class="btn btn-secondary mt-3">Kembali</a>
+                <a href="{{ !empty($post->t_small_groups_id) ? route('groups.posting.posts', ['groups_id' => $post->t_small_groups_id]) : route('socialmedia.moderation.index') }}" class="btn btn-secondary mt-3">Kembali</a>
             </form>
 
 

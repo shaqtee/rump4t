@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthWebController;
 use App\Http\Controllers\Admin\Modules\CommunityController;
 use App\Http\Controllers\Admin\Modules\Groups\GroupsController;
+use App\Http\Controllers\Admin\Modules\Groups\GroupsPostingController;
 use App\Http\Controllers\ManageEvent\ManageEventController;
 use App\Http\Controllers\Admin\Modules\UserManageController;
 use App\Http\Controllers\Admin\Modules\AlbumCommunityController;
@@ -188,6 +189,13 @@ Route::middleware(['auth'])->group(function () {
             Route::post('add-member/{groups_id}', [GroupsController::class, 'add_member'])->name('groups.addmember');
             Route::delete('left-member/{id}', [GroupsController::class, 'left_member'])->name('groups.leftmember');
             Route::post('change-status-admin', [GroupsController::class, 'change_status_admin'])->name('groups.changestatusadmin');
+
+            Route::prefix('posting')->group(function () {
+                Route::get('index', [GroupsPostingController::class, 'index'])->name('groups.posting.semua');
+                Route::get('index-posts/{groups_id}', [GroupsPostingController::class, 'index_posts'])->name('groups.posting.posts');
+                Route::get('create/{groups_id}', [GroupsPostingController::class, 'create'])->name('groups.posting.create');
+                Route::post('store/{groups_id}', [GroupsPostingController::class, 'store'])->name('groups.posting.store');
+            });
         });
 
         Route::prefix('community')->group(function () {

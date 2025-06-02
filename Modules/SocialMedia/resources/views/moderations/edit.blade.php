@@ -26,7 +26,7 @@
                 <div class="form-group mt-3">
                     <label for="image">Existing Image</label>
                     <div class="mb-3">
-                        <img src{{  $post->url_cover_image }}" alt="Existing Image" class="img-thumbnail" style="max-width: 200px;">
+                        <img src="{{  $post->url_cover_image }}" alt="Existing Image" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" class="img-thumbnail" style="max-width: 200px;">
                     </div>
                     <label for="image">Upload New Image</label>
                     <input type="file" name="image" id="image" class="form-control">
@@ -34,7 +34,7 @@
 
                 <div class="form-group mt-4">
                     <button type="submit" class="btn btn-primary">Update</button>
-                    <a href="{{ route('socialmedia.moderation.index') }}" class="btn btn-secondary">Cancel</a>
+                    <a href="{{ !empty($post->t_small_groups_id) ? route('groups.posting.posts', ['groups_id' => $post->t_small_groups_id]) : route('socialmedia.moderation.index') }}" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

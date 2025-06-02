@@ -27,9 +27,12 @@ class ModeratorController extends Controller
         
         if(auth()->user()->t_group_id == 3){
             $posts = Post::whereIn('id_user', $arr_user_id)
+                ->where('t_small_groups_id', NULL)
                 ->orderBy("created_at" , "desc")->withTrashed() ->paginate(6);
         }else{
-            $posts = Post::orderBy("created_at" , "desc")->withTrashed() ->paginate(6);
+            $posts = Post::orderBy("created_at" , "desc")
+                ->where('t_small_groups_id', NULL)
+                ->withTrashed() ->paginate(6);
         }
 
         return view('socialmedia.moderations::index' , compact('posts'));
@@ -43,32 +46,40 @@ class ModeratorController extends Controller
 
     public function moderateStore(Request $request, $id)
     {
+        // dd('komen mod');
         try{
             DB::beginTransaction();
-        $post = Post::find($id);
-       (object) $moderation = [
-            "moderator" => auth()->user(),
-            "reason" => $request->input('comments'),
-        ];
-        $post->moderation = (object) $moderation;
-        $post->save();
-    }catch(\Exception $e) {
-        DB::rollBack();
+            $post = Post::find($id);
+            $groups_id = !empty($post->t_small_groups_id) ? $post->t_small_groups_id : false;
+            (object) $moderation = [
+                "moderator" => auth()->user(),
+                "reason" => $request->input('comments'),
+            ];
+            $post->moderation = (object) $moderation;
+            $post->save();
+        }catch(\Exception $e) {
+            DB::rollBack();
             return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
         }
+
         DB::commit();
         // return redirect()->route('socialmedia.moderation.index')->with('success', 'Post moderated successfully.');
 
-
         try {
-        DB::beginTransaction();
-        $post = Post::find($id)->delete();
+            DB::beginTransaction();
+            $post = Post::find($id)->delete();
 
         }catch(\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
         }
+
         DB::commit();
+
+        if($groups_id){
+            return redirect()->route('groups.posting.posts', ['groups_id' => $groups_id])->with('success', 'Post updated successfully.');    
+        }
+
         return redirect()->route('socialmedia.moderation.index')->with('success', 'Post moderated successfully.');
     }
 
@@ -89,12 +100,13 @@ class ModeratorController extends Controller
             $comment->id_user = auth()->user()->id;
             $comment->komentar = $request->input('content');
             $comment->save();
+
+            DB::commit();
+            return redirect()->route('socialmedia.moderation.comments', $id)->with('success', 'Comment created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Fail to comment: ' . $e->getMessage());
         }
-        DB::commit();
-        return redirect()->route('socialmedia.moderation.comments', $id)->with('success', 'Comment created successfully.');
     }
 
     public function editComment(Request $request , $id , $comment_id)
@@ -217,32 +229,29 @@ class ModeratorController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-
-
         // push image to s3 and write full link to database url_cover_image
 
         try {
-        
-        $img = null;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = 'socialmedia/' . $filename;
-            \Storage::disk('s3')->put($path, file_get_contents($file));
-            $img = \Storage::disk('s3')->url($path);
-        }
-        DB::beginTransaction();
-        $post = Post::create([
-            'title' => $request->title,
-            'desc' => $request->content,
-            'id_user' => auth()->user()->id,
-            'url_cover_image' => $img,
-        ]) ;
-        $post->save();
-        // dd($post);
-    }catch (\Exception $e) {
-        DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
+            $img = null;
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'socialmedia/' . $filename;
+                \Storage::disk('s3')->put($path, file_get_contents($file));
+                $img = \Storage::disk('s3')->url($path);
+            }
+            DB::beginTransaction();
+            $post = Post::create([
+                'title' => $request->title,
+                'desc' => $request->content,
+                'id_user' => auth()->user()->id,
+                'url_cover_image' => $img,
+            ]) ;
+            $post->save();
+            // dd($post);
+        }catch (\Exception $e) {
+            DB::rollBack();
+                return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
         }
         DB::commit();
         return redirect()->route('socialmedia.moderation.index')->with('success', 'Post created successfully.');
@@ -282,18 +291,22 @@ class ModeratorController extends Controller
                 $path = 'socialmedia/' . $filename;
                 \Storage::disk('s3')->put($path, file_get_contents($file));
                 $post->url_cover_image = \Storage::disk('s3')->url($path);
-            } else {
-                // dd('no image');
-                $post->url_cover_image = null; // or set a default value if needed
             }
+
             $post->save();
+            DB::commit();
+
+            if(!empty($post->t_small_groups_id)){
+                return redirect()->route('groups.posting.posts', ['groups_id' => $post->t_small_groups_id])->with('success', 'Post updated successfully.');    
+            }
+
+            return redirect()->route('socialmedia.moderation.index')->with('success', 'Post updated successfully.');
+
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to update post: ' . $e->getMessage());
 
         }
-        DB::commit();
-        return redirect()->route('socialmedia.moderation.index')->with('success', 'Post updated successfully.');
     }
 
     /**
@@ -305,11 +318,13 @@ class ModeratorController extends Controller
             DB::beginTransaction();
             $post = Post::find($id);
             $post->delete();
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Post deleted successfully.');
+
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to delete post: ' . $e->getMessage());
         }
-        DB::commit();
-        return redirect()->route('socialmedia.moderation.index')->with('success', 'Post deleted successfully.');
     }
 }

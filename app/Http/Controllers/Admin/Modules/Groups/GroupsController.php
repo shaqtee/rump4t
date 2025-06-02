@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Exceptions\Handler;
-use App\Services\ApiResponse;
 use App\Services\WebRedirect;
 use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +13,6 @@ use App\Models\User;
 use App\Models\Group;
 use App\Models\SmallGroupUser;
 use Modules\Masters\App\Models\MasterCity;
-use Modules\Community\App\Models\Community;
 use Modules\Groups\App\Models\Group as SmallGroup;
 use Illuminate\Validation\ValidationException;
 use Modules\Community\App\Models\MembersCommonity;
@@ -163,27 +161,6 @@ class GroupsController extends Controller
         }
     }
 
-    public function user_index(Request $request, $groups_id)
-    {
-        try{
-            $page = $request->size ?? 10;
-            $data = [
-                'content' => 'Admin/Groups/add-manage-people',
-                'title' => 'Data User For people Manage',
-                // 'users' => $this->users->where('flag_done_profile', 1)->where('active', 1)->where('flag_community', 'JOINED')->where('t_community_id', $community_id)->with(['community:id,title', 'group:id,name', 'city:id,name'])->whereRelation('membersCommonity', 'flag_manage', 1)->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()), //->whereRelation('membersCommonity', 'flag_manage', null)
-                // 'groups' => $this->groups->where('active', 1)->get(),
-                // 'community' => $this->model->orderBy('id', 'asc')->get(),
-                // 'columns' => $this->users->columnsWeb(),
-                'groups_id' => $groups_id,
-            ];
-
-            return view('Admin.Layouts.wrapper', $data);
-
-        } catch (\Throwable $e) {
-            return $this->handler->handleExceptionWeb($e);
-        }
-    }
-
     public function user_member(Request $request, $groups_id)
     {
         $members = $this->users->whereHas('small_groups', function($q) use($groups_id) {
@@ -246,8 +223,8 @@ class GroupsController extends Controller
             DB::commit();
             
             return $this->web->destroyBack('Berhasil melepaskan member dari group.');
-        } catch (\Throwable $th) {
-            report($th);
+        } catch (\Throwable $e) {
+            report($e);
             DB::rollBack();
 
             return $this->handler->handleExceptionWeb($e);
