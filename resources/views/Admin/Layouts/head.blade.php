@@ -137,6 +137,33 @@
       padding: 15px;
       margin-top: 20px;
     }
+
+    .custom-multiselect {
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+}
+.custom-multiselect .selected-options {
+    min-height: 20px;
+}
+.custom-multiselect .options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 8px;
+}
+.custom-multiselect.open .options {
+    display: block;
+}
 </style>
 </head>
 
