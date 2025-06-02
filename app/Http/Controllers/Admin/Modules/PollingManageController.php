@@ -47,7 +47,7 @@ class PollingManageController extends Controller
             $data = [
                 'content' => 'Admin/Polling/index',
                 'title' => 'Data Polling',
-                'pollings' => $this->model->with(['options', 'votes'])
+                'pollings' => $this->model->with(['options', 'votes', 'user'])
                     // ->where(function($q){
                     //     if(auth()->user()->t_group_id == 3){
                     //         $q->where('region', auth()->user()->region);
@@ -69,7 +69,7 @@ class PollingManageController extends Controller
         try{
             $data = [
                 'content' => 'Admin/Polling/addEdit',
-                'title' => 'Add Polling Score',
+                'title' => 'Add Data Polling',
                 'pollings' => null,
                 'regions' => Region::where('parameter', 'm_region')->get(),
                 'communities' => Community::all(),
@@ -91,16 +91,11 @@ class PollingManageController extends Controller
                 'title_description' => 'nullable|string',
                 'question' => 'required|string',
                 'question_description' => 'nullable|string',
-                'is_active' => 'required|boolean',
                 'deadline' => 'nullable|date',
                 'target_roles' => 'nullable|array',
                 'target_roles.*' => 'string',
                 'target_region_id' => 'nullable|integer',
                 'target_community_id' => 'nullable|integer',
-                'is_custom_target' => 'required|boolean',
-                // 'options' => 'required|array|min:1',
-                // 'options.*.type' => 'required|in:text,image',
-                // 'options.*.value' => 'required|string',
             ]);
 
             $polling = Polling::create([
@@ -108,23 +103,16 @@ class PollingManageController extends Controller
                 'title_description' => $validated['title_description'] ?? null,
                 'question' => $validated['question'],
                 'question_description' => $validated['question_description'] ?? null,
-                'is_active' => $validated['is_active'],
+                'is_active' => true,
                 'deadline' => $validated['deadline'] ?? null,
-                // 'target_roles' => $validated['target_roles'] ?? [],
+                'target_roles' => $validated['target_roles']
+                    ? '{' . implode(',', $validated['target_roles']) . '}'
+                    : null,
                 'target_region_id' => $validated['target_region_id'] ?? null,
                 'target_community_id' => $validated['target_community_id'] ?? null,
-                'is_custom_target' => $validated['is_custom_target'],
                 'created_by' => auth()->id(),
+                'created_at' => now(),
             ]);
-
-            // // Simpan opsi polling
-            // foreach ($validated['options'] as $index => $option) {
-            //     $polling->options()->create([
-            //         'option_value' => ($index + 1),
-            //         'option_text' => $option['type'] === 'text' ? $option['value'] : null,
-            //         'option_image' => $option['type'] === 'image' ? $option['value'] : null,
-            //     ]);
-            // }
 
             DB::commit();
             return $this->web->store('polling.admin');
@@ -137,6 +125,81 @@ class PollingManageController extends Controller
             return $this->handler->handleExceptionWeb($e);
         }
     }
+
+    public function create_option($id)
+    {
+        try{
+            $options = PollingOption::where('polling_id', $id)->get();
+
+            $data = [
+                'content' => 'Admin/Polling/addEdit_Option',
+                'title' => 'Add Polling Option Data',
+                'polling_id' => $id,
+                'options' => $options,
+            ];
+            return view('Admin.Layouts.wrapper', $data);
+        } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function store_option(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+    
+        try {
+            $request->validate([
+                'polling_id' => 'required|exists:t_pollings,id',
+                'option_value.*' => 'nullable|string|max:10',
+                'option_text.*' => 'nullable|string',
+                'option_image.*' => 'nullable|image|max:2048',
+            ]);
+    
+            $folder = "rump4t/polling/polling-images";
+            $column = "image";
+    
+            foreach ($request->option_text as $index => $text) {
+                $file = $request->file('option_image')[$index] ?? null;
+                $imagePath = null;
+                $model = null;
+    
+                if ($file && $file->isValid()) {
+    
+                    $model = $this->option->create([
+                        'polling_id' => $request->polling_id,
+                        'option_value' => $request->option_value[$index],
+                        'option_text' => $text,
+                        'option_image' => $file,
+                    ]);
+
+                    $this->helper->uploads($folder, $model, $column);
+
+                } else {
+                    $this->option->create([
+                        'polling_id' => $request->polling_id,
+                        'option_value' => $request->option_value[$index],
+                        'option_text' => $text,
+                        'option_image' => null,
+                    ]);
+                }
+            }
+    
+            DB::commit();
+            return $this->web->store('polling.admin');
+    
+        } catch (\Throwable $e) {
+            DB::rollBack();
+    
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                return $this->web->error_validation($e);
+            }
+    
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+    
+    
 
     // public function reset_password(Request $request, string $id)
     // {

@@ -235,8 +235,10 @@ Route::middleware(['auth'])->group(function () {
 
             Route::prefix('polling')->group(function () {
                 Route::get('index-admin', [PollingManageController::class, 'index_admin'])->name('polling.admin');
-                Route::get('tambah', [PollingManageController::class, 'create'])->name('polling.create');
-                Route::post('tambah', [PollingManageController::class, 'store'])->name('polling.store');
+                Route::get('tambah', [PollingManageController::class, 'create'])->name('polling_admin.create');
+                Route::post('tambah', [PollingManageController::class, 'store'])->name('polling_admin.store');
+                Route::get('tambah_option/{id}', [PollingManageController::class, 'create_option'])->name('polling_otion.add');
+                Route::post('option/store', [PollingManageController::class, 'store_option'])->name('polling_option.store');
                 // Route::patch('{id}/index-admin', [UserManageController::class, 'update_admin'])->name('users.admin.edit');
                 // Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');    
                 // Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');
