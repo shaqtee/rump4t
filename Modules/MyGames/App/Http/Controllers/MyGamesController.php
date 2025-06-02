@@ -112,7 +112,7 @@ class MyGamesController extends Controller
                 $index = $this->users->select('id', 'name')
                             ->with([
                                 'myLetsPlayList' => function($q) use($request){
-                                    $q->with(['organized:id,name', 'roundType:id,value1']);
+                                    $q->with(['organized:id,name', 'roundType:id,value1', 'golfCourse']);
                                 }
                             ])->filter($request)->findOrfail($userId);
 

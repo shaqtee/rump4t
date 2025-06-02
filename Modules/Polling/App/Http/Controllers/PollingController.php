@@ -80,6 +80,12 @@ class PollingController extends Controller
             }
     
             $pollings = $query->get()->map(function ($polling) {
+                
+                $now = now();
+                if ($polling->deadline && $polling->deadline < $now) {
+                    $polling->is_active = false;
+                }
+
                 $totalVotes = $polling->options->sum(fn($opt) => $opt->votes->count());
 
                 $userId = auth()->id();
