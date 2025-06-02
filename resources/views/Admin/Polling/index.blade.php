@@ -6,7 +6,7 @@
             </div>
             <div class="row justify-content-start mt-3">
                 <div class="col-auto">
-                    <a href="{{ route('polling.create') }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
+                    <a href="{{ route('polling_admin.create') }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
                 </div>
             </div>
         </div>
@@ -43,31 +43,38 @@
                             <th>Title Description</th>
                             <th>Question</th>
                             <th>Question Description</th>
-                            <th>Is Active</th>
                             <th>Deadline</th>
                             <th>Created At</th>
                             <th>Created By</th>
-                            <th colspan="2">Action</th>
+                            <th>Is Active</th>
+                            <th colspan="3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            
+                        @endphp
                         @foreach ($pollings as $key => $p)
                             <tr>
                                 <th scope="row">{{ $pollings->firstItem() + $key }}</th>
-                                <td>{{ $p->title }}</td>
-                                <td>{{ $p->title_description }}</td>
-                                <td>{{ $p->question }}</td>
-                                <td>{{ $p->question_description }}</td>
-                                <td>{{ $p->is_active }}</td>
-                                <td>{{ $p->deadline }}</td>
-                                <td>{{ $p->target_roles }}</td>
-                                <td>{{ $p->created_at }}</td>
-                                <td>{{ $p->created_by }}</td>
+                                <td>{{ $p->title ?? '-' }}</td>
+                                <td>{{ $p->title_description ?? '-'}}</td>
+                                <td>{{ $p->question  ?? '-'}}</td>
+                                <td>{{ $p->question_description  ?? '-'}}</td>
+                                <td>{{ \Carbon\Carbon::parse($p->deadline)->translatedFormat('d F Y') ?? '-' }}</td>
+                                <td>{{ $p->user->name  ?? '-'}}</td>
+                                <td>{{ $p->created_at  ?? '-'}}</td>
                                 <td>
-                                    <a class="btn btn-info" href="{{ route('polling.edit', ['pollings' => $p->id]) }}">EDIT</a>
+                                    <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: {{ $p->is_active == '1' ? '#28a745' : '#adb5bd' }}">
+                                        {{ $p->is_active == '1' ? 'Active' : 'Deactivate' }}
+                                    </span>
                                 </td>
                                 <td>
-                                    <form action="{{ route('polling.destroy', ['pollings' => $p->id]) }}" method="POST">
+                                    <a class="btn btn-info mb-2" href="{{ route('polling.edit', $p->id) }}">EDIT</a>
+                                    <a class="btn btn-warning" href="{{ route('polling_otion.add', $p->id) }}">POLLING OPTIONS</a>
+                                </td>
+                                <td>
+                                    <form action="{{ route('polling.destroy', $p->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">DELETE</button>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthWebController;
 use App\Http\Controllers\Admin\Modules\CommunityController;
 use App\Http\Controllers\Admin\Modules\Groups\GroupsController;
+use App\Http\Controllers\Admin\Modules\Groups\GroupsPostingController;
 use App\Http\Controllers\ManageEvent\ManageEventController;
 use App\Http\Controllers\Admin\Modules\UserManageController;
 use App\Http\Controllers\Admin\Modules\AlbumCommunityController;
@@ -175,12 +176,26 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::prefix('groups')->group(function () {
+            /* crud */
             Route::get('index', [GroupsController::class, 'index'])->name('groups.semua');
             Route::get('tambah', [GroupsController::class, 'create'])->name('groups.tambah');
             Route::post('tambah', [GroupsController::class, 'store'])->name('groups.tambah');
             Route::get('{id}/ubah', [GroupsController::class, 'edit'])->name('groups.ubah');
             Route::patch('{id}/ubah', [GroupsController::class, 'update'])->name('groups.ubah');
             Route::delete('{id}/hapus', [GroupsController::class, 'destroy'])->name('groups.hapus');
+            
+            /* add member*/
+            Route::get('{groups_id}/member', [GroupsController::class, 'user_member'])->name('groups.member');
+            Route::post('add-member/{groups_id}', [GroupsController::class, 'add_member'])->name('groups.addmember');
+            Route::delete('left-member/{id}', [GroupsController::class, 'left_member'])->name('groups.leftmember');
+            Route::post('change-status-admin', [GroupsController::class, 'change_status_admin'])->name('groups.changestatusadmin');
+
+            Route::prefix('posting')->group(function () {
+                Route::get('index', [GroupsPostingController::class, 'index'])->name('groups.posting.semua');
+                Route::get('index-posts/{groups_id}', [GroupsPostingController::class, 'index_posts'])->name('groups.posting.posts');
+                Route::get('create/{groups_id}', [GroupsPostingController::class, 'create'])->name('groups.posting.create');
+                Route::post('store/{groups_id}', [GroupsPostingController::class, 'store'])->name('groups.posting.store');
+            });
         });
 
         Route::prefix('community')->group(function () {
@@ -235,8 +250,10 @@ Route::middleware(['auth'])->group(function () {
 
             Route::prefix('polling')->group(function () {
                 Route::get('index-admin', [PollingManageController::class, 'index_admin'])->name('polling.admin');
-                Route::get('tambah', [PollingManageController::class, 'create'])->name('polling.create');
-                Route::post('tambah', [PollingManageController::class, 'store'])->name('polling.store');
+                Route::get('tambah', [PollingManageController::class, 'create'])->name('polling_admin.create');
+                Route::post('tambah', [PollingManageController::class, 'store'])->name('polling_admin.store');
+                Route::get('tambah_option/{id}', [PollingManageController::class, 'create_option'])->name('polling_otion.add');
+                Route::post('option/store', [PollingManageController::class, 'store_option'])->name('polling_option.store');
                 // Route::patch('{id}/index-admin', [UserManageController::class, 'update_admin'])->name('users.admin.edit');
                 // Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');    
                 // Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');

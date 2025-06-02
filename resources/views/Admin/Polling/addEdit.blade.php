@@ -8,7 +8,7 @@
             <form action="{{ route('polling.update', ['pollings' => $pollings->id]) }}" method="POST">
             @method('PATCH')
             @else
-            <form action="{{ route('polling.store') }}" method="POST">
+            <form action="{{ route('polling_admin.store') }}" method="POST">
             @endif
                 @csrf
                      {{-- TITLE --}}
@@ -57,24 +57,39 @@
                     @error('deadline')
                         <small style="color: red">{{ $message }}</small>
                     @enderror
+                    @php
+                        $now = \Carbon\Carbon::now()->format('Y-m-d\TH:i');
+                    @endphp
                     <input type="datetime-local" name="deadline" id="deadline"
                         class="form-control @error('deadline') is-invalid @enderror"
-                        value="{{ old('deadline', isset($pollings->deadline) ? \Carbon\Carbon::parse($pollings->deadline)->format('Y-m-d\TH:i') : '') }}">
+                        value="{{ old('deadline', isset($pollings->deadline) ? \Carbon\Carbon::parse($pollings->deadline)->format('Y-m-d\TH:i') : '') }}" min="{{ $now }}">
                 </div>
 
                 {{-- TARGET ROLES --}}
                 <div class="form-group">
                     <label for="target_roles">Target Roles</label>
+                    <div class="custom-multiselect" onclick="this.classList.toggle('open')">
+                        <div class="selected-options" id="selectedRolesText">Pilih Target Roles</div>
+                        <div class="options">
+                            @php
+                                $roles = ['pengurus', 'pengawas', 'pembina', 'anggota', 'custom'];
+                                $selected = old('target_roles', $pollings->target_roles ?? []);
+                            @endphp
+                            @foreach ($roles as $role)
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="target_roles[]" value="{{ $role }}"
+                                            {{ in_array($role, $selected) ? 'checked' : '' }}
+                                            onchange="updateSelectedRoles(event)" />
+                                        {{ ucfirst($role) }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                     @error('target_roles')
                         <small style="color: red">{{ $message }}</small>
                     @enderror
-                    <select name="target_roles[]" id="target_roles" class="form-control @error('target_roles') is-invalid @enderror" multiple>
-                        <option value="pengurus" {{ in_array('pengurus', old('target_roles', $pollings->target_roles ?? [])) ? 'selected' : '' }}>Pengurus</option>
-                        <option value="pengawas" {{ in_array('pengawas', old('target_roles', $pollings->target_roles ?? [])) ? 'selected' : '' }}>Pengawas</option>
-                        <option value="pembina" {{ in_array('pembina', old('target_roles', $pollings->target_roles ?? [])) ? 'selected' : '' }}>Pembina</option>
-                        <option value="anggota" {{ in_array('anggota', old('target_roles', $pollings->target_roles ?? [])) ? 'selected' : '' }}>Anggota</option>
-                        <option value="custom" {{ in_array('custom', old('target_roles', $pollings->target_roles ?? [])) ? 'selected' : '' }}>Custom</option>
-                    </select>
                 </div>
 
                 {{-- REGION --}}
@@ -109,21 +124,14 @@
                     </select>
                 </div>
 
-              {{-- IS CUSTOM TARGET --}}
-                <div class="form-check">
-                    <input type="hidden" name="is_custom_target" value="0">
-                    <input type="checkbox" name="is_custom_target" id="is_custom_target" class="form-check-input" value="1"
-                        {{ old('is_custom_target', $pollings->is_custom_target ?? false) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="is_custom_target">Gunakan Custom Target</label>
-                </div>
 
                 {{-- IS ACTIVE --}}
-                <div class="form-check mt-2">
+                {{-- <div class="form-check mt-2">
                     <input type="hidden" name="is_active" value="0">
                     <input type="checkbox" name="is_active" id="is_active" class="form-check-input" value="1"
                         {{ old('is_active', $pollings->is_active ?? false) ? 'checked' : '' }}>
                     <label class="form-check-label" for="is_active">Aktifkan Polling</label>
-                </div>
+                </div> --}}
 
                 <button type="submit" class="btn btn-success mt-3 mb-0">Submit</button>
             </form>
@@ -143,6 +151,21 @@
             const checkedCheckboxes = $('.hole-checkbox:checked').length;
 
             $('#selectAll').prop('checked', totalCheckboxes === checkedCheckboxes);
+        });
+    });
+</script>
+<script>
+    function updateSelectedRoles(event) {
+        if (event) event.stopPropagation();
+        const checked = Array.from(document.querySelectorAll('input[name="target_roles[]"]:checked'))
+            .map(el => el.parentNode.textContent.trim());
+        const label = checked.length > 0 ? checked.join(', ') : 'Pilih Target Roles';
+        document.getElementById('selectedRolesText').innerText = label;
+    }
+
+    document.addEventListener('click', function(e) {
+        document.querySelectorAll('.custom-multiselect').forEach(el => {
+            if (!el.contains(e.target)) el.classList.remove('open');
         });
     });
 </script>

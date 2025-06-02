@@ -320,6 +320,21 @@
         })
     });
 
+    function change_status_admin(v){
+        let id = v.id.split('_')[1]
+        console.log(id);
+        $('#loader-'+id).removeClass('d-none');
+        $.post(
+            "{{ route('groups.changestatusadmin') }}",
+            {_token:"{{ csrf_token() }}", id},
+            function(data){
+                $('#loader-'+id).addClass('d-none');
+                console.log(data);
+            }
+        )
+        
+    }
+
 	function previewImage() {
 		const image = document.querySelector('#image');
 		const imgPreview = document.querySelector('.image-preview');

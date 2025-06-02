@@ -6,14 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Exceptions\Handler;
-use App\Services\ApiResponse;
 use App\Services\WebRedirect;
 use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
-use App\Models\Group;
 use App\Models\User;
+use App\Models\Group;
+use App\Models\SmallGroupUser;
 use Modules\Masters\App\Models\MasterCity;
-use Modules\Community\App\Models\Community;
 use Modules\Groups\App\Models\Group as SmallGroup;
 use Illuminate\Validation\ValidationException;
 use Modules\Community\App\Models\MembersCommonity;
@@ -28,8 +27,9 @@ class GroupsController extends Controller
     protected $users;
     protected $members;
     protected $groups;
+    protected $smallGroupUser;
 
-    public function __construct(SmallGroup $model, Helper $helper, MasterCity $city, WebRedirect $web, Handler $handler, User $users, MembersCommonity $members, Group $groups)
+    public function __construct(SmallGroup $model,SmallGroupUser $smallGroupUser, Helper $helper, MasterCity $city, WebRedirect $web, Handler $handler, User $users, MembersCommonity $members, Group $groups)
     {
         $this->model = $model;
         $this->helper = $helper;
@@ -39,6 +39,7 @@ class GroupsController extends Controller
         $this->users = $users;
         $this->members = $members;
         $this->groups = $groups;
+        $this->smallGroupUser = $smallGroupUser;
     }
 
     public function index(Request $request){
@@ -151,12 +152,94 @@ class GroupsController extends Controller
         DB::beginTransaction();
         try{
             $this->model->findOrfail($id)->delete();
-
             DB::commit();
+
             return $this->web->destroy('groups.semua');
         } catch (\Throwable $e) {
             DB::rollBack();
             return $this->handler->handleExceptionWeb($e);
         }
+    }
+
+    public function user_member(Request $request, $groups_id)
+    {
+        $members = $this->users->whereHas('small_groups', function($q) use($groups_id) {
+                    $q->where('t_small_groups_user.t_small_groups_id', $groups_id);
+                });
+                
+        $ids = [];
+        foreach($members->get()->toArray() as $m){
+            $ids[] = $m['id'];
+        }
+        
+        try{
+            $page = $request->size ?? 10;
+            $data = [
+                'content' => 'Admin/Groups/member',
+                'title' => 'Data User Members',
+                'group' => $members->with('small_groups')->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
+                'users' => $this->users->whereNotIn('id', $ids)->where('active', 1)->get(),
+                'columns' => $this->users->columnsWeb(),
+                'groups_id' => $groups_id,
+            ];
+
+            return view('Admin.Layouts.wrapper', $data);
+
+        } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function add_member(Request $request, $groups_id)
+    {
+        DB::beginTransaction();
+        try {
+            $datas = $request->validate([
+                    't_small_groups_id' => 'required',
+                    'user_id' => 'required',
+                    'is_admin' => 'nullable',
+                ]);
+                
+            $this->smallGroupUser->create($datas);
+            DB::commit();
+
+            return $this->web->successReturn('groups.member', 'groups_id', $groups_id);
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollBack();
+            if($e instanceof ValidationException){
+                return $this->web->error_validation($e);
+            }
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function left_member($id)
+    {
+        DB::beginTransaction();
+        try {
+            $pivot = $this->smallGroupUser->find($id);
+            $pivot->delete();
+            DB::commit();
+            
+            return $this->web->destroyBack('Berhasil melepaskan member dari group.');
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollBack();
+
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function change_status_admin(Request $request)
+    {
+        $pivot = $this->smallGroupUser->find($request->id);
+        $pivot->is_admin = !$pivot->is_admin;
+        $pivot->save();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $pivot,
+        ]);
     }
 }

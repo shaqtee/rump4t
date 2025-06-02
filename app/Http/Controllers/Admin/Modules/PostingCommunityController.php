@@ -138,7 +138,7 @@ class PostingCommunityController extends Controller
                 'posting' => $this->model->findOrfail($id),
                 'community' => $this->community->get(),
             ];
-
+            
             return view('Admin.Layouts.wrapper', $data);
         } catch (\Throwable $e) {
             return $this->handler->handleExceptionWeb($e);

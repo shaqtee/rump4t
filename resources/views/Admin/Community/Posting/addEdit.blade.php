@@ -23,11 +23,12 @@
                             @error('t_community_id')
                                 <small style="color: red">{{ $message }}</small>
                             @enderror
+                            {{-- {{ dump($posting) }} --}}
                             <select name="t_community_id" id="t_community_id" class="form-control select2" required autofocus>
                                     <option label="Choose one"></option>
                                 @foreach ($community as $com)
                                     <option value="{{ $com->id }}"
-                                        @if(old('t_community_id', isset($community) ? $com->t_community_id : '') == $com->t_community_id)
+                                        @if(old('t_community_id', isset($posting) ? $posting->t_community_id : '') == $com->id)
                                             selected
                                         @endif
                                     >

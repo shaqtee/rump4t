@@ -20,7 +20,7 @@ class PollingOption extends Model
 
     public function votes()
     {
-        return $this->hasMany(PollingVote::class, 'id');
+        return $this->hasMany(PollingVote::class, 'polling_option_id');
     }
 
     public function scopeFilter($query, $request)

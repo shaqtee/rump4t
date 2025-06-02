@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
 class CompressUploadedImages
@@ -10,6 +11,10 @@ class CompressUploadedImages
     public function handle($request, Closure $next)
     {
         foreach ($request->files->all() as $key => $file) {
+            if (!($file instanceof UploadedFile)) {
+                continue;
+            }
+            
             if ($file && $file->isValid() && Str::startsWith($file->getMimeType(), 'image/')) {
                 // Open the image with GD
                 $image = imagecreatefromstring(file_get_contents($file));
