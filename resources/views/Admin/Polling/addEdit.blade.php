@@ -5,7 +5,7 @@
         </div>
         <div class="card-body pt-0">
             @if (isset($pollings))
-            <form action="{{ route('polling.update', ['pollings' => $pollings->id]) }}" method="POST">
+            <form action="{{ route('polling_admin.edit', $pollings->id) }}" method="POST">
             @method('PATCH')
             @else
             <form action="{{ route('polling_admin.store') }}" method="POST">
@@ -51,6 +51,20 @@
                         class="form-control @error('question_description') is-invalid @enderror">{{ old('question_description', $pollings->question_description ?? '') }}</textarea>
                 </div>
 
+                {{-- START DATE --}}
+                 <div class="form-group">
+                    <label for="start_date">Tanggal Mulai</label>
+                    @error('start_date')
+                        <small style="color: red">{{ $message }}</small>
+                    @enderror
+                    @php
+                        $now = \Carbon\Carbon::now()->format('Y-m-d\TH:i');
+                    @endphp
+                    <input type="datetime-local" name="start_date" id="start_date"
+                        class="form-control @error('start_date') is-invalid @enderror"
+                        value="{{ old('start_date', isset($pollings->start_date) ? \Carbon\Carbon::parse($pollings->start_date)->format('Y-m-d\TH:i') : '') }}" min="{{ $now }}">
+                </div>
+
                 {{-- DEADLINE --}}
                 <div class="form-group">
                     <label for="deadline">Deadline</label>
@@ -74,6 +88,11 @@
                             @php
                                 $roles = ['pengurus', 'pengawas', 'pembina', 'anggota', 'custom'];
                                 $selected = old('target_roles', $pollings->target_roles ?? []);
+
+                                if (is_string($selected)) {
+                                    $selected = str_replace(['{', '}'], '', $selected); 
+                                    $selected = explode(',', $selected);
+                                }
                             @endphp
                             @foreach ($roles as $role)
                                 <div>

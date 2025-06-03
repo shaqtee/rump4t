@@ -43,7 +43,8 @@
                             <th>Title Description</th>
                             <th>Question</th>
                             <th>Question Description</th>
-                            <th>Deadline</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
                             <th>Created At</th>
                             <th>Created By</th>
                             <th>Is Active</th>
@@ -61,20 +62,23 @@
                                 <td>{{ $p->title_description ?? '-'}}</td>
                                 <td>{{ $p->question  ?? '-'}}</td>
                                 <td>{{ $p->question_description  ?? '-'}}</td>
+                                <td>{{ \Carbon\Carbon::parse($p->start_date)->translatedFormat('d F Y') ?? '-' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($p->deadline)->translatedFormat('d F Y') ?? '-' }}</td>
                                 <td>{{ $p->user->name  ?? '-'}}</td>
                                 <td>{{ $p->created_at  ?? '-'}}</td>
                                 <td>
                                     <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: {{ $p->is_active == '1' ? '#28a745' : '#adb5bd' }}">
-                                        {{ $p->is_active == '1' ? 'Active' : 'Deactivate' }}
+                                        {{ $p->is_active == '1' ? 'Active' : 'Not-Active' }}
                                     </span>
                                 </td>
                                 <td>
-                                    <a class="btn btn-info mb-2" href="{{ route('polling.edit', $p->id) }}">EDIT</a>
+                                    <a class="btn btn-info" href="{{ route('polling_admin.edit_form', $p->id) }}">EDIT</a>
+                                </td>
+                                <td>
                                     <a class="btn btn-warning" href="{{ route('polling_otion.add', $p->id) }}">POLLING OPTIONS</a>
                                 </td>
                                 <td>
-                                    <form action="{{ route('polling.destroy', $p->id) }}" method="POST">
+                                    <form action="{{ route('polling_admin.destroy', $p->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">DELETE</button>
