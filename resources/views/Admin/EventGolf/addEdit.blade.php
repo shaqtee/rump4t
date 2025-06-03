@@ -12,7 +12,7 @@
             @endif
                 @csrf
                     <div class="">
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="t_community_id">Community</label>
                             @error('t_community_id')
                                 <small style="color: red">{{ $message }}</small>
@@ -29,9 +29,9 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
-                            <label for="title">title</label>
+                            <label for="title">Title</label>
                             @error('title')
                                 <small style="color: red">{{ $message }}</small>
                             @enderror
