@@ -95,28 +95,28 @@ class MyGamesController extends Controller
         try {
             $userId = Auth::id();
             if ($typeGame == 'event') {
-                // unset($request->type_game);
-                // $index = $this->users->select('id', 'name')
-                //             ->with([
-                //                 'myEventList' => function($q) use($request){
-                //                     $q->select('t_event.id', 't_event.t_community_id', 't_event.title', 't_event.play_date_start', 't_event.play_date_end','t_member_event.t_event_id','t_member_event.t_user_id','t_event.type_scoring','t_member_event.approve')
-                //                     ->with(['eventCommonity:id,title']);
-                //                 }
-                //             ])->filter($request)->findOrfail($userId);
-                $index = $this->viewEvent->where('id', $userId)->filter($request)->get();
-                $model = $this->viewEvent;
+                unset($request->type_game);
+                $index = $this->users->select('id', 'name')
+                            ->with([
+                                'myEventGolfList' => function($q) use($request){
+                                    $q->select('t_eventgolf.id', 't_eventgolf.t_community_id', 't_eventgolf.title', 't_eventgolf.play_date_start', 't_eventgolf.play_date_end','t_member_eventgolf.t_event_id','t_member_eventgolf.t_user_id','t_eventgolf.type_scoring','t_member_eventgolf.approve')
+                                    ->with(['eventCommonity:id,title']);
+                                }
+                            ])->filter($request)->findOrfail($userId);
+                // $index = $this->viewEvent->where('id', $userId)->filter($request)->get();
+                $model = $this->users;
             }
 
             if ($typeGame == 'lets_play') {
-                // unset($request->type_game);
-                // $index = $this->users->select('id', 'name')
-                //             ->with([
-                //                 'myLetsPlayList' => function($q) use($request){
-                //                     $q->with(['organized:id,name', 'roundType:id,value1']);
-                //                 }
-                //             ])->filter($request)->findOrfail($userId);
+                unset($request->type_game);
+                $index = $this->users->select('id', 'name')
+                            ->with([
+                                'myLetsPlayList' => function($q) use($request){
+                                    $q->with(['organized:id,name', 'roundType:id,value1', 'golfCourse']);
+                                }
+                            ])->filter($request)->findOrfail($userId);
 
-                $index = $this->viewLp->where('id', $userId)->filter($request)->get();
+                // $index = $this->viewLp->where('id', $userId)->filter($request)->get();
                 $model = $this->viewLp;
             }
 

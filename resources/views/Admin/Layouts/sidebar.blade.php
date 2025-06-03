@@ -211,15 +211,14 @@
                         </li>
 
                         <!-- Community -->
-                        <li class="sub-slide">
+                        {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" data-toggle="sub-slide" href="#">
                                 Community <i class="sub-angle fe fe-chevron-down"></i>
                             </a>
                             <ul class="sub-slide-menu">
                                 <li><a class="sub-slide-item" href="{{ route('community.semua') }}">List Community</a></li>
-                                {{-- <li><a class="sub-slide-item" href="#">Events</a></li> --}}
                             </ul>
-                        </li>
+                        </li> --}}
 
                         <!-- Master -->
                         <li class="sub-slide">
