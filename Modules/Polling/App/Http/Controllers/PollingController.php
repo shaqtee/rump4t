@@ -112,8 +112,8 @@ class PollingController extends Controller
                     'is_votes' => $hasVoted,
                     'options' => $options,
                 ];
-            });    
-
+            });  
+    
             return $this->api->list($pollings, $this->polling);
         } catch (\Throwable $e) {
             if (config('envconfig.app_debug')) {

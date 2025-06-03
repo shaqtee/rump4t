@@ -91,6 +91,7 @@ class PollingManageController extends Controller
                 'title_description' => 'nullable|string',
                 'question' => 'required|string',
                 'question_description' => 'nullable|string',
+                'start_date' => 'nullable|date',
                 'deadline' => 'nullable|date',
                 'target_roles' => 'nullable|array',
                 'target_roles.*' => 'string',
@@ -104,6 +105,7 @@ class PollingManageController extends Controller
                 'question' => $validated['question'],
                 'question_description' => $validated['question_description'] ?? null,
                 'is_active' => true,
+                'start_date' => $validated['start_date'] ?? null,
                 'deadline' => $validated['deadline'] ?? null,
                 'target_roles' => $validated['target_roles']
                     ? '{' . implode(',', $validated['target_roles']) . '}'
@@ -199,6 +201,68 @@ class PollingManageController extends Controller
         }
     }
     
+    public function edit_admin($id)
+    {
+        $polling = $this->model->findOrFail($id);
+
+        try{
+            $data = [
+                'content' => 'Admin/Polling/addEdit',
+                'title' => 'Edit Data Polling',
+                'pollings'=> $polling,
+                'regions' => Region::where('parameter', 'm_region')->get(),
+                'communities' => Community::all(),
+            ];
+            return view('Admin.Layouts.wrapper', $data);
+        } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function update_admin(Request $request, $id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'title_description' => 'nullable|string',
+                'question' => 'required|string',
+                'question_description' => 'nullable|string',
+                'start_date' => 'nullable|date',
+                'deadline' => 'nullable|date',
+                'target_roles' => 'nullable|array',
+                'target_roles.*' => 'string',
+                'target_region_id' => 'nullable|integer',
+                'target_community_id' => 'nullable|integer',
+            ]);
+
+            $polling = Polling::findOrFail($id);
+            $polling->update([
+                'title' => $validated['title'],
+                'title_description' => $validated['title_description'] ?? null,
+                'question' => $validated['question'],
+                'question_description' => $validated['question_description'] ?? null,
+                'start_date' => $validated['start_date'] ?? null,
+                'deadline' => $validated['deadline'] ?? null,
+                'target_roles' => $validated['target_roles']
+                    ? '{' . implode(',', $validated['target_roles']) . '}'
+                    : null,
+                'target_region_id' => $validated['target_region_id'] ?? null,
+                'target_community_id' => $validated['target_community_id'] ?? null,
+            ]);
+
+            DB::commit();
+            return redirect()->route('polling_admin.index')->with('success', 'Polling berhasil diperbarui.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            if ($e instanceof ValidationException) {
+                return back()->withErrors($e->validator)->withInput();
+            }
+            return back()->with('error', 'Terjadi kesalahan.');
+        }
+    }
+
     
 
     // public function reset_password(Request $request, string $id)
