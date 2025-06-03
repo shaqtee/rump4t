@@ -39,7 +39,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Community</th>
+                            {{-- <th>Community</th> --}}
                             <th>Name</th>
                             {{-- <th>Image</th> --}}
                             {{-- <th>Description</th> --}}
@@ -61,7 +61,7 @@
                         @foreach ($event as $key => $evt)
                             <tr>
                                 <th scope="row">{{ $event->firstItem() + $key }}</th>
-                                <td>{{ $evt->eventCommonity->title ?? '-' }}</td>
+                                {{-- <td>{{ $evt->eventCommonity->title ?? '-' }}</td> --}}
                                 <td>{{ $evt->title ?? '-'}}</td>
                                 {{-- <td> <img class="img-thumbnail" src="{{ $evt->image }}" alt=""></td> --}}
                                 {{-- <td>{{ $evt->description }}</td> --}}
