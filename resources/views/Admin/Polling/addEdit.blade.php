@@ -5,10 +5,10 @@
         </div>
         <div class="card-body pt-0">
             @if (isset($pollings))
-            <form action="{{ route('polling.update', ['pollings' => $pollings->id]) }}" method="POST">
+            <form action="{{ route('polling_admin.edit', $pollings->id) }}" method="POST">
             @method('PATCH')
             @else
-            <form action="{{ route('polling.store') }}" method="POST">
+            <form action="{{ route('polling_admin.store') }}" method="POST">
             @endif
                 @csrf
                      {{-- TITLE --}}
@@ -51,34 +51,68 @@
                         class="form-control @error('question_description') is-invalid @enderror">{{ old('question_description', $pollings->question_description ?? '') }}</textarea>
                 </div>
 
+                {{-- START DATE --}}
+                 <div class="form-group">
+                    <label for="start_date">Tanggal Mulai</label>
+                    @error('start_date')
+                        <small style="color: red">{{ $message }}</small>
+                    @enderror
+                    @php
+                        $now = \Carbon\Carbon::now()->format('Y-m-d\TH:i');
+                    @endphp
+                    <input type="datetime-local" name="start_date" id="start_date"
+                        class="form-control @error('start_date') is-invalid @enderror"
+                        value="{{ old('start_date', isset($pollings->start_date) ? \Carbon\Carbon::parse($pollings->start_date)->format('Y-m-d\TH:i') : '') }}" min="{{ $now }}">
+                </div>
+
                 {{-- DEADLINE --}}
                 <div class="form-group">
                     <label for="deadline">Deadline</label>
                     @error('deadline')
                         <small style="color: red">{{ $message }}</small>
                     @enderror
+                    @php
+                        $now = \Carbon\Carbon::now()->format('Y-m-d\TH:i');
+                    @endphp
                     <input type="datetime-local" name="deadline" id="deadline"
                         class="form-control @error('deadline') is-invalid @enderror"
-                        value="{{ old('deadline', isset($pollings->deadline) ? \Carbon\Carbon::parse($pollings->deadline)->format('Y-m-d\TH:i') : '') }}">
+                        value="{{ old('deadline', isset($pollings->deadline) ? \Carbon\Carbon::parse($pollings->deadline)->format('Y-m-d\TH:i') : '') }}" min="{{ $now }}">
                 </div>
 
                 {{-- TARGET ROLES --}}
                 <div class="form-group">
                     <label for="target_roles">Target Roles</label>
+                    <div class="custom-multiselect" onclick="this.classList.toggle('open')">
+                        <div class="selected-options" id="selectedRolesText">Pilih Target Roles</div>
+                        <div class="options">
+                            @php
+                                $roles = ['pengurus', 'pengawas', 'pembina', 'anggota', 'custom'];
+                                $selected = old('target_roles', $pollings->target_roles ?? []);
+
+                                if (is_string($selected)) {
+                                    $selected = str_replace(['{', '}'], '', $selected); 
+                                    $selected = explode(',', $selected);
+                                }
+                            @endphp
+                            @foreach ($roles as $role)
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="target_roles[]" value="{{ $role }}"
+                                            {{ in_array($role, $selected) ? 'checked' : '' }}
+                                            onchange="updateSelectedRoles(event); toggleRegionCommunityVisibility()" {{ $role === 'custom' ? 'id=targetRoleCustom' : '' }} />
+                                        {{ ucfirst($role) }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                     @error('target_roles')
                         <small style="color: red">{{ $message }}</small>
                     @enderror
-                    <select name="target_roles[]" id="target_roles" class="form-control @error('target_roles') is-invalid @enderror" multiple>
-                        <option value="pengurus" {{ in_array('pengurus', old('target_roles', $pollings->target_roles ?? [])) ? 'selected' : '' }}>Pengurus</option>
-                        <option value="pengawas" {{ in_array('pengawas', old('target_roles', $pollings->target_roles ?? [])) ? 'selected' : '' }}>Pengawas</option>
-                        <option value="pembina" {{ in_array('pembina', old('target_roles', $pollings->target_roles ?? [])) ? 'selected' : '' }}>Pembina</option>
-                        <option value="anggota" {{ in_array('anggota', old('target_roles', $pollings->target_roles ?? [])) ? 'selected' : '' }}>Anggota</option>
-                        <option value="custom" {{ in_array('custom', old('target_roles', $pollings->target_roles ?? [])) ? 'selected' : '' }}>Custom</option>
-                    </select>
                 </div>
 
                 {{-- REGION --}}
-                <div class="form-group">
+                <div class="form-group" id="regionGroup" style="display: none;">
                     <label for="target_region_id">Wilayah</label>
                     @error('target_region_id')
                         <small style="color: red">{{ $message }}</small>
@@ -94,7 +128,7 @@
                 </div>
 
                 {{-- COMMUNITY --}}
-                <div class="form-group">
+                <div class="form-group" id="communityGroup" style="display: none;">
                     <label for="target_community_id">Komunitas</label>
                     @error('target_community_id')
                         <small style="color: red">{{ $message }}</small>
@@ -109,22 +143,17 @@
                     </select>
                 </div>
 
-              {{-- IS CUSTOM TARGET --}}
-                <div class="form-check">
-                    <input type="hidden" name="is_custom_target" value="0">
-                    <input type="checkbox" name="is_custom_target" id="is_custom_target" class="form-check-input" value="1"
-                        {{ old('is_custom_target', $pollings->is_custom_target ?? false) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="is_custom_target">Gunakan Custom Target</label>
-                </div>
 
                 {{-- IS ACTIVE --}}
-                <div class="form-check mt-2">
+                {{-- <div class="form-check mt-2">
                     <input type="hidden" name="is_active" value="0">
                     <input type="checkbox" name="is_active" id="is_active" class="form-check-input" value="1"
                         {{ old('is_active', $pollings->is_active ?? false) ? 'checked' : '' }}>
                     <label class="form-check-label" for="is_active">Aktifkan Polling</label>
-                </div>
+                </div> --}}
 
+                <br>
+                <br>
                 <button type="submit" class="btn btn-success mt-3 mb-0">Submit</button>
             </form>
         </div>
@@ -145,4 +174,38 @@
             $('#selectAll').prop('checked', totalCheckboxes === checkedCheckboxes);
         });
     });
+</script>
+<script>
+    function updateSelectedRoles(event) {
+        if (event) event.stopPropagation();
+        const checked = Array.from(document.querySelectorAll('input[name="target_roles[]"]:checked'))
+            .map(el => el.parentNode.textContent.trim());
+        const label = checked.length > 0 ? checked.join(', ') : 'Pilih Target Roles';
+        document.getElementById('selectedRolesText').innerText = label;
+    }
+
+    document.addEventListener('click', function(e) {
+        document.querySelectorAll('.custom-multiselect').forEach(el => {
+            if (!el.contains(e.target)) el.classList.remove('open');
+        });
+    });
+
+    function toggleRegionCommunityVisibility() {
+        const isCustomChecked = document.getElementById('targetRoleCustom')?.checked;
+        const regionGroup = document.getElementById('regionGroup');
+        const communityGroup = document.getElementById('communityGroup');
+
+        if (isCustomChecked) {
+            regionGroup.style.display = 'block';
+            communityGroup.style.display = 'block';
+        } else {
+            regionGroup.style.display = 'none';
+            communityGroup.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        toggleRegionCommunityVisibility();
+    });
+
 </script>
