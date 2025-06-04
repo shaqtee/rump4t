@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Services\Functions\SqlFunction;
 use Modules\Community\App\Emails\EVoucher;
+use Modules\Community\App\Models\Community;
 use Modules\Community\App\Models\MemberEvent;
 use Modules\Community\App\Models\EventCommonity;
 use Modules\Community\App\Services\Interfaces\CommunityInterface;
@@ -25,8 +26,9 @@ class EventCommonityController extends Controller
     protected $interface;
     protected $memberEvent;
     protected $sqlFunction;
+    protected $users;
 
-    public function __construct(ApiResponse $api, Helper $helper, CommunityInterface $interface, EventCommonity $model, MemberEvent $memberEvent, SqlFunction $sqlFunction)
+    public function __construct(ApiResponse $api, Helper $helper, CommunityInterface $interface, EventCommonity $model, MemberEvent $memberEvent, SqlFunction $sqlFunction, User $users)
     {
         $this->api = $api;
         $this->model = $model;
@@ -34,6 +36,7 @@ class EventCommonityController extends Controller
         $this->interface = $interface;
         $this->memberEvent = $memberEvent;
         $this->sqlFunction = $sqlFunction;
+        $this->users = $users;
     }
 
     /**
@@ -585,6 +588,40 @@ class EventCommonityController extends Controller
             return $this->api->success(null, 'Template Retrieved');
         } catch(\Throwable $e) {
             DB::rollback();
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
+
+    public function check_community(Request $request)
+    {
+        try {
+            $user = $request->user();
+            // $komunitas = $user->userCommonity()->get();
+
+            // $show = [
+            //     'joined' => $komunitas->isNotEmpty(),
+            //     'komunitas' => $komunitas
+            // ];
+
+            $semuaKomunitas = Community::get();
+            $komunitasUser = $user->membersCommonity()->pluck('t_community_id')->toArray();
+
+            // Tandai mana yang sudah diikuti
+            $data = $semuaKomunitas->map(function ($komunitas) use ($komunitasUser) {
+                $komunitas->is_joined = in_array($komunitas->id, $komunitasUser);
+                return $komunitas;
+            });
+
+            $show = [
+                'komunitas' => $data
+            ];
+    
+            return $this->api->list($show, $this->users, "Check Komunitas");
+        } catch (\Throwable $e) {
             if (config('envconfig.app_debug')) {
                 return $this->api->error_code($e->getMessage(), $e->getCode());
             } else {
