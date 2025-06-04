@@ -20,6 +20,6 @@ dev:
 
 prod:
   script:
-    - ssh -i ~/.ssh/id_rsa ${!SSH_HOST} "cd /var/www/html/rump4t/ && git checkout -- . && git pull origin ${CI_COMMIT_BRANCH} && composer update && exit"
+    - ssh -i ~/.ssh/id_rsa ${!SSH_HOST} -p60022 "dploy deploy prod"
   only:
     - prod
