@@ -18,10 +18,10 @@ class Donasi extends Model
         return $this->hasMany(ImgDonasi::class, 'donasi_id');
     }
 
-    // public function donatur()
-    // {
-    //     return $this->hasMany(Donatur::class, 'donasi_id');
-    // }
+    public function donatur()
+    {
+        return $this->hasMany(DonaturDonasi::class, 'donasi_id');
+    }
 
     public function user()
     {

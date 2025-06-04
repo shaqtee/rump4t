@@ -139,6 +139,12 @@ class User extends Authenticatable
         return $this->belongsTo(MasterConfiguration::class, 'm_faculty_id', 'id')->where('parameter', 'm_faculty');
     }
 
+    public function donasiDisumbangkan()
+    {
+        return $this->hasMany(DonaturDonasi::class, 'user_id');
+    }
+
+
     // public function myGroupDiscussions(){
     //     return $this->hasMany(DiscussionGroup::class, 't_user_id');
     // }

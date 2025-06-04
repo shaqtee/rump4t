@@ -12,6 +12,7 @@ use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Donasi;
+use App\Models\DonaturDonasi;
 use App\Models\ImgDonasi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -24,16 +25,16 @@ class DonationManageController extends Controller
     protected $handler;
     protected $web;
     protected $img;
-    // protected $vote;
+    protected $donatur;
 
-    public function __construct(Donasi $model, Helper $helper, Handler $handler, WebRedirect $web, ImgDonasi $img)
+    public function __construct(Donasi $model, Helper $helper, Handler $handler, WebRedirect $web, ImgDonasi $img, DonaturDonasi $donatur)
     {
         $this->model = $model;
         $this->helper = $helper;
         $this->handler = $handler;
         $this->web = $web;
         $this->img = $img;
-        // $this->vote = $vote;
+        $this->donatur = $donatur;
     }
     /**
      * Display a listing of the resource.
@@ -45,7 +46,7 @@ class DonationManageController extends Controller
             $data = [
                 'content' => 'Admin/Donasi/index',
                 'title' => 'Data Donasi',
-                'donation' => $this->model->with(['image_donasi', 'user'])
+                'donation' => $this->model->with(['image_donasi', 'user'])->withCount(['donatur as total_donatur'])->withSum('donatur', 'nominal')  
                     // ->where(function($q){
                     //     if(auth()->user()->t_group_id == 3){
                     //         $q->where('region', auth()->user()->region);
@@ -53,6 +54,8 @@ class DonationManageController extends Controller
                     // })
                     ->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
                 'columns' => $this->model->columnsWeb(),
+                'total_donasi' => $this->donatur->sum('nominal'),
+                'total_donatur' => $this->donatur->count(),
             ];
 
             return view('Admin.Layouts.wrapper', $data);
@@ -150,7 +153,6 @@ class DonationManageController extends Controller
 
     public function store_image(Request $request)
     {
-        // dd($request->all());
         DB::beginTransaction();
     
         try {
@@ -161,48 +163,46 @@ class DonationManageController extends Controller
             ]);
     
             $imgIds = $request->img_id ?? [];
-            $existingImgIds = $this->img
-                ->where('donasi_id', $request->donasi_id)
-                ->pluck('id')
-                ->toArray();
-
             $processedIds = [];
-
-            foreach ($request->url_image as $index => $file) {
-                $imageId = $imgIds[$index] ?? null;
     
-                if ($imageId && in_array($imageId, $existingImgIds)) {
-                    // Update gambar lama
-                    $image = $this->img->find($imageId);
+            if ($request->hasFile('url_image')) {
+                foreach ($request->file('url_image') as $index => $file) {
+                    $imageId = $imgIds[$index] ?? null;
     
-                    if ($file && $file->isValid()) {
-                        $path = $file->store('rump4t/donasi/images-slide', 's3');
-                        $url = Storage::disk('s3')->url($path);
-                        $image->url_image = $url;
-                    }
+                    if ($imageId) {
+                        $image = $this->img->where('donasi_id', $request->donasi_id)
+                            ->where('id', $imageId)
+                            ->first();
     
-                    $image->save();
-                    $processedIds[] = $imageId;
-                } else {
-                    // Tambah gambar baru
-                    if ($file && $file->isValid()) {
-                        $path = $file->store('rump4t/donasi/images-slide', 's3');
-                        $url = Storage::disk('s3')->url($path);
+                        if ($image) {
+                            if ($file && $file->isValid()) {
+                                $path = $file->store('rump4t/donasi/images-slide', 's3');
+                                $url = Storage::disk('s3')->url($path);
+                                $image->url_image = $url;
+                            }
+                            $image->save();
+                            $processedIds[] = $imageId;
+                        }
+                    } else {
+                        if ($file && $file->isValid()) {
+                            $path = $file->store('rump4t/donasi/images-slide', 's3');
+                            $url = Storage::disk('s3')->url($path);
     
-                        $newImage = $this->img->create([
-                            'donasi_id' => $request->donasi_id,
-                            'url_image' => $url,
-                        ]);
-    
-                        $processedIds[] = $newImage->id;
+                            $newImage = $this->img->create([
+                                'donasi_id' => $request->donasi_id,
+                                'url_image' => $url,
+                            ]);
+                            $processedIds[] = $newImage->id;
+                        }
                     }
                 }
             }
     
-            $toDelete = array_diff($existingImgIds, $processedIds);
-            if (!empty($toDelete)) {
-                $this->img->whereIn('id', $toDelete)->delete();
-            }
+            $toKeep = array_merge($imgIds, $processedIds);
+            $this->img
+                ->where('donasi_id', $request->donasi_id)
+                ->whereNotIn('id', $toKeep)
+                ->delete();
     
             DB::commit();
             return $this->web->store('donasi.admin');
@@ -220,15 +220,13 @@ class DonationManageController extends Controller
     
     public function edit_admin($id)
     {
-        $polling = $this->model->findOrFail($id);
+        $donation = $this->model->findOrFail($id);
 
         try{
             $data = [
-                'content' => 'Admin/Polling/addEdit',
-                'title' => 'Edit Data Polling',
-                'pollings'=> $polling,
-                'regions' => Region::where('parameter', 'm_region')->get(),
-                'communities' => Community::all(),
+                'content' => 'Admin/Donasi/addEdit',
+                'title' => 'Edit Data Donasi',
+                'donation'=> $donation,
             ];
             return view('Admin.Layouts.wrapper', $data);
         } catch (\Throwable $e) {
@@ -243,34 +241,47 @@ class DonationManageController extends Controller
         try {
             $validated = $request->validate([
                 'title' => 'required|string|max:255',
-                'title_description' => 'nullable|string',
-                'question' => 'required|string',
-                'question_description' => 'nullable|string',
                 'start_date' => 'nullable|date',
-                'deadline' => 'nullable|date',
-                'target_roles' => 'nullable|array',
-                'target_roles.*' => 'string',
-                'target_region_id' => 'nullable|integer',
-                'target_community_id' => 'nullable|integer',
+                'end_date' => 'nullable|date',
+                'description' => 'nullable|string',
+                'target_sumbangan' => 'nullable|string',
+                'img_penggalang_dana' => 'nullable|image|max:2048',
+                'nama_penggalang_dana' => 'required|string|max:255',
+                'nama_bank' => 'required|string|max:255',
+                'nomor_rekening' => 'required|string|max:255',
             ]);
 
-            $polling = Polling::findOrFail($id);
-            $polling->update([
+            $donation = Donasi::findOrFail($id);
+            $url = null;
+
+            if ($request->hasFile('img_penggalang_dana')) {
+                $file = $request->file('img_penggalang_dana');
+        
+                if ($file->isValid()) {
+                    $path = $file->store('rump4t/donasi/pengalang_dana-images', 's3');
+                    $url = Storage::disk('s3')->url($path);
+                }
+            }
+
+            $donation->update([
                 'title' => $validated['title'],
-                'title_description' => $validated['title_description'] ?? null,
-                'question' => $validated['question'],
-                'question_description' => $validated['question_description'] ?? null,
                 'start_date' => $validated['start_date'] ?? null,
-                'deadline' => $validated['deadline'] ?? null,
-                'target_roles' => $validated['target_roles']
-                    ? '{' . implode(',', $validated['target_roles']) . '}'
-                    : null,
-                'target_region_id' => $validated['target_region_id'] ?? null,
-                'target_community_id' => $validated['target_community_id'] ?? null,
+                'end_date' => $validated['end_date'] ?? null,
+                'description' => $validated['description'] ?? null,
+                'target_sumbangan' => $validated['target_sumbangan'] ?? null,
+                'nama_penggalang_dana' => $validated['nama_penggalang_dana'],
+                'nama_bank' => $validated['nama_bank'],
+                'nomor_rekening' => $validated['nomor_rekening'],
+                'created_by' => auth()->id(),
+                'created_at' => now(),
             ]);
+
+            if ($url) {
+                $updateData['img_penggalang_dana'] = $url;
+            }
 
             DB::commit();
-            return redirect()->route('polling_admin.index')->with('success', 'Polling berhasil diperbarui.');
+            return redirect()->route('donasi.admin')->with('success', 'Data berhasil diperbarui.');
         } catch (\Throwable $e) {
             DB::rollBack();
             if ($e instanceof ValidationException) {
@@ -289,11 +300,28 @@ class DonationManageController extends Controller
             $polling->delete();
 
             DB::commit();
-            return $this->web->destroy('polling.admin');
+            return $this->web->destroy('donasi.admin');
         } catch (\Throwable $e) {
             DB::rollBack();
             return $this->handler->handleExceptionWeb($e);
         }
     }
 
+    public function detail_donatur($id)
+    {
+        $donatur = DonaturDonasi::with(['user'])->where('donasi_id', $id)->paginate(10);
+
+        $firstItem = $donatur->firstItem(); 
+        $lastItem = $donatur->lastItem();   // also works
+                try{
+            $data = [
+                'content' => 'Admin/Donasi/DetailDonatur',
+                'title' => 'Detail Donatur Donasi',
+                'donatur'=> $donatur,
+            ];
+            return view('Admin.Layouts.wrapper', $data);
+        } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
 }

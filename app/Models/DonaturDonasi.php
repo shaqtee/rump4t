@@ -6,16 +6,21 @@ use App\Services\Helpers\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ImgDonasi extends Model
+class DonaturDonasi extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $table = 't_img_donasi';
+    protected $table = 't_donatur_donasi';
 
     public function donasi()
     {
         return $this->belongsTo(Donasi::class, 'donasi_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
 
