@@ -68,3 +68,5 @@ Route::post('photo/bulk-destroy', [PhotoCommonityController::class, 'bulk_destro
 
 Route::apiResource('sponsor', SponsorCommonityController::class)->only(['index', 'show', 'store', 'update', 'destroy']);;
 Route::post('sponsor/bulk-destroy', [SponsorCommonityController::class, 'bulk_destroy']);
+
+Route::get('check_community', [EventCommonityController::class, 'check_community']);
