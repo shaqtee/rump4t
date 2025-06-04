@@ -163,7 +163,7 @@ class EventCommunityController extends Controller
             }
 
             $datas = $request->validate([
-                't_community_id' => 'required',
+                // 't_community_id' => 'required',
                 'title' => 'required|string',
                 'image' => 'required|image|file|max:2048|mimes:jpeg,png,jpg',
                 'description' => 'required|string',
@@ -293,7 +293,7 @@ class EventCommunityController extends Controller
             }
 
             $datas = $request->validate([
-                't_community_id' => 'required',
+                // 't_community_id' => 'required',
                 'title' => 'required|string',
                 'image' => 'nullable|image|file|max:2048|mimes:jpeg,png,jpg',
                 'description' => 'required|string',

@@ -68,7 +68,7 @@
                                 <td>{{ $p->created_at  ?? '-'}}</td>
                                 <td>
                                     <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: {{ $p->is_active == '1' ? '#28a745' : '#adb5bd' }}">
-                                        {{ $p->is_active == '1' ? 'Active' : 'Not-Active' }}
+                                        {{ $p->is_active == '1' ? 'Active' : 'NotActive' }}
                                     </span>
                                 </td>
                                 <td>
