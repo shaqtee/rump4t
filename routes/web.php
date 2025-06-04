@@ -271,6 +271,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('image_donasi/store', [DonationManageController::class, 'store_image'])->name('donasi_image.store');
                 Route::get('donasi/{id}/edit-admin', [DonationManageController::class, 'edit_admin'])->name('donasi_admin.edit_form');
                 Route::patch('donasi/{id}/index-admin', [DonationManageController::class, 'update_admin'])->name('donasi_admin.edit');
+                Route::get('detail_donatur/{id}', [DonationManageController::class, 'detail_donatur'])->name('donatur.detail');
 
                 Route::delete('{id}/hapus', [DonationManageController::class, 'destroy'])->name('donasi_admin.destroy');
             });
