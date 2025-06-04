@@ -41,6 +41,7 @@
                             <th>No</th>
                             <th>Community</th>
                             <th>Title</th>
+                            <th>Description</th>
                             <th>Image</th>
                             {{-- <th>Content</th> --}}
                             {{-- <th>Active</th> --}}
@@ -53,7 +54,8 @@
                                 <th scope="row">{{ $posting->firstItem() + $key }}</th>
                                 <td>{{ $post?->postingCommonity?->title ?? "" }}</td>
                                 <td>{{ $post->title }}</td>
-                                <td><img class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" src="{{ $post->image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" alt=""></td>
+                                <td>{{ $post->desc }}</td>
+                                <td><img class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" src="{{ $post->url_cover_image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" alt=""></td>
                                 {{-- <td>{{ $post->content }}</td> --}}
                                 {{-- <td>{{ ($post->active == '1') ? 'Active' : 'Deactivate' }}</td> --}}
                                 <td>

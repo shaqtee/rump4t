@@ -8,9 +8,11 @@ use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\WebRedirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Modules\Community\App\Models\Community;
 use Modules\Community\App\Models\PostingCommonity;
+use Modules\SocialMedia\App\Models\Post;
 
 class PostingCommunityController extends Controller
 {
@@ -20,7 +22,7 @@ class PostingCommunityController extends Controller
     protected $community;
     protected $web;
 
-    public function __construct(PostingCommonity $model, Helper $helper, Handler $handler, Community $community, WebRedirect $web)
+    public function __construct(Post $model, Helper $helper, Handler $handler, Community $community, WebRedirect $web)
     {
         $this->model = $model;
         $this->helper = $helper;
@@ -39,7 +41,7 @@ class PostingCommunityController extends Controller
             $data = [
                 'content' => 'Admin/Community/Posting/index',
                 'title' => 'Data Posting',
-                'posting' => $this->model->with(['postingCommonity:id,title'])->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
+                'posting' => $this->model->with(['postingCommonity:id,title'])->whereNotNull('t_community_id')->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
                 'columns' => $this->model->columnsWeb(),
             ];
 
@@ -74,23 +76,26 @@ class PostingCommunityController extends Controller
      */
     public function store(Request $request)
     {
+
         DB::beginTransaction();
         try{
             $datas = $request->validate([
                 't_community_id' => 'required',
                 'title' => 'required|max:20',
                 'image' => 'required|image|file|max:2048|mimes:jpeg,png,jpg',
-                'content' => 'required',
-                'active' => 'required',
+                'desc' => 'required',
             ]);
 
-            $folder = "dgolf/community/posting";
-            $column = "image";
-            
-            $datas['content'] = str_replace("\r", "", $datas['content']);
-            $model = $this->model->create($datas);
+            $datas['id_user'] = auth()->id();
 
-            $this->helper->uploads($folder, $model, $column);
+            $file = $request->file('image');
+            if ($file && $file->isValid()) {
+                $path = $file->store('rump4t/community/socialmedia', 's3');
+                $url = Storage::disk('s3')->url($path);
+                $datas['url_cover_image'] = $url; 
+            }
+
+            $model = $this->model->create($datas);
 
             $com = Community::with([
                     'membersCommonity' => function($q) {
@@ -155,20 +160,20 @@ class PostingCommunityController extends Controller
             $datas = $request->validate([
                 't_community_id' => 'required',
                 'title' => 'required|max:20',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg',
-                'content' => 'required',
-                'active' => 'nullable',
+                'image' => 'nullable|image|file|max:2048|mimes:jpeg,png,jpg',
+                'desc' => 'required',
             ]);
 
+            $datas['id_user'] = auth()->id();
             $model = $this->model->findOrfail($id);
 
-            $folder = "dgolf/community/posting";
-            $column = "image";
-
-            $datas['content'] = str_replace("\r", "", $datas['content']);
+            $file = $request->file('image');
+            if ($file && $file->isValid()) {
+                $path = $file->store('rump4t/community/socialmedia', 's3');
+                $url = Storage::disk('s3')->url($path);
+                $datas['url_cover_image'] = $url; 
+            }
             $model->update($datas);
-
-            $this->helper->uploads($folder, $model, $column);
 
             DB::commit();
             return $this->web->update('community.posting.semua');
