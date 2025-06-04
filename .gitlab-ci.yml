@@ -20,6 +20,6 @@ dev:
 
 prod:
   script:
-    - ssh -i ~/.ssh/id_rsa ${!SSH_HOST} "dploy deploy prod"
+    - ssh -i ~/.ssh/id_rsa ${!SSH_HOST} -p60022 "dploy deploy prod"
   only:
     - prod
