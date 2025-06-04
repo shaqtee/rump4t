@@ -551,7 +551,8 @@ class MyGamesController extends Controller
             //                     ->filter($request)->get();
                                 // ->paginate($page);
 
-            $show = $this->users->select('users.id', 'users.name', 'users.nickname')->where('users.flag_done_profile', 1)
+            // $show = $this->users->select('users.id', 'users.name', 'users.nickname')->where('users.flag_done_profile', 1)
+            $show = $this->users->select('users.id', 'users.name', 'users.nickname')
                                 ->whereNotExists(function ($query) use ($id) {
                                     $query->select(DB::raw(1))
                                     ->from('t_invitation_players')
