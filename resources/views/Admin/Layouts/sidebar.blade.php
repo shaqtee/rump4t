@@ -99,7 +99,7 @@
                             <a class="sub-side-menu__item" href="{{ route('community.event.semua') }}"><span class="sub-side-menu__label">Event</span></a>
                         </li>
                         <li class="sub-slide">
-                            <a class="sub-side-menu__item" href="{{ route('community.posting.semua') }}"><span class="sub-side-menu__label">Posting</span></a>
+                            <a class="sub-side-menu__item" href="{{ route('community.posting.semua') }}"><span class="sub-side-menu__label">Sosial Media</span></a>
                             <ul class="sub-slide-menu">
                                 <li><a class="sub-slide-item" href="{{ route('community.posting.semua') }}">Maintenance</a></li>
                             </ul>

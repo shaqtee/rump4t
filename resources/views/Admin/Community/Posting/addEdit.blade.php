@@ -50,34 +50,22 @@
                                 <small style="color: red">{{ $message }}</small>
                             @enderror
                             <img class="image-preview img-thumbnail wd-100p wd-sm-200 mb-3" style="display: block;">
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" value="{{ old('image', isset($posting) ? $posting->image : '') }}" name="image" id="image" placeholder="Image" @if(!$posting) required autofocus @endif onchange="previewImage()">
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" value="{{ old('image', isset($posting) ? $posting->url_cover_image : '') }}" name="image" id="image" placeholder="Image" @if(!$posting) required autofocus @endif onchange="previewImage()">
                         </div>
                         @if (isset($posting))
                             <div class="form-group">
-                                <img class="img-thumbnail mb-3" src="{{ isset($posting) ? $posting->image : '' }}" alt="" width="300" height="200">
+                                <img class="img-thumbnail mb-3" src="{{ isset($posting) ? $posting->url_cover_image : '' }}" alt="" width="300" height="200">
                             </div>
                         @endif
-                        <div class="form-group">
-                            <label for="active">Active</label>
-                            @error('active')
-                                <small style="color: red">{{ $message }}</small>
-                            @enderror
-                            <div class="row">
-                                <div class="col">
-                                    <label class="rdiobox"><input value="1" name="active" type="radio" {{ old('active', isset($posting) && $posting->active) == '1' ? 'checked' : '' }} required autofocus> <span>Active</span></label>
-                                    <label class="rdiobox"><input value="0" name="active" type="radio" {{ old('active', isset($posting) && $posting->active) == '0' ? 'checked' : '' }} required autofocus> <span>Deactive</span></label>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label for="content">Content</label>
-                            @error('content')
+                            <label for="desc">Content</label>
+                            @error('desc')
                                 <small style="color: red">{{ $message }}</small>
                             @enderror
-                            <textarea class="form-control" placeholder="Body" name="content" rows="25" required autofocus>
-                                {{ isset($posting) ? $posting->content : old('content') }}
+                            <textarea class="form-control" placeholder="Body" name="desc" rows="25" required autofocus>
+                                {{ isset($posting) ? $posting->desc : old('desc') }}
                             </textarea>
                         </div>
                     </div>

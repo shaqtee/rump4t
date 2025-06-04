@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\{Model , SoftDeletes};
 use Modules\SocialMedia\App\Models\DetailPost;
 use Illuminate\Support\Facades\Schema;
-
-
+use Modules\Community\App\Models\Community;
 
 class Post extends Model
 {
@@ -44,6 +43,10 @@ class Post extends Model
     public function likedBy($userId)
     {
         return $this->like()->where('t_user_id', $userId)->exists();
+    }
+
+    public function postingCommonity(){
+        return $this->belongsTo(Community::class, 't_community_id');
     }
 
     public function scopeFilter($query, $request)
