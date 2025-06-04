@@ -61,6 +61,7 @@ class PollingController extends Controller
                     'question' => $polling->question,
                     'question_description' => $polling->question_description,
                     'is_active' => $polling->is_active,
+                    'start_date' => $polling->start_date,
                     'deadline' => $polling->deadline,
                     'created_at' => $polling->created_at,
                     'total_votes' => $totalVotes,
@@ -71,6 +72,13 @@ class PollingController extends Controller
                 return $this->api->list($data, $this->polling);
             }
             // List polling
+
+            // update is_active
+            Polling::whereNotNull('deadline')
+                    ->where('deadline', '<', now())
+                    ->where('is_active', true)
+                    ->update(['is_active' => false]);
+
             $query = Polling::with(['options.votes'])->orderBy('created_at', 'desc');
 
             if ($status === 'active') {
@@ -80,11 +88,6 @@ class PollingController extends Controller
             }
     
             $pollings = $query->get()->map(function ($polling) {
-                
-                $now = now();
-                if ($polling->deadline && $polling->deadline < $now) {
-                    $polling->is_active = false;
-                }
 
                 $totalVotes = $polling->options->sum(fn($opt) => $opt->votes->count());
 
@@ -106,14 +109,15 @@ class PollingController extends Controller
                     'question' => $polling->question,
                     'question_description' => $polling->question_description,
                     'is_active' => $polling->is_active,
+                    'start_date' => $polling->start_date,
                     'deadline' => $polling->deadline,
                     'created_at' => $polling->created_at,
                     'total_votes' => $totalVotes,
                     'is_votes' => $hasVoted,
                     'options' => $options,
                 ];
-            });    
-
+            });  
+    
             return $this->api->list($pollings, $this->polling);
         } catch (\Throwable $e) {
             if (config('envconfig.app_debug')) {

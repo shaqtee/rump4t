@@ -5,7 +5,7 @@
         </div>
         <div class="card-body pt-0">
             @if (isset($pollings))
-            <form action="{{ route('polling.update', ['pollings' => $pollings->id]) }}" method="POST">
+            <form action="{{ route('polling_admin.edit', $pollings->id) }}" method="POST">
             @method('PATCH')
             @else
             <form action="{{ route('polling_admin.store') }}" method="POST">
@@ -51,6 +51,20 @@
                         class="form-control @error('question_description') is-invalid @enderror">{{ old('question_description', $pollings->question_description ?? '') }}</textarea>
                 </div>
 
+                {{-- START DATE --}}
+                 <div class="form-group">
+                    <label for="start_date">Tanggal Mulai</label>
+                    @error('start_date')
+                        <small style="color: red">{{ $message }}</small>
+                    @enderror
+                    @php
+                        $now = \Carbon\Carbon::now()->format('Y-m-d\TH:i');
+                    @endphp
+                    <input type="datetime-local" name="start_date" id="start_date"
+                        class="form-control @error('start_date') is-invalid @enderror"
+                        value="{{ old('start_date', isset($pollings->start_date) ? \Carbon\Carbon::parse($pollings->start_date)->format('Y-m-d\TH:i') : '') }}" min="{{ $now }}">
+                </div>
+
                 {{-- DEADLINE --}}
                 <div class="form-group">
                     <label for="deadline">Deadline</label>
@@ -74,13 +88,18 @@
                             @php
                                 $roles = ['pengurus', 'pengawas', 'pembina', 'anggota', 'custom'];
                                 $selected = old('target_roles', $pollings->target_roles ?? []);
+
+                                if (is_string($selected)) {
+                                    $selected = str_replace(['{', '}'], '', $selected); 
+                                    $selected = explode(',', $selected);
+                                }
                             @endphp
                             @foreach ($roles as $role)
                                 <div>
                                     <label>
                                         <input type="checkbox" name="target_roles[]" value="{{ $role }}"
                                             {{ in_array($role, $selected) ? 'checked' : '' }}
-                                            onchange="updateSelectedRoles(event)" />
+                                            onchange="updateSelectedRoles(event); toggleRegionCommunityVisibility()" {{ $role === 'custom' ? 'id=targetRoleCustom' : '' }} />
                                         {{ ucfirst($role) }}
                                     </label>
                                 </div>
@@ -93,7 +112,7 @@
                 </div>
 
                 {{-- REGION --}}
-                <div class="form-group">
+                <div class="form-group" id="regionGroup" style="display: none;">
                     <label for="target_region_id">Wilayah</label>
                     @error('target_region_id')
                         <small style="color: red">{{ $message }}</small>
@@ -109,7 +128,7 @@
                 </div>
 
                 {{-- COMMUNITY --}}
-                <div class="form-group">
+                <div class="form-group" id="communityGroup" style="display: none;">
                     <label for="target_community_id">Komunitas</label>
                     @error('target_community_id')
                         <small style="color: red">{{ $message }}</small>
@@ -133,6 +152,8 @@
                     <label class="form-check-label" for="is_active">Aktifkan Polling</label>
                 </div> --}}
 
+                <br>
+                <br>
                 <button type="submit" class="btn btn-success mt-3 mb-0">Submit</button>
             </form>
         </div>
@@ -168,4 +189,23 @@
             if (!el.contains(e.target)) el.classList.remove('open');
         });
     });
+
+    function toggleRegionCommunityVisibility() {
+        const isCustomChecked = document.getElementById('targetRoleCustom')?.checked;
+        const regionGroup = document.getElementById('regionGroup');
+        const communityGroup = document.getElementById('communityGroup');
+
+        if (isCustomChecked) {
+            regionGroup.style.display = 'block';
+            communityGroup.style.display = 'block';
+        } else {
+            regionGroup.style.display = 'none';
+            communityGroup.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        toggleRegionCommunityVisibility();
+    });
+
 </script>

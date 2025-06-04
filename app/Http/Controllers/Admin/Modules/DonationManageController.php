@@ -11,32 +11,29 @@ use Illuminate\Validation\Rule;
 use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Polling;
-use App\Models\PollingOption;
-use App\Models\PollingVote;
+use App\Models\Donasi;
+use App\Models\ImgDonasi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use Modules\Community\App\Models\Community;
-use Modules\Regions\App\Models\Region;
 
-class PollingManageController extends Controller
+class DonationManageController extends Controller
 {
     protected $model;
     protected $helper;
     protected $handler;
     protected $web;
-    protected $option;
-    protected $vote;
+    protected $img;
+    // protected $vote;
 
-    public function __construct(Polling $model, Helper $helper, Handler $handler, WebRedirect $web, PollingOption $option, PollingVote $vote)
+    public function __construct(Donasi $model, Helper $helper, Handler $handler, WebRedirect $web, ImgDonasi $img)
     {
         $this->model = $model;
         $this->helper = $helper;
         $this->handler = $handler;
         $this->web = $web;
-        $this->option = $option;
-        $this->vote = $vote;
+        $this->img = $img;
+        // $this->vote = $vote;
     }
     /**
      * Display a listing of the resource.
@@ -46,9 +43,9 @@ class PollingManageController extends Controller
         try{
             $page = $request->size ?? 10;
             $data = [
-                'content' => 'Admin/Polling/index',
-                'title' => 'Data Polling',
-                'pollings' => $this->model->with(['options', 'votes', 'user'])
+                'content' => 'Admin/Donasi/index',
+                'title' => 'Data Donasi',
+                'donation' => $this->model->with(['image_donasi', 'user'])
                     // ->where(function($q){
                     //     if(auth()->user()->t_group_id == 3){
                     //         $q->where('region', auth()->user()->region);
@@ -69,11 +66,9 @@ class PollingManageController extends Controller
     {
         try{
             $data = [
-                'content' => 'Admin/Polling/addEdit',
-                'title' => 'Add Data Polling',
-                'pollings' => null,
-                'regions' => Region::where('parameter', 'm_region')->get(),
-                'communities' => Community::all(),
+                'content' => 'Admin/Donasi/addEdit',
+                'title' => 'Add Data Donasi',
+                'donation' => null,
             ];
             return view('Admin.Layouts.wrapper', $data);
         } catch (\Throwable $e) {
@@ -89,36 +84,43 @@ class PollingManageController extends Controller
         try {
             $validated = $request->validate([
                 'title' => 'required|string|max:255',
-                'title_description' => 'nullable|string',
-                'question' => 'required|string',
-                'question_description' => 'nullable|string',
                 'start_date' => 'nullable|date',
-                'deadline' => 'nullable|date',
-                'target_roles' => 'nullable|array',
-                'target_roles.*' => 'string',
-                'target_region_id' => 'nullable|integer',
-                'target_community_id' => 'nullable|integer',
+                'end_date' => 'nullable|date',
+                'description' => 'nullable|string',
+                'target_sumbangan' => 'nullable|string',
+                'img_penggalang_dana' => 'nullable|image|max:2048',
+                'nama_penggalang_dana' => 'required|string|max:255',
+                'nama_bank' => 'required|string|max:255',
+                'nomor_rekening' => 'required|string|max:255',
             ]);
 
-            $polling = Polling::create([
+            $url = null;
+
+            if ($request->hasFile('img_penggalang_dana')) {
+                $file = $request->file('img_penggalang_dana');
+        
+                if ($file->isValid()) {
+                    $path = $file->store('rump4t/donasi/pengalang_dana-images', 's3');
+                    $url = Storage::disk('s3')->url($path);
+                }
+            }
+
+            $donasi = Donasi::create([
                 'title' => $validated['title'],
-                'title_description' => $validated['title_description'] ?? null,
-                'question' => $validated['question'],
-                'question_description' => $validated['question_description'] ?? null,
-                'is_active' => true,
                 'start_date' => $validated['start_date'] ?? null,
-                'deadline' => $validated['deadline'] ?? null,
-                'target_roles' => $validated['target_roles']
-                    ? '{' . implode(',', $validated['target_roles']) . '}'
-                    : null,
-                'target_region_id' => $validated['target_region_id'] ?? null,
-                'target_community_id' => $validated['target_community_id'] ?? null,
+                'end_date' => $validated['end_date'] ?? null,
+                'description' => $validated['description'] ?? null,
+                'target_sumbangan' => $validated['target_sumbangan'] ?? null,
+                'img_penggalang_dana' => $url,
+                'nama_penggalang_dana' => $validated['nama_penggalang_dana'],
+                'nama_bank' => $validated['nama_bank'],
+                'nomor_rekening' => $validated['nomor_rekening'],
                 'created_by' => auth()->id(),
                 'created_at' => now(),
             ]);
 
             DB::commit();
-            return $this->web->store('polling.admin');
+            return $this->web->store('donasi.admin');
 
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -129,16 +131,16 @@ class PollingManageController extends Controller
         }
     }
 
-    public function create_option($id)
+    public function create_image($id)
     {
         try{
-            $options = PollingOption::where('polling_id', $id)->get();
+            $img = ImgDonasi::where('donasi_id', $id)->get();
 
             $data = [
-                'content' => 'Admin/Polling/addEdit_Option',
-                'title' => 'Add Polling Option Data',
-                'polling_id' => $id,
-                'options' => $options,
+                'content' => 'Admin/Donasi/addEdit_ImgDonasi',
+                'title' => 'Add Image Donasi',
+                'donasi_id' => $id,
+                'image' => $img,
             ];
             return view('Admin.Layouts.wrapper', $data);
         } catch (\Throwable $e) {
@@ -146,77 +148,64 @@ class PollingManageController extends Controller
         }
     }
 
-    public function store_option(Request $request)
+    public function store_image(Request $request)
     {
         // dd($request->all());
         DB::beginTransaction();
     
         try {
             $request->validate([
-                'polling_id' => 'required|exists:t_pollings,id',
-                'option_value.*' => 'nullable|string|max:10',
-                'option_text.*' => 'nullable|string',
-                'option_image.*' => 'nullable|image|max:2048',
+                'donasi_id' => 'required|exists:t_pollings,id',
+                'url_image.*' => 'nullable|image|max:2048',
+                'img_id.*' => 'nullable|integer',
             ]);
     
-            $optionIds = $request->option_id ?? [];
-            $existingOptionIds = $this->option
-                ->where('polling_id', $request->polling_id)
+            $imgIds = $request->img_id ?? [];
+            $existingImgIds = $this->img
+                ->where('donasi_id', $request->donasi_id)
                 ->pluck('id')
                 ->toArray();
 
             $processedIds = [];
 
-            foreach ($request->option_text as $index => $text) {
-                $optionId = $optionIds[$index] ?? null;
-                $value = $request->option_value[$index] ?? null;
-                $file = $request->file('option_image')[$index] ?? null;
-
-                if ($optionId && in_array($optionId, $existingOptionIds)) {
-                    // Update
-                    $option = $this->option->find($optionId);
-                    $option->option_value = $value;
-                    $option->option_text = $text;
+            foreach ($request->url_image as $index => $file) {
+                $imageId = $imgIds[$index] ?? null;
+    
+                if ($imageId && in_array($imageId, $existingImgIds)) {
+                    // Update gambar lama
+                    $image = $this->img->find($imageId);
     
                     if ($file && $file->isValid()) {
-                        $path = $file->store('rump4t/polling/polling-images', 's3');
+                        $path = $file->store('rump4t/donasi/images-slide', 's3');
                         $url = Storage::disk('s3')->url($path);
-                
-                        $option->option_image = $url;
+                        $image->url_image = $url;
                     }
     
-                    $option->save();
-                    $processedIds[] = $optionId;
-    
+                    $image->save();
+                    $processedIds[] = $imageId;
                 } else {
-                    // Tambah baru
-                    $newOption = $this->option->create([
-                        'polling_id' => $request->polling_id,
-                        'option_value' => $value,
-                        'option_text' => $text,
-                    ]);
-    
+                    // Tambah gambar baru
                     if ($file && $file->isValid()) {
-                        $path = $file->store('rump4t/polling/polling-images', 's3');
+                        $path = $file->store('rump4t/donasi/images-slide', 's3');
                         $url = Storage::disk('s3')->url($path);
-                
-                        $newOption->update([
-                            'option_image' => $url,
-                        ]);                    
-                    }
     
-                    $processedIds[] = $newOption->id;
+                        $newImage = $this->img->create([
+                            'donasi_id' => $request->donasi_id,
+                            'url_image' => $url,
+                        ]);
+    
+                        $processedIds[] = $newImage->id;
+                    }
                 }
             }
-
-            // Hapus opsi yang dihapus
-            $toDelete = array_diff($existingOptionIds, $processedIds);
+    
+            $toDelete = array_diff($existingImgIds, $processedIds);
             if (!empty($toDelete)) {
-                $this->option->whereIn('id', $toDelete)->delete();
+                $this->img->whereIn('id', $toDelete)->delete();
             }
     
             DB::commit();
-            return $this->web->store('polling.admin');
+            return $this->web->store('donasi.admin');
     
         } catch (\Throwable $e) {
             DB::rollBack();

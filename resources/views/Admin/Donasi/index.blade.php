@@ -6,7 +6,7 @@
             </div>
             <div class="row justify-content-start mt-3">
                 <div class="col-auto">
-                    <a href="{{ route('polling_admin.create') }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
+                    <a href="{{ route('donasi_admin.create') }}" class="btn btn-success  d-flex align-items-center justify-content-center"><i class="fa fa-plus"></i> ADD</a>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@
                     </select>
                 </div>
                 <div class="col-auto">
-                    <form action="{{ route('polling.admin') }}" method="GET" class="d-flex">
+                    <form action="{{ route('donasi.admin') }}" method="GET" class="d-flex">
                             {{-- <select id="searchIndex" class="form-control" style="margin-right: 10px;">
                                 @foreach ($columns as $items => $values)
                                     @foreach ($values as $item => $value)
@@ -40,14 +40,14 @@
                         <tr>
                             <th>No</th>
                             <th>Title</th>
-                            <th>Title Description</th>
-                            <th>Question</th>
-                            <th>Question Description</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Created At</th>
+                            <th>Description</th>
+                            <th>Target Sumbangan</th>
+                            <th>Total Sumbangan</th>
+                            <th>Total Donatur</th>
                             <th>Created By</th>
-                            <th>Is Active</th>
+                            <th>Created At</th>
                             <th colspan="3">Action</th>
                         </tr>
                     </thead>
@@ -55,30 +55,26 @@
                         @php
                             
                         @endphp
-                        @foreach ($pollings as $key => $p)
+                        @foreach ($donation as $key => $d)
                             <tr>
-                                <th scope="row">{{ $pollings->firstItem() + $key }}</th>
-                                <td>{{ $p->title ?? '-' }}</td>
-                                <td>{{ $p->title_description ?? '-'}}</td>
-                                <td>{{ $p->question  ?? '-'}}</td>
-                                <td>{{ $p->question_description  ?? '-'}}</td>
-                                <td>{{ \Carbon\Carbon::parse($p->start_date)->translatedFormat('d F Y') ?? '-' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($p->deadline)->translatedFormat('d F Y') ?? '-' }}</td>
-                                <td>{{ $p->user->name  ?? '-'}}</td>
-                                <td>{{ $p->created_at  ?? '-'}}</td>
+                                <th scope="row">{{ $donation->firstItem() + $key }}</th>
+                                <td>{{ $d->title ?? '-' }}</td>
+                                <td>{{ \Carbon\Carbon::parse($d->start_date)->translatedFormat('d F Y') ?? '-' }}</td>
+                                <td>{{ \Carbon\Carbon::parse($d->end_date)->translatedFormat('d F Y') ?? '-' }}</td>
+                                <td>{{ $d->description ?? '-'}}</td>
+                                <td>Rp. {{ $d->target_sumbangan  ?? '-'}}</td>
+                                <td>Rp. {{ $d->total_sumbangan  ?? '-'}}</td>
+                                <td>{{ $d->total_donatur  ?? '-'}}</td>
+                                <td>{{ $d->created_by  ?? '-'}}</td>
+                                <td>{{ $d->created_at  ?? '-'}}</td>
                                 <td>
-                                    <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: {{ $p->is_active == '1' ? '#28a745' : '#adb5bd' }}">
-                                        {{ $p->is_active == '1' ? 'Active' : 'NotActive' }}
-                                    </span>
+                                    <a class="btn btn-info" href="{{ route('donasi_admin.edit_form', $d->id) }}">EDIT</a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-info" href="{{ route('polling_admin.edit_form', $p->id) }}">EDIT</a>
+                                    <a class="btn btn-warning" href="{{ route('donasi_image.add', $d->id) }}">ADD IMAGE</a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-warning" href="{{ route('polling_otion.add', $p->id) }}">POLLING OPTIONS</a>
-                                </td>
-                                <td>
-                                    <form action="{{ route('polling_admin.destroy', $p->id) }}" method="POST">
+                                    <form action="{{ route('donasi_admin.destroy', $d->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">DELETE</button>
@@ -92,7 +88,7 @@
             <div class="row">
                 <div class="col-12">
                     <ul class="pagination pagination-success justify-content-center mt-3">
-                        @if ($pollings->onFirstPage())
+                        @if ($donation->onFirstPage())
                             <li class="page-item disabled">
                                 <span class="page-link"><i class="icon ion-ios-arrow-back"></i></span>
                             </li>
@@ -102,37 +98,37 @@
                             </li>
                         @endif
             
-                        @if ($pollings->currentPage() > 3)
+                        @if ($donation->currentPage() > 3)
                             <li class="page-item">
                                 <a class="page-link" href="{{ $winnerCategory->url(1) }}">1</a>
                             </li>
-                            @if ($pollings->currentPage() > 4)
+                            @if ($donation->currentPage() > 4)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                         @endif
             
-                        @foreach(range(1, $pollings->lastPage()) as $i)
-                            @if ($i >= $pollings->currentPage() - 2 && $i <= $pollings->currentPage() + 2)
-                                @if ($i == $pollings->currentPage())
+                        @foreach(range(1, $donation->lastPage()) as $i)
+                            @if ($i >= $donation->currentPage() - 2 && $i <= $donation->currentPage() + 2)
+                                @if ($i == $donation->currentPage())
                                     <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
                                 @else
-                                    <li class="page-item"><a class="page-link" href="{{ $pollings->url($i) }}">{{ $i }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="{{ $donation->url($i) }}">{{ $i }}</a></li>
                                 @endif
                             @endif
                         @endforeach
             
-                        @if ($pollings->currentPage() < $pollings->lastPage() - 2)
-                            @if ($pollings->currentPage() < $pollings->lastPage() - 3)
+                        @if ($donation->currentPage() < $donation->lastPage() - 2)
+                            @if ($donation->currentPage() < $donation->lastPage() - 3)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                             <li class="page-item">
-                                <a class="page-link" href="{{ $pollings->url($pollings->lastPage()) }}">{{ $pollings->lastPage() }}</a>
+                                <a class="page-link" href="{{ $donation->url($donation->lastPage()) }}">{{ $donation->lastPage() }}</a>
                             </li>
                         @endif
             
-                        @if ($pollings->hasMorePages())
+                        @if ($donation->hasMorePages())
                             <li class="page-item">
-                                <a class="page-link" href="{{ $pollings->nextPageUrl() }}" rel="next"><i class="icon ion-ios-arrow-forward"></i></a>
+                                <a class="page-link" href="{{ $donation->nextPageUrl() }}" rel="next"><i class="icon ion-ios-arrow-forward"></i></a>
                             </li>
                         @else
                             <li class="page-item disabled">

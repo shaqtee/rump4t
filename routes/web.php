@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Modules\Groups\GroupsPostingController;
 use App\Http\Controllers\ManageEvent\ManageEventController;
 use App\Http\Controllers\Admin\Modules\UserManageController;
 use App\Http\Controllers\Admin\Modules\AlbumCommunityController;
+use App\Http\Controllers\Admin\Modules\DonationManageController;
 use App\Http\Controllers\Admin\Modules\EventCommunityController;
 use App\Http\Controllers\ManageEvent\ManageEventAlbumController;
 use App\Http\Controllers\Admin\Modules\PostingCommunityController;
@@ -254,10 +255,24 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('tambah', [PollingManageController::class, 'store'])->name('polling_admin.store');
                 Route::get('tambah_option/{id}', [PollingManageController::class, 'create_option'])->name('polling_otion.add');
                 Route::post('option/store', [PollingManageController::class, 'store_option'])->name('polling_option.store');
-                // Route::patch('{id}/index-admin', [UserManageController::class, 'update_admin'])->name('users.admin.edit');
+                Route::get('polling/{id}/edit-admin', [PollingManageController::class, 'edit_admin'])->name('polling_admin.edit_form');
+                Route::patch('polling/{id}/index-admin', [PollingManageController::class, 'update_admin'])->name('polling_admin.edit');
+
                 // Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');    
                 // Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');
-                // Route::delete('{id}/hapus', [UserManageController::class, 'delete_soft'])->name('users.hapus');
+                Route::delete('{id}/hapus', [PollingManageController::class, 'destroy'])->name('polling_admin.destroy');
+            });
+
+            Route::prefix('donasi')->group(function () {
+                Route::get('index-admin', [DonationManageController::class, 'index_admin'])->name('donasi.admin');
+                Route::get('tambah', [DonationManageController::class, 'create'])->name('donasi_admin.create');
+                Route::post('tambah', [DonationManageController::class, 'store'])->name('donasi_admin.store');
+                Route::get('tambah_image/{id}', [DonationManageController::class, 'create_image'])->name('donasi_image.add');
+                Route::post('image_donasi/store', [DonationManageController::class, 'store_image'])->name('donasi_image.store');
+                Route::get('donasi/{id}/edit-admin', [DonationManageController::class, 'edit_admin'])->name('donasi_admin.edit_form');
+                Route::patch('donasi/{id}/index-admin', [DonationManageController::class, 'update_admin'])->name('donasi_admin.edit');
+
+                Route::delete('{id}/hapus', [DonationManageController::class, 'destroy'])->name('donasi_admin.destroy');
             });
         });
 
