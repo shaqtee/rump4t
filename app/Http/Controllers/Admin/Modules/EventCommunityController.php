@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use Modules\Community\App\Models\Community;
 use Modules\Community\App\Models\MemberEvent;
 use Illuminate\Validation\ValidationException;
+use Modules\Community\App\Models\CourseArea;
 use Modules\Community\App\Models\EventCommonity;
 use Modules\Masters\App\Models\MasterGolfCourse;
 use Modules\Performace\App\Models\ScoreHandicap;
@@ -162,6 +163,8 @@ class EventCommunityController extends Controller
                 $request['type_scoring'] = $request->type_scoring_show;
             }
 
+            $orderedAreaIds = $request->input('course_area_ids');
+
             $datas = $request->validate([
                 // 't_community_id' => 'required',
                 'title' => 'required|string',
@@ -191,6 +194,7 @@ class EventCommunityController extends Controller
             $datas['period'] = 1;
 
             $datas['auto_scoring'] = isset($request->auto_scoring) && $request->auto_scoring == 'on' ? true : false;
+            $datas['course_area_ids'] = json_encode($orderedAreaIds);
 
             //convert location to longitude & latitude
             // $latlng = $this->helper->gMaps($datas['location']);

@@ -580,7 +580,7 @@ class ScoreHandicapController extends Controller
                         ->with([
                             'myEventGolfList' => function($q) {
                                 $q->select('t_eventgolf.id', 't_eventgolf.t_community_id', 't_eventgolf.title', 't_eventgolf.type_scoring', 't_eventgolf.play_date_start', 't_eventgolf.t_tee_man_id', 't_eventgolf.t_tee_ladies_id', 't_eventgolf.m_golf_course_id', 't_eventgolf.m_round_type_id')
-                                ->with(['teeMan:id,tee_type,course_rating,slope_rating', 'teeLadies:id,tee_type,course_rating,slope_rating', 'golfCourseEvent:id,name', 'roundType:id,value1'])
+                                ->with(['teeMan:id,tee_type,course_rating,slope_rating', 'teeLadies:id,tee_type,course_rating,slope_rating', 'golfCourseEvent:id,name', 'courseArea','roundType:id,value1'])
                                 ->whereNot('t_eventgolf.period', 1)->where('t_member_eventgolf.approve', 'PAID')
                                 ->whereNotExists(function($subQuery) {
                                     $subQuery->select(DB::raw(1))
