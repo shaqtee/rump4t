@@ -146,7 +146,7 @@
             
                         @if ($group->currentPage() > 3)
                             <li class="page-item">
-                                <a class="page-link" href="{{ $users->url(1) }}">1</a>
+                                <a class="page-link" href="{{ $group->url(1) }}">1</a>
                             </li>
                             @if ($group->currentPage() > 4)
                                 <li class="page-item disabled"><span class="page-link">...</span></li>

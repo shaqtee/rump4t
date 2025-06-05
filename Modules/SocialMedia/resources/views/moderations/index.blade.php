@@ -43,18 +43,28 @@
                         @endif
                         <hr>
                         @if($post->user === null || $post->user->id !== auth()->id())
-                            <a href="{{ route('socialmedia.moderation.moderate', $post->id) }}" class="btn btn-primary btn-sm">Moderate</a>
+                            @if(empty($post->deleted_at))
+                                <a href="{{ route('socialmedia.moderation.moderate', $post->id) }}" class="btn btn-primary btn-sm">Moderate </a>
+                            @endif
                         @endif
                         @if($post->user === null || $post->user->id === auth()->id())
-                            <a href="{{ route('socialmedia.moderation.ubah', $post->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            @if(empty($post->deleted_at))
+                                <a href="{{ route('socialmedia.moderation.ubah', $post->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            @endif
                         @endif
                         <a href="{{ route('socialmedia.moderation.comments', $post->id) }}" class="btn btn-info btn-sm">Comments</a>
-                        @if($post->user === null || $post->user->id === auth()->id())
-                            <form action="{{ route('socialmedia.moderation.hapus', $post->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
+                        @if($post->user === null 
+                            || $post->user->id === auth()->id() 
+                            || auth()->user()->t_group_id == 1
+                            || auth()->user()->t_group_id == 3
+                            )
+                            @if(empty($post->deleted_at))
+                                <form action="{{ route('socialmedia.moderation.hapus', $post->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            @endif
                         @endif
                     </div>
                 </div>
