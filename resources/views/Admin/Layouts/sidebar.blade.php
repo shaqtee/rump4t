@@ -104,12 +104,12 @@
                                 <li><a class="sub-slide-item" href="{{ route('community.posting.semua') }}">Maintenance</a></li>
                             </ul>
                         </li>
-                        <li class="sub-slide">
+                        {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('community.album.semua') }}"><span class="sub-side-menu__label">Album</span></a>
                             <ul class="sub-slide-menu">
                                 <li><a class="sub-slide-item" href="{{ route('community.album.semua') }}">Maintenance</a></li>
                             </ul>
-                        </li>
+                        </li> --}}
                         {{-- <li class="sub-slide">
                             <a class="sub-side-menu__item" href="{{ route('community.sponsor.semua') }}"><span class="sub-side-menu__label">Supporting Partner</span></a>
                             <ul class="sub-slide-menu">

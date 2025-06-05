@@ -534,4 +534,26 @@ class CommunityController extends Controller
             };
         }
     }
+
+    public function list_komunitas(Request $request)
+    {
+        try {
+            $page = $request->size ?? 10;
+            // $index = $this->model->with([
+            //     'membersCommonity' => function ($query) {
+            //         $query->select('name', 'image')->orderByDesc('users.id')->get();
+            //     },
+            // ])->filter($request)->orderBy('id', 'asc')->paginate($page);
+
+            $index = $this->model->with(['membersCommonity'])->filter($request)->orderBy('id', 'asc')->paginate($page);
+
+            return $this->api->list($index, $this->model);
+        } catch(\Throwable $e) {
+            if (config('envconfig.app_debug')) {
+                return $this->api->error_code($e->getMessage(), $e->getCode());
+            } else {
+                return $this->api->error_code_log("Internal Server Error", $e->getMessage());
+            };
+        }
+    }
 }

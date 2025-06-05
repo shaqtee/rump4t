@@ -213,6 +213,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{community_id}/leaderboard', [CommunityController::class, 'leaderboard'])->name('community.leaderboard');
             Route::get('event/index', [EventCommunityController::class, 'index_community'])->name('community.event.semua'); // off
             Route::get('event/{event_id}/lihat', [EventCommunityController::class, 'show_community'])->name('community.event.lihat'); // off
+            Route::get('{community_id}/image_slider', [CommunityController::class, 'image_slider'])->name('community.image_slider');
 
             Route::prefix('posting')->group(function () {
                 Route::get('index', [PostingCommunityController::class, 'index'])->name('community.posting.semua');
@@ -347,6 +348,16 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{golf_course_id}/hole', [MasterGolfCourseController::class, 'edit_hole'])->name('golf-course.hole.edit');
             Route::patch('update/{golf_course_id}/hole', [MasterGolfCourseController::class, 'update_hole'])->name('golf-course.hole.update');
             Route::delete('delete/{golf_course_id}/hole', [MasterGolfCourseController::class, 'delete_hole'])->name('golf-course.hole.delete');
+           
+            Route::get('index/{golf_course_id}/course_area', [MasterGolfCourseController::class, 'index_course_area'])->name('golf-course.course_area.index');
+            Route::get('create/{golf_course_id}/course_area', [MasterGolfCourseController::class, 'create_course_area'])->name('golf-course.course_area.create');
+            Route::post('store/course_area', [MasterGolfCourseController::class, 'store_course_area'])->name('golf-course.course_area.store');
+            Route::get('edit/{golf_course_id}/course_area', [MasterGolfCourseController::class, 'edit_course_area'])->name('golf-course.course_area.edit');
+            Route::patch('update/{golf_course_id}/course_area', [MasterGolfCourseController::class, 'update_course_area'])->name('golf-course.course_area.update');
+            Route::delete('delete/{golf_course_id}/course_area', [MasterGolfCourseController::class, 'delete_course_area'])->name('golf-course.course_area.delete');
+
+            Route::get('/admin/course-area/by-golf-course/{id}', [MasterGolfCourseController::class, 'getCourseAreas']);
+
             Route::resources(['golf-course' => MasterGolfCourseController::class]);
             Route::resources(['banner-slide' => MasterBannerSlideController::class]);
             Route::post('banner-slide/activate/{desc}', [MasterBannerSlideController::class, 'activate']);

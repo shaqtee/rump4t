@@ -6,6 +6,7 @@ use App\Services\Helpers\Helper;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Masters\App\Models\MasterConfiguration;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Community\App\Models\CourseArea;
 use Modules\Community\App\Models\Hole;
 use Modules\Community\App\Models\TeeBoxCourse;
 use Modules\Masters\Database\factories\MasterGolfCourseFactory;
@@ -26,6 +27,10 @@ class MasterGolfCourse extends Model
 
     public function holes(){
         return $this->hasMany(Hole::class, 'course_id');
+    }
+
+    public function courseArea(){
+        return $this->hasMany(CourseArea::class, 'course_id');
     }
 
     public function scopeFilter($query, $request)

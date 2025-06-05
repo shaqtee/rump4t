@@ -79,8 +79,8 @@
         const newOption = `
         <div class="polling-option border p-3 mb-3">
             <div class="form-group">
-                <label>Nilai Opsi (Maks 10 Karakter)</label>
-                <input type="text" name="option_value[]" class="form-control" maxlength="10">
+                <label>Nilai Opsi</label>
+                <input type="text" name="option_value[]" class="form-control">
             </div>
             <div class="form-group">
                 <label>Isi Teks Opsi</label>

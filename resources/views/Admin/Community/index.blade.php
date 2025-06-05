@@ -2,7 +2,7 @@
     <div class="card mg-b-20">
         <div class="card-header pb-0">
             <div class="d-flex justify-content-between">
-                <h4 class="card-title mg-b-0">Data Grid</h4>
+                <h4 class="card-title mg-b-0">Data Komunitas</h4>
             </div>
             <div class="row justify-content-start">
                 <div class="col-auto">
@@ -40,8 +40,11 @@
                                 <td> 
                                     <a class="btn btn-info " href="{{ route('community.member', ['community_id' => $com->id]) }}">Member</a>
                                 </td>
-                                <td> 
+                                {{-- <td> 
                                     <a class="btn btn-info " href="{{ route('community.leaderboard', ['community_id' => $com->id]) }}">Leaderboard</a>
+                                </td> --}}
+                                <td> 
+                                    <a class="btn btn-info " href="{{ route('community.image_slider', ['community_id' => $com->id]) }}">Image</a>
                                 </td>
                                 <td>
                                     <div class="row">
