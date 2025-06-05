@@ -84,7 +84,7 @@
                             </select>
                         </div>
                         <div id="course-area-container" class="mt-3"></div>
-                        <div class="form-group">
+                        <div class="form-group mt-2">
                             <label for="price">Price</label>
                             @error('price')
                                 <small style="color: red">{{ $message }}</small>
@@ -450,48 +450,67 @@
     chekTypeScoring();
     document.addEventListener('DOMContentLoaded', toggleTypeScoring);
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css">
+
 <script>
-    // $(document).ready(function () {
-    //     $('#m_golf_course_id').on('change', function () {
-    //         const golfCourseId = $(this).val();
+    const baseUrl = "{{ route('admin.course-area.by-golf-course', ['id' => '__ID__']) }}";
 
-    //         if (golfCourseId) {
-    //             $.ajax({
-    //                 url: '/admin/course-area/by-golf-course/' + golfCourseId,
-    //                 method: 'GET',
-    //                 success: function (response) {
-    //                     $('#course-area-container').html('');
+    $(document).ready(function () {
+        $('#m_golf_course_id').on('change', function () {
+            const golfCourseId = $(this).val();
 
-    //                     if (response.length > 0) {
-    //                         let html = `<label class="mt-2">Course Areas (sortable)</label>
-    //                                     <ul id="sortable-course-area" class="list-group">`;
+            if (golfCourseId) {
+                const url = baseUrl.replace('__ID__', golfCourseId);
 
-    //                         response.forEach(function (area) {
-    //                             html += `
-    //                                 <li class="list-group-item d-flex align-items-center justify-content-between">
-    //                                     <input type="hidden" name="course_area_ids[]" value="${area.id}">
-    //                                     <span>${area.course_name} (Holes: ${area.holes_number})</span>
-    //                                     <i class="fa fa-bars handle" style="cursor:move;"></i>
-    //                                 </li>`;
-    //                         });
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (response) {
+                        $('#course-area-container').html('');
 
-    //                         html += `</ul>`;
-    //                         $('#course-area-container').html(html);
+                        if (response.length > 0) {
+                            let html = `<label class="mt-2">Course Areas</label>
+                                        <ul id="course-area-list" class="list-group">`;
 
-    //                         $('#sortable-course-area').sortable({
-    //                             handle: '.handle'
-    //                         });
-    //                     } else {
-    //                         $('#course-area-container').html('<p class="text-muted">No course areas found.</p>');
-    //                     }
-    //                 },
-    //                 error: function () {
-    //                     alert('Failed to fetch course areas.');
-    //                 }
-    //             });
-    //         }
-    //     });
-    // });
+                            response.forEach(function (area, index) {
+                                html += `
+                                    <li class="list-group-item d-flex align-items-center justify-content-between" data-index="${index}">
+                                        <div>
+                                            <input type="hidden" name="course_area_ids[]" value="${area.id}">
+                                            <span>${area.course_name} (Holes: ${area.holes_number})</span>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-sm btn-light move-up">⬆️</button>
+                                            <button type="button" class="btn btn-sm btn-light move-down">⬇️</button>
+                                        </div>
+                                    </li>`;
+                            });
+
+                            html += `</ul>`;
+                            $('#course-area-container').html(html);
+
+                            $('#course-area-list').on('click', '.move-up', function () {
+                                let item = $(this).closest('li');
+                                item.prev().before(item);
+                            });
+
+                            $('#course-area-list').on('click', '.move-down', function () {
+                                let item = $(this).closest('li');
+                                item.next().after(item);
+                            });
+                        } else {
+                            $('#course-area-container').html('<p class="text-muted">No course areas found.</p>');
+                        }
+                    },
+                    error: function () {
+                        alert('Failed to fetch course areas.');
+                    }
+                });
+            }
+        });
+    });
 </script>
 {{-- <script>
     const fieldTemplates = {

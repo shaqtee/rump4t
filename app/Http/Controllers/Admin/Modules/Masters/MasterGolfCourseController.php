@@ -529,7 +529,6 @@ class MasterGolfCourseController extends Controller
 
     public function getCourseAreas($id)
     {
-        dd($id);
         $areas = $this->course_area->where('course_id', $id)
             ->orderBy('id', 'asc')
             ->get(['id', 'course_name', 'holes_number']);

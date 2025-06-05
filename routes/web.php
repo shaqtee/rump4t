@@ -356,7 +356,7 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('update/{golf_course_id}/course_area', [MasterGolfCourseController::class, 'update_course_area'])->name('golf-course.course_area.update');
             Route::delete('delete/{golf_course_id}/course_area', [MasterGolfCourseController::class, 'delete_course_area'])->name('golf-course.course_area.delete');
 
-            Route::get('/admin/course-area/by-golf-course/{id}', [MasterGolfCourseController::class, 'getCourseAreas']);
+            Route::get('admin/course-area/by-golf-course/{id}', [MasterGolfCourseController::class, 'getCourseAreas'])->name('admin.course-area.by-golf-course');
 
             Route::resources(['golf-course' => MasterGolfCourseController::class]);
             Route::resources(['banner-slide' => MasterBannerSlideController::class]);

@@ -91,6 +91,11 @@ class EventCommonity extends Model
         return $this->BelongsTo(MasterConfiguration::class, 'm_round_type_id')->where('parameter', 'm_round_type');
     }
 
+    public function courseArea()
+    {
+        return $this->hasMany(CourseArea::class, 'course_id', 'm_golf_course_id');
+    }
+
     // public function typeScore(){
     //     return $this->BelongsTo(MasterConfiguration::class, 'type_scoring')->where('parameter', 'm_type_scor');
     // }
