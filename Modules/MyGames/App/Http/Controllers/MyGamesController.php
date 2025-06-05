@@ -189,6 +189,7 @@ class MyGamesController extends Controller
             $index = $this->letsPlay->with([
                 'organized:id,name',
                 'golfCourse:id,name,latitude,longitude',
+                'courseArea',
                 'teeBox:id,tee_type,t_golf_course_id',
                 'roundType:id,value1',
                 'memberLetsPlay' => function ($q) {
