@@ -26,6 +26,7 @@ class CommunityController extends Controller
     protected $users;
     protected $members;
     protected $groups;
+    // protected $images;
 
     public function __construct(Community $model, Helper $helper, MasterCity $city, WebRedirect $web, Handler $handler, User $users, MembersCommonity $members, Group $groups)
     {
@@ -37,6 +38,7 @@ class CommunityController extends Controller
         $this->users = $users;
         $this->members = $members;
         $this->groups = $groups;
+        // $this->images = $images;
     }
 
     /**
@@ -295,6 +297,28 @@ class CommunityController extends Controller
                 'content' => 'Admin/Community/leaderboard',
                 'title' => 'Leaderboard',
                 'leaderboard' => $result,
+            ];
+
+            return view('Admin.Layouts.wrapper', $data);
+
+        } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function image_slider(Request $request, $community_id)
+    {
+        try{
+            $page = $request->size ?? 10;
+            $data = [
+                'content' => 'Admin/Community/index_image',
+                'title' => 'Data Image Community',
+                'image' => $this->community_image->where('t_community_id', $community_id)->get(),
+                // 'users' => $this->users->where('flag_done_profile', 1)->where('active', 1)->where('flag_community', 'JOINED')->where('t_community_id', $community_id)->with(['community:id,title', 'group:id,name', 'city:id,name'])->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()), //->whereRelation('membersCommonity', 'flag_manage', null)
+                // 'groups' => $this->groups->where('active', 1)->get(),
+                // 'community' => $this->model->orderBy('id', 'asc')->get(),
+                // 'columns' => $this->users->columnsWeb(),
+                // 'community_id' => $community_id,
             ];
 
             return view('Admin.Layouts.wrapper', $data);

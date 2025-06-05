@@ -117,6 +117,11 @@ class MyGamesController extends Controller
                             ])->filter($request)->findOrfail($userId);
 
                 // $index = $this->viewLp->where('id', $userId)->filter($request)->get();
+
+                foreach ($index->myLetsPlayList as $item) {
+                    unset($item->is_private);
+                }
+            
                 $model = $this->viewLp;
             }
 

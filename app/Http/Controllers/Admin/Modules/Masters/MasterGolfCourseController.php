@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Helpers\Helper;
 use Illuminate\Validation\ValidationException;
+use Modules\Community\App\Models\CourseArea;
 use Modules\Community\App\Models\TeeBoxCourse;
 use Modules\Community\App\Models\Hole;
 use Modules\Masters\App\Models\MasterGolfCourse;
@@ -21,16 +22,18 @@ class MasterGolfCourseController extends Controller
     protected $model;
     protected $teeBox;
     protected $hole;
+    protected $course_area;
     protected $config;
     protected $helper;
 
-    public function __construct(WebRedirect $web, Handler $handler, MasterGolfCourse $model, TeeBoxCourse $teeBox, Hole $hole, MasterConfiguration $config, Helper $helper)
+    public function __construct(WebRedirect $web, Handler $handler, MasterGolfCourse $model, TeeBoxCourse $teeBox, Hole $hole, CourseArea $courseArea, MasterConfiguration $config, Helper $helper)
     {
         $this->web = $web;
         $this->handler = $handler;
         $this->model = $model;
         $this->teeBox = $teeBox;
         $this->hole = $hole;
+        $this->course_area = $courseArea;
         $this->config = $config;
         $this->helper = $helper;
     }
@@ -413,4 +416,125 @@ class MasterGolfCourseController extends Controller
             return $this->handler->handleExceptionWeb($e);
         }
     }
+    public function index_course_area(Request $request, $golf_course_id)
+    {
+        try{
+            $page = $request->size ?? 10;
+            $data = [
+                'content' => 'Admin/Masters/GolfCourse/CourseArea/index',
+                'title' => 'Data Course Area',
+                'course_area' => $this->course_area->where('course_id', $golf_course_id)->get(),
+                'golfCourse' => $this->model->findOrfail($golf_course_id),
+            ];
+            return view('Admin.Layouts.wrapper', $data);
+        } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+
+    public function create_course_area($id)
+    {
+        try{
+            $data = [
+                'content' => 'Admin/Masters/GolfCourse/CourseArea/addEdit',
+                'title' => 'Add Course Area',
+                'golfCourse' => $this->model->findOrfail($id),
+                'course_area' => null,
+                'MasterHole' => $this->config->where('parameter', 'm_hole')->get(),
+            ];
+            return view('Admin.Layouts.wrapper', $data);
+        } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function store_course_area(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+            $datas = $request->validate([
+                'course_id' => 'required',
+                'course_name' => 'required',
+                'holes_number' => 'required',
+            ]);
+            $this->course_area->create($datas);
+
+            DB::commit();
+            return redirect()->route('golf-course.course_area.index', ['golf_course_id' => $datas['course_id']])->with('success', 'Data successfully added');;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            if($e instanceof ValidationException){
+                return $this->web->error_validation($e);
+            }
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function edit_course_area(string $id)
+    {
+        try{
+            $data = [
+                'content' => 'Admin/Masters/GolfCourse/CourseArea/addEdit',
+                'title' => 'Edit Course Area',
+                'course_area'=> $this->course_area->findOrfail($id),
+                'golfCourse'=> $this->course_area->findOrfail($id)->course_id,
+
+            ];
+            return view('Admin.Layouts.wrapper', $data);
+        } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function update_course_area(Request $request, string $id)
+    {
+        DB::beginTransaction();
+        try{
+            $datas = $request->validate([
+                'course_name' => 'required',
+                'holes_number' => 'required',
+            ]);
+            $model = $this->course_area->findOrfail($id)->update($datas);
+
+            $course_id =$this->course_area->findOrfail($id)->course_id;
+
+            DB::commit();
+            // return $this->web->updateBack();
+            return redirect()->route('golf-course.course_area.index', ['golf_course_id' => $course_id])->with('success', 'Data successfully updated');;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            if($e instanceof ValidationException){
+                return $this->web->error_validation($e);
+            }
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function delete_course_area(string $id)
+    {
+        DB::beginTransaction();
+        try{
+
+            $course_id =$this->course_area->findOrfail($id)->course_id;
+
+            $this->course_area->findOrfail($id)->delete();
+            DB::commit();
+            return redirect()->route('golf-course.course_area.index', ['golf_course_id' => $course_id])->with('success', 'Data successfully deleted');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function getCourseAreas($id)
+    {
+        dd($id);
+        $areas = $this->course_area->where('course_id', $id)
+            ->orderBy('id', 'asc')
+            ->get(['id', 'course_name', 'holes_number']);
+
+        return response()->json($areas);
+    }
+
 }
