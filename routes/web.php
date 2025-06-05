@@ -41,6 +41,7 @@ use Modules\News\App\Http\Controllers\NewsController;
 use Modules\NewsAdmin\App\Http\Controllers\NewsAdminController;
 use Modules\Regions\App\Http\Controllers\RegionsController;
 use Modules\SocialMedia\App\Http\Controllers\ModeratorController;
+use App\Http\Controllers\Admin\Modules\Pemilu\PemiluController;
 
 /*
 |--------------------------------------------------------------------------
@@ -274,6 +275,16 @@ Route::middleware(['auth'])->group(function () {
 
                 Route::delete('{id}/hapus', [DonationManageController::class, 'destroy'])->name('donasi_admin.destroy');
             });
+        });
+
+        Route::prefix('pemilu')->group(function () {
+            /* crud pemilu */
+            Route::get('', [PemiluController::class, 'index_admin'])->name('pemilu.semua');
+            Route::get('tambah', [PemiluController::class, 'create'])->name('pemilu_admin.create');
+            Route::post('tambah', [PemiluController::class, 'store'])->name('pemilu_admin.store');
+            Route::get('{id}/edit-admin', [PemiluController::class, 'edit_admin'])->name('pemilu_admin.edit');
+            Route::patch('{id}/update-admin', [PemiluController::class, 'update_admin'])->name('pemilu_admin.update');
+            Route::delete('{id}/hapus', [PemiluController::class, 'destroy'])->name('pemilu_admin.destroy');
         });
 
         Route::prefix('lets-play')->group(function () {
