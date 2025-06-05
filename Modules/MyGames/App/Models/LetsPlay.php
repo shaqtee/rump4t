@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\Masters\App\Models\MasterConfiguration;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Community\App\Models\CourseArea;
 use Modules\Community\App\Models\TeeBoxCourse;
 use Modules\Masters\App\Models\MasterRules;
 use Modules\MyGames\Database\factories\LetsPlayFactory;
@@ -51,6 +52,11 @@ class LetsPlay extends Model
 
     public function roundType(){
         return $this->belongsTo(MasterConfiguration::class, 'm_round_type_id')->where('parameter', 'm_round_type');
+    }
+
+    public function courseArea()
+    {
+        return $this->hasMany(CourseArea::class, 'course_id', 't_golf_course_id');
     }
 
     // public function typeScore(){
