@@ -73,6 +73,12 @@ class User extends Authenticatable
         'reset_request' => 'boolean',
     ];
 
+    public function candidates()
+    {
+        return $this->belongsToMany(Pemilu::class, 't_pemilu_candidates', 'user_id', 't_pemilu_id')
+            ->withPivot(['id', 'is_active', 'created_at', 'updated_at']);
+    }
+
     public function small_groups()
     {
         return $this->belongsToMany(SmallGroup::class, 't_small_groups_user', 'user_id', 't_small_groups_id')

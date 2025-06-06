@@ -48,6 +48,7 @@ class GroupsController extends Controller
             $page = $request->size ?? 10;
             $data = [
                 'content' => 'Admin/Groups/index',
+                'title' => 'Data Groups',
                 'community' => $this->model->filter($request)->orderBy('id', 'asc')->paginate($page),
             ];
 
@@ -176,7 +177,7 @@ class GroupsController extends Controller
             $page = $request->size ?? 10;
             $data = [
                 'content' => 'Admin/Groups/member',
-                'title' => 'Data User Members',
+                'title' => 'Data Group Members',
                 'group' => $members->with('small_groups')->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
                 'users' => $this->users->whereNotIn('id', $ids)->where('active', 1)->get(),
                 'columns' => $this->users->columnsWeb(),
