@@ -2,46 +2,47 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthWebController;
+use Modules\News\App\Http\Controllers\NewsController;
+use Modules\Event\App\Http\Controllers\EventController;
 use App\Http\Controllers\Admin\Modules\CommunityController;
-use App\Http\Controllers\Admin\Modules\Groups\GroupsController;
-use App\Http\Controllers\Admin\Modules\Groups\GroupsPostingController;
 use App\Http\Controllers\ManageEvent\ManageEventController;
+use Modules\Regions\App\Http\Controllers\RegionsController;
 use App\Http\Controllers\Admin\Modules\UserManageController;
+use App\Http\Controllers\Admin\Modules\Groups\GroupsController;
+use App\Http\Controllers\Admin\Modules\Pemilu\PemiluController;
+use App\Http\Controllers\Admin\Modules\PollingManageController;
+use Modules\NewsAdmin\App\Http\Controllers\NewsAdminController;
 use App\Http\Controllers\Admin\Modules\AlbumCommunityController;
 use App\Http\Controllers\Admin\Modules\DonationManageController;
 use App\Http\Controllers\Admin\Modules\EventCommunityController;
 use App\Http\Controllers\ManageEvent\ManageEventAlbumController;
+use Modules\SocialMedia\App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\Admin\Modules\PostingCommunityController;
 use App\Http\Controllers\Admin\Modules\SponsorCommunityController;
 use App\Http\Controllers\ManageEvent\ManageEventSponsorController;
 use App\Http\Controllers\Admin\Modules\Events\AlbumEventController;
 use App\Http\Controllers\Admin\Modules\LetsPlay\LetsPlayController;
 use App\Http\Controllers\Admin\Modules\Events\SponsorEventController;
+use App\Http\Controllers\Admin\Modules\Groups\GroupsPostingController;
 use App\Http\Controllers\Admin\Modules\Events\WinnerCategoryController;
+use App\Http\Controllers\Admin\Modules\Pemilu\PemiluPollingsController;
+use App\Http\Controllers\Admin\Modules\SocialMedia\ElectionsController;
 use App\Http\Controllers\ManagePeople\Modules\ManageCommunityController;
+use App\Http\Controllers\Admin\Modules\SocialMedia\InformationController;
+use App\Http\Controllers\Admin\Modules\SocialMedia\SocialMediaController;
 use App\Http\Controllers\ManageEvent\ManageEventWinnerCategoryController;
 use App\Http\Controllers\ManagePeople\Modules\ManageUserManageController;
 use App\Http\Controllers\Admin\Modules\Masters\MasterGolfCourseController;
-use App\Http\Controllers\Admin\Modules\Masters\MasterBannerSlideController;
 use App\Http\Controllers\Admin\Modules\Masters\MasterRulesScoreController;
+use App\Http\Controllers\Admin\Modules\Masters\MasterBannerSlideController;
 use App\Http\Controllers\ManagePeople\Modules\ManageAlbumCommunityController;
 use App\Http\Controllers\ManagePeople\Modules\ManageEventCommunityController;
 use App\Http\Controllers\Admin\Modules\Masters\MasterWinnerCategoryController;
-use App\Http\Controllers\Admin\Modules\PollingManageController;
-use App\Http\Controllers\Admin\Modules\SocialMedia\ElectionsController;
-use App\Http\Controllers\Admin\Modules\SocialMedia\InformationController;
-use App\Http\Controllers\Admin\Modules\SocialMedia\SocialMediaController;
 use App\Http\Controllers\ManagePeople\Modules\ManagePostingCommunityController;
 use App\Http\Controllers\ManagePeople\Modules\ManageSponsorCommunityController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageAlbumEventController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageSponsorEventController;
 use App\Http\Controllers\ManagePeople\Modules\Events\ManageWinnerCategoryController;
-use Modules\Event\App\Http\Controllers\EventController;
-use Modules\News\App\Http\Controllers\NewsController;
-use Modules\NewsAdmin\App\Http\Controllers\NewsAdminController;
-use Modules\Regions\App\Http\Controllers\RegionsController;
-use Modules\SocialMedia\App\Http\Controllers\ModeratorController;
-use App\Http\Controllers\Admin\Modules\Pemilu\PemiluController;
 
 /*
 |--------------------------------------------------------------------------
@@ -287,6 +288,21 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{id}/edit-admin', [PemiluController::class, 'edit_admin'])->name('pemilu_admin.edit');
             Route::patch('{id}/update-admin', [PemiluController::class, 'update_admin'])->name('pemilu_admin.update');
             Route::delete('{id}/hapus', [PemiluController::class, 'destroy'])->name('pemilu_admin.destroy');
+
+            Route::prefix('candidate')->group(function () {
+                /* candidate */
+                Route::get('{pemilu_id}/list', [PemiluController::class, 'user_candidate'])->name('pemilu.candidate');
+                Route::post('{pemilu_id}/add', [PemiluController::class, 'add_candidate'])->name('pemilu.candidate.add');
+                Route::delete('{id}/left', [PemiluController::class, 'left_candidate'])->name('pemilu.candidate.left');
+                Route::post('activate', [PemiluController::class, 'activate_candidate'])->name('pemilu.candidate.activate');
+            });
+
+            Route::prefix('pollings')->group(function () {
+                /* pollings */
+                Route::get('', [PemiluPollingsController::class, 'index'])->name('pemilu.pollings');
+                Route::post('ajax-user-vote', [PemiluPollingsController::class, 'ajax_user_vote'])->name('pemilu.pollings.ajax_user_vote');
+                Route::post('vote', [PemiluPollingsController::class, 'vote'])->name('pemilu.pollings.vote');
+            });
         });
 
         Route::prefix('lets-play')->group(function () {

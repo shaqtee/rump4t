@@ -50,6 +50,7 @@ class GroupsPostingController extends Controller
             $page = $request->size ?? 10;
             $data = [
                 'content' => 'Admin/Groups/Posting/index',
+                'title' => 'Data Groups',
                 'groups' => $this->model->filter($request)->orderBy('id', 'asc')->paginate($page),
                 'columns' => $this->model->columns(),
             ];
@@ -71,16 +72,19 @@ class GroupsPostingController extends Controller
             
             if(auth()->user()->t_group_id == 3){
                 $posts = Post::whereIn('id_user', $arr_user_id)
+                    ->with('postingGroup')
                     ->where('t_small_groups_id', $groups_id)
                     ->orderBy("created_at" , "desc")->withTrashed() ->paginate(6);
             }else{
                 $posts = Post::orderBy("created_at" , "desc")
+                    ->with('postingGroup')
                     ->where('t_small_groups_id', $groups_id)
                     ->withTrashed() ->paginate(6);
             }
             
             $data = [
                 'content' => 'Admin/Groups/Posting/index_posts',
+                'group' => $this->model->where('id', $groups_id)->first(),
                 'posts' => $posts,
                 'groups_id' => $groups_id,
             ];

@@ -267,10 +267,7 @@
                             </a>
                         </li>
                         <li class="sub-slide">
-                            <a class="sub-side-menu__item" href="#"><span class="sub-side-menu__label">Kandidat</span></a>
-                        </li>
-                        <li class="sub-slide">
-                            <a class="sub-side-menu__item" href="#"><span class="sub-side-menu__label">Polling</span></a>
+                            <a class="sub-side-menu__item" href="{{ route('pemilu.pollings') }}"><span class="sub-side-menu__label">Pollings</span></a>
                         </li>
                     </ul>
                 </li>
