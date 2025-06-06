@@ -50,6 +50,10 @@
                     </thead>
                     <tbody>
                         @foreach ($pollings as $key => $p)
+                            @php
+                                $today = date('Y-m-d H:i:s');
+                                $expired = strtotime($p->end_date) < strtotime($today) ? true : false;
+                            @endphp
                             <tr>
                                 <th  scope="row">{{ $pollings->firstItem() + $key }}</th>
                                 <td>{{ $p->title ?? '-' }}</td>
@@ -58,11 +62,18 @@
                                 <td>{{ date('d/m/Y H:i', strtotime($p->end_date)) ?? '-'}}</td>
                                 <td>{{ $p->user->name ?? '-'}}</td>
                                 <td>
-                                    <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: {{ $p->is_active == '1' ? '#28a745' : '#adb5bd' }}">
-                                        {{ $p->is_active == '1' ? 'Active' : 'NotActive' }}
+                                    <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: {{ $expired ? '#adb5bd' : ($p->is_active == '1' ? '#28a745' : '#adb5bd') }}">
+                                        {{ $expired ? 'Expired' : ($p->is_active == '1' ? 'Active' : 'NotActive') }}
                                     </span>
                                 </td>
                                 {{-- action --}}
+                                <td>
+                                    @if ($expired)
+                                        <button class="btn btn-sm btn-secondary disabled">Candidate</button>
+                                    @else
+                                        <a class="btn btn-sm btn-primary" href="{{ route('pemilu.candidate', $p->id) }}">Candidate</a>
+                                    @endif
+                                </td>
                                 <td>
                                     <a class="btn btn-sm btn-info" href="{{ route('pemilu_admin.edit', $p->id) }}">EDIT</a>
                                 </td>

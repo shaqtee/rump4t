@@ -2,7 +2,7 @@
     <div class="card mg-b-20">
         <div class="card-header pb-0">
             <div class="d-flex justify-content-between">
-                <h4 class="card-title mg-b-0">Data Grid</h4>
+                <h4 class="card-title mg-b-0">{{ $title }}</h4>
             </div>
         </div>
         <div class="card-body">

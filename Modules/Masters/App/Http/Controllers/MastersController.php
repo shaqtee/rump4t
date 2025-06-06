@@ -276,7 +276,7 @@ class MastersController extends Controller
     {
         try {
             $page = $this->request->size ?? 150;
-            $datas = MasterGolfCourse::select('id', 'name', 'address', 'latitude', 'longitude')->with(['teeCourse'])->where('is_staging', '1')->filter($this->request)->paginate($page);
+            $datas = MasterGolfCourse::select('id', 'name', 'address', 'latitude', 'longitude')->with(['teeCourse', 'courseArea'])->where('is_staging', '1')->filter($this->request)->paginate($page);
 
             return $this->api->list($datas, new MasterGolfCourse, 'Success Get Data');
         } catch(\Throwable $e) {

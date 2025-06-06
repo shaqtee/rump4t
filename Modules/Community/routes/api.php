@@ -70,3 +70,11 @@ Route::apiResource('sponsor', SponsorCommonityController::class)->only(['index',
 Route::post('sponsor/bulk-destroy', [SponsorCommonityController::class, 'bulk_destroy']);
 
 Route::get('check_community', [EventCommonityController::class, 'check_community']);
+
+Route::prefix('social-media')->group(function () {
+    Route::get('', [CommunityController::class, 'list_komunitas']);
+    // Route::post('store', [CommunityController::class, 'store_manage']);
+    // Route::get('show/{id}', [CommunityController::class, 'show_manage']);
+    // Route::patch('update/{id}', [CommunityController::class, 'update_manage']);
+    // Route::delete('delete/{id}', [CommunityController::class, 'destroy_manage']);
+});

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\Helpers\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\{Model , SoftDeletes};
+use Modules\Groups\App\Models\Group as SmallGroup;
 use Modules\SocialMedia\App\Models\DetailPost;
 use Illuminate\Support\Facades\Schema;
 use Modules\Community\App\Models\Community;
@@ -47,6 +48,10 @@ class Post extends Model
 
     public function postingCommonity(){
         return $this->belongsTo(Community::class, 't_community_id');
+    }
+
+    public function postingGroup(){
+        return $this->belongsTo(SmallGroup::class, 't_small_groups_id');
     }
 
     public function scopeFilter($query, $request)

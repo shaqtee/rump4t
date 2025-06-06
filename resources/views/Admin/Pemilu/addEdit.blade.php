@@ -42,7 +42,7 @@
                     @endphp
                     <input type="datetime-local" name="start_date" id="start_date"
                         class="form-control @error('start_date') is-invalid @enderror"
-                        value="{{ old('start_date', isset($pollings->start_date) ? \Carbon\Carbon::parse($pollings->start_date)->format('Y-m-d\TH:i') : '') }}" min="{{ $now }}">
+                        value="{{ old('start_date', isset($pollings->start_date) ? \Carbon\Carbon::parse($pollings->start_date)->format('Y-m-d\TH:i') : '') }}">
                 </div>
 
                 {{-- END DATE --}}

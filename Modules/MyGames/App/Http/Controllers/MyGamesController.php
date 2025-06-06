@@ -117,6 +117,11 @@ class MyGamesController extends Controller
                             ])->filter($request)->findOrfail($userId);
 
                 // $index = $this->viewLp->where('id', $userId)->filter($request)->get();
+
+                foreach ($index->myLetsPlayList as $item) {
+                    unset($item->is_private);
+                }
+            
                 $model = $this->viewLp;
             }
 
@@ -184,6 +189,7 @@ class MyGamesController extends Controller
             $index = $this->letsPlay->with([
                 'organized:id,name',
                 'golfCourse:id,name,latitude,longitude',
+                'courseArea',
                 'teeBox:id,tee_type,t_golf_course_id',
                 'roundType:id,value1',
                 'memberLetsPlay' => function ($q) {

@@ -83,7 +83,8 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div id="course-area-container" class="mt-3"></div>
+                        <div class="form-group mt-2">
                             <label for="price">Price</label>
                             @error('price')
                                 <small style="color: red">{{ $message }}</small>
@@ -413,7 +414,7 @@
         </div>
     </div>
 </div>
-
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <script>
     // Function to toggle 'type_scoring' based on 'default_peoria'
     function toggleTypeScoring() {
@@ -448,6 +449,68 @@
 
     chekTypeScoring();
     document.addEventListener('DOMContentLoaded', toggleTypeScoring);
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css">
+
+<script>
+    const baseUrl = "{{ route('admin.course-area.by-golf-course', ['id' => '__ID__']) }}";
+
+    $(document).ready(function () {
+        $('#m_golf_course_id').on('change', function () {
+            const golfCourseId = $(this).val();
+
+            if (golfCourseId) {
+                const url = baseUrl.replace('__ID__', golfCourseId);
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (response) {
+                        $('#course-area-container').html('');
+
+                        if (response.length > 0) {
+                            let html = `<label class="mt-2">Course Areas</label>
+                                        <ul id="course-area-list" class="list-group">`;
+
+                            response.forEach(function (area, index) {
+                                html += `
+                                    <li class="list-group-item d-flex align-items-center justify-content-between" data-index="${index}">
+                                        <div>
+                                            <input type="hidden" name="course_area_ids[]" value="${area.id}">
+                                            <span>${area.course_name} (Holes: ${area.holes_number})</span>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-sm btn-light move-up">⬆️</button>
+                                            <button type="button" class="btn btn-sm btn-light move-down">⬇️</button>
+                                        </div>
+                                    </li>`;
+                            });
+
+                            html += `</ul>`;
+                            $('#course-area-container').html(html);
+
+                            $('#course-area-list').on('click', '.move-up', function () {
+                                let item = $(this).closest('li');
+                                item.prev().before(item);
+                            });
+
+                            $('#course-area-list').on('click', '.move-down', function () {
+                                let item = $(this).closest('li');
+                                item.next().after(item);
+                            });
+                        } else {
+                            $('#course-area-container').html('<p class="text-muted">No course areas found.</p>');
+                        }
+                    },
+                    error: function () {
+                        alert('Failed to fetch course areas.');
+                    }
+                });
+            }
+        });
+    });
 </script>
 {{-- <script>
     const fieldTemplates = {

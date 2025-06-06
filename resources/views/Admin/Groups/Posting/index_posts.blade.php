@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="card-title text-center">Postingan</h1>
+                    <h1 class="card-title text-center">Postingan&nbsp;<span class="text-primary">{{ $group->title }}</span></h1>
                 </div>
             </div>
         </div>

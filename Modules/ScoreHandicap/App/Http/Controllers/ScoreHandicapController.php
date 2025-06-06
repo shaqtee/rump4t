@@ -579,8 +579,8 @@ class ScoreHandicapController extends Controller
             $index = $this->users->select('id', 'name')
                         ->with([
                             'myEventGolfList' => function($q) {
-                                $q->select('t_eventgolf.id', 't_eventgolf.t_community_id', 't_eventgolf.title', 't_eventgolf.type_scoring', 't_eventgolf.play_date_start', 't_eventgolf.t_tee_man_id', 't_eventgolf.t_tee_ladies_id', 't_eventgolf.m_golf_course_id', 't_eventgolf.m_round_type_id')
-                                ->with(['teeMan:id,tee_type,course_rating,slope_rating', 'teeLadies:id,tee_type,course_rating,slope_rating', 'golfCourseEvent:id,name', 'roundType:id,value1'])
+                                $q->select('t_eventgolf.id', 't_eventgolf.t_community_id', 't_eventgolf.title', 't_eventgolf.type_scoring', 't_eventgolf.play_date_start', 't_eventgolf.t_tee_man_id', 't_eventgolf.t_tee_ladies_id', 't_eventgolf.m_golf_course_id', 't_eventgolf.m_round_type_id','t_eventgolf.course_area_ids')
+                                ->with(['teeMan:id,tee_type,course_rating,slope_rating', 'teeLadies:id,tee_type,course_rating,slope_rating', 'golfCourseEvent:id,name', 'courseArea','roundType:id,value1'])
                                 ->whereNot('t_eventgolf.period', 1)->where('t_member_eventgolf.approve', 'PAID')
                                 ->whereNotExists(function($subQuery) {
                                     $subQuery->select(DB::raw(1))
@@ -591,7 +591,7 @@ class ScoreHandicapController extends Controller
                                 ;
                             },
                             'myLetsPlayList' => function($q) {
-                                $q->with(['golfCourse:id,name', 'teeBox', 'roundType:id,value1'])
+                                $q->with(['golfCourse:id,name', 'teeBox', 'roundType:id,value1','courseArea'])
                                 ->whereNotExists(function($subQuery) {
                                     $subQuery->select(DB::raw(1))
                                         ->from('t_score_handicap')
@@ -604,6 +604,24 @@ class ScoreHandicapController extends Controller
                         ])
                         ->findOrfail($userId);
 
+                        $index->myEventGolfList->transform(function ($event) {
+                            if (!empty($event->course_area_ids)) {
+                                $areaOrder = collect(json_decode($event->course_area_ids, true))
+                                    ->map(fn($id) => (int)$id)
+                                    ->toArray();
+                
+                                $sortedCourseArea = collect($event->courseArea)
+                                    ->sortBy(function ($area) use ($areaOrder) {
+                                        $idx = array_search($area->id, $areaOrder);
+                                        return $idx !== false ? $idx : 9999;
+                                    })
+                                    ->values();
+                
+                                $event->setRelation('courseArea', $sortedCourseArea);
+                            }
+                            return $event;
+                        });
+                        
             // Tambahkan flag_data secara manual
             $eventList = $index->myEventGolfList->map(function ($item) {
                 $item['flag_data'] = 't_event';
