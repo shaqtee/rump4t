@@ -217,6 +217,8 @@ class MyGamesController extends Controller
             $request['periode'] = 1;
             $request['active'] = 1;
 
+            $request['course_area_ids'] = json_encode($request->course_area_ids);
+
             $store = $this->interfaces->store($this->letsPlay, $request->all());
 
             $request2 = new Request([
@@ -312,6 +314,8 @@ class MyGamesController extends Controller
             if ($checkOrganized->t_user_id != $organized) {
                 return $this->api->error('You Cant Edit This Game');
             }
+
+            $request['course_area_ids'] = $request->course_area_ids;
 
             $update = $this->interfaces->update($this->letsPlay, $request->all(), $id);
 
