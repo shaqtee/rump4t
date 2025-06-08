@@ -29,6 +29,10 @@ class LetsPlay extends Model
         'flag_data'
     ];
 
+    protected $casts = [
+        'course_area_ids' => 'array',
+    ];
+
     public function getFlagDataAttribute()
     {
         return 't_lets_play';
