@@ -216,8 +216,7 @@ class MyGamesController extends Controller
             $request['t_user_id'] = Auth::id();
             $request['periode'] = 1;
             $request['active'] = 1;
-
-            $request['course_area_ids'] = json_encode($request->course_area_ids);
+            $request['course_area_ids'] = $request->course_area_ids;
 
             $store = $this->interfaces->store($this->letsPlay, $request->all());
 
@@ -490,12 +489,27 @@ class MyGamesController extends Controller
             $show = $this->letsPlay->with([
                 'memberLetsPlay' => function ($q) {
                     $q->select('t_member_lets_play.id AS member_id', 'users.id AS t_user_id', 'users.player_id', 'users.name', 'users.nickname', 'users.image', 't_member_lets_play.approve')->where('t_member_lets_play.approve', 'PENDING')->orderBy('users.name', 'ASC');
-                }
+                },
+                'courseArea'
             ])->findOrFail($id);
 
             if ($show->t_user_id !== auth()->user()->id) {
                 return $this->api->success([], "Data show");
             }
+
+            if (is_array($show->course_area_ids)) {
+                $orderedCourseAreas = collect($show->course_area_ids)
+                    ->map(function ($id) use ($show) {
+                        return $show->courseArea->firstWhere('id', (int) $id);
+                    })
+                    ->filter() 
+                    ->values(); 
+                $show->course_area = $orderedCourseAreas;
+            } else {
+                $show->course_area = $show->courseArea;
+            }
+    
+            unset($show->courseArea);
 
             return $this->api->success($show, "Data show");
         } catch (\Throwable $e) {
