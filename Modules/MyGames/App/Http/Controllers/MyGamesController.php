@@ -196,7 +196,7 @@ class MyGamesController extends Controller
                     $q->select('users.id', 'users.name', 'users.image', 't_member_lets_play.approve')->where('t_member_lets_play.approve', 'ACCEPT');
                 }
             ])->where(function($q) {
-                $q->where('is_private', '!=', 1)->orWhere('is_private', 1)->where('t_user_id', auth()->user()->id);
+                $q->where('is_private', '!=', 1)->orWhere('is_private', 0)->where('t_user_id', auth()->user()->id);
             })->active()->filter($request)->orderByDesc('id')->get();
 
             return $this->api->list($index, $this->letsPlay);
@@ -216,7 +216,19 @@ class MyGamesController extends Controller
             $request['t_user_id'] = Auth::id();
             $request['periode'] = 1;
             $request['active'] = 1;
-            $request['course_area_ids'] = $request->course_area_ids;
+
+            // $request['course_area_ids'] = $request->course_area_ids;
+            $rawCourseAreaIds = $request->course_area_ids;
+
+            if (is_string($rawCourseAreaIds)) {
+                if (str_starts_with($rawCourseAreaIds, '[')) {
+                    $request['course_area_ids'] = json_decode($rawCourseAreaIds, true);
+                } else {
+                    $request['course_area_ids'] = explode(',', $rawCourseAreaIds);
+                }
+            } else {
+                $request['course_area_ids'] = $rawCourseAreaIds;
+            }
 
             $store = $this->interfaces->store($this->letsPlay, $request->all());
 
@@ -314,7 +326,18 @@ class MyGamesController extends Controller
                 return $this->api->error('You Cant Edit This Game');
             }
 
-            $request['course_area_ids'] = $request->course_area_ids;
+            // $request['course_area_ids'] = $request->course_area_ids;
+            $rawCourseAreaIds = $request->course_area_ids;
+
+            if (is_string($rawCourseAreaIds)) {
+                if (str_starts_with($rawCourseAreaIds, '[')) {
+                    $request['course_area_ids'] = json_decode($rawCourseAreaIds, true);
+                } else {
+                    $request['course_area_ids'] = explode(',', $rawCourseAreaIds);
+                }
+            } else {
+                $request['course_area_ids'] = $rawCourseAreaIds;
+            }
 
             $update = $this->interfaces->update($this->letsPlay, $request->all(), $id);
 
