@@ -261,7 +261,7 @@ class EventCommunityController extends Controller
     {
         try{
             $data = [
-                'content' => 'Admin/Event/addEdit',
+                'content' => 'Admin/EventGolf/addEdit',
                 'title' => 'Edit Event',
                 'event' => $this->model->findOrfail($id),
                 'community' => $this->community->get(),
@@ -295,6 +295,7 @@ class EventCommunityController extends Controller
             {
                 $request['type_scoring'] = $request->type_scoring_show;
             }
+            $orderedAreaIds = $request->input('course_area_ids');
 
             $datas = $request->validate([
                 // 't_community_id' => 'required',
@@ -322,6 +323,8 @@ class EventCommunityController extends Controller
                 'nama_rekening' => 'required',
                 'no_rekening' => 'required',
             ]);
+
+            $datas['course_area_ids'] = json_encode($orderedAreaIds);
 
             $datas['auto_scoring'] = isset($request->auto_scoring) && $request->auto_scoring == 'on' ? true : false;
 
