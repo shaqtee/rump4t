@@ -118,9 +118,9 @@ class MyGamesController extends Controller
 
                 // $index = $this->viewLp->where('id', $userId)->filter($request)->get();
 
-                foreach ($index->myLetsPlayList as $item) {
-                    unset($item->is_private);
-                }
+                // foreach ($index->myLetsPlayList as $item) {
+                //     unset($item->is_private);
+                // }
             
                 $model = $this->viewLp;
             }
@@ -196,7 +196,7 @@ class MyGamesController extends Controller
                     $q->select('users.id', 'users.name', 'users.image', 't_member_lets_play.approve')->where('t_member_lets_play.approve', 'ACCEPT');
                 }
             ])->where(function($q) {
-                $q->where('is_private', '!=', 1)->orWhere('is_private', 1)->where('t_user_id', auth()->user()->id);
+                $q->where('is_private', '!=', 1)->orWhere('is_private', 0)->where('t_user_id', auth()->user()->id);
             })->active()->filter($request)->orderByDesc('id')->get();
 
             return $this->api->list($index, $this->letsPlay);
@@ -490,12 +490,27 @@ class MyGamesController extends Controller
             $show = $this->letsPlay->with([
                 'memberLetsPlay' => function ($q) {
                     $q->select('t_member_lets_play.id AS member_id', 'users.id AS t_user_id', 'users.player_id', 'users.name', 'users.nickname', 'users.image', 't_member_lets_play.approve')->where('t_member_lets_play.approve', 'PENDING')->orderBy('users.name', 'ASC');
-                }
+                },
+                'courseArea'
             ])->findOrFail($id);
 
             if ($show->t_user_id !== auth()->user()->id) {
                 return $this->api->success([], "Data show");
             }
+
+            if (is_array($show->course_area_ids)) {
+                $orderedCourseAreas = collect($show->course_area_ids)
+                    ->map(function ($id) use ($show) {
+                        return $show->courseArea->firstWhere('id', (int) $id);
+                    })
+                    ->filter() 
+                    ->values(); 
+                $show->course_area = $orderedCourseAreas;
+            } else {
+                $show->course_area = $show->courseArea;
+            }
+    
+            unset($show->courseArea);
 
             return $this->api->success($show, "Data show");
         } catch (\Throwable $e) {
