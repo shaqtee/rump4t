@@ -90,16 +90,19 @@ class MasterGolfCourseController extends Controller
                 'number_par' => 'required',
                 'is_staging' => 'required',
             ]);
-
+            
             // convert address to longitude & latitude
             $latlng = $this->helper->gMaps($datas['address']);
+            // dd($latlng);
 
             if($latlng == false){
-                return $this->web->error('Location Not Found');
+                // return $this->web->error('Location Not Found');
+                $datas['longitude'] = NULL;
+                $datas['latitude'] = NULL;
+            }else{
+                $datas['longitude'] = $latlng['longitude'];
+                $datas['latitude'] = $latlng['latitude'];
             }
-
-            $datas['longitude'] = $latlng['longitude'];
-            $datas['latitude'] = $latlng['latitude'];
 
             $this->model->create($datas);
 
@@ -161,11 +164,13 @@ class MasterGolfCourseController extends Controller
             $latlng = $this->helper->gMaps($datas['address']);
 
             if($latlng == false){
-                return $this->web->error('Location Not Found');
+                // return $this->web->error('Location Not Found');
+                $datas['longitude'] = NULL;
+                $datas['latitude'] = NULL;
+            }else{
+                $datas['longitude'] = $latlng['longitude'];
+                $datas['latitude'] = $latlng['latitude'];
             }
-
-            $datas['longitude'] = $latlng['longitude'];
-            $datas['latitude'] = $latlng['latitude'];
 
             $model = $this->model->findOrfail($id)->update($datas);
 
