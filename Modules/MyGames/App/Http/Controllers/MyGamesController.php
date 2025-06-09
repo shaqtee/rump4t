@@ -217,18 +217,7 @@ class MyGamesController extends Controller
             $request['periode'] = 1;
             $request['active'] = 1;
 
-            // $request['course_area_ids'] = $request->course_area_ids;
-            $rawCourseAreaIds = $request->course_area_ids;
-
-            if (is_string($rawCourseAreaIds)) {
-                if (str_starts_with($rawCourseAreaIds, '[')) {
-                    $request['course_area_ids'] = json_decode($rawCourseAreaIds, true);
-                } else {
-                    $request['course_area_ids'] = explode(',', $rawCourseAreaIds);
-                }
-            } else {
-                $request['course_area_ids'] = $rawCourseAreaIds;
-            }
+            $request['course_area_ids'] = json_encode($request->course_area_ids);
 
             $store = $this->interfaces->store($this->letsPlay, $request->all());
 
@@ -326,18 +315,7 @@ class MyGamesController extends Controller
                 return $this->api->error('You Cant Edit This Game');
             }
 
-            // $request['course_area_ids'] = $request->course_area_ids;
-            $rawCourseAreaIds = $request->course_area_ids;
-
-            if (is_string($rawCourseAreaIds)) {
-                if (str_starts_with($rawCourseAreaIds, '[')) {
-                    $request['course_area_ids'] = json_decode($rawCourseAreaIds, true);
-                } else {
-                    $request['course_area_ids'] = explode(',', $rawCourseAreaIds);
-                }
-            } else {
-                $request['course_area_ids'] = $rawCourseAreaIds;
-            }
+            $request['course_area_ids'] = $request->course_area_ids;
 
             $update = $this->interfaces->update($this->letsPlay, $request->all(), $id);
 
