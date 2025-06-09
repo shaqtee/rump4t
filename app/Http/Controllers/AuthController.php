@@ -374,6 +374,52 @@ class AuthController extends Controller
                 $datas['year_of_retirement'] = (int) $datas['year_of_retirement'];
             }
 
+            $newCommunityIds = json_decode($request->input('t_community_id'), true); 
+            $newCommunityIds = is_array($newCommunityIds) ? $newCommunityIds : [];
+        
+            $currentCommunityIds = $dataUser->t_community_id ?? [];
+        
+            if (!is_array($currentCommunityIds)) {
+                $currentCommunityIds = json_decode($currentCommunityIds, true);
+            }
+        
+            $hasChanged = $newCommunityIds != $currentCommunityIds;
+            if (!empty($newCommunityIds) && $hasChanged) {
+                $dataUser->t_community_id = $newCommunityIds;
+
+                // cek apakah user sudah ada di community
+                foreach ($newCommunityIds as $communityId) {
+                    $community = $this->community->find($communityId);
+                    if ($community) {
+                        $exists = $this->memberCommunity
+                            ->where('t_user_id', $dataUser->id)
+                            ->where('t_community_id', $community->id)
+                            ->exists();
+                
+                        if (!$exists) {
+                            $join = [
+                                't_user_id' => $dataUser->id,
+                                't_community_id' => $community->id,
+                                'active' => 1,
+                            ];
+                            $this->memberCommunity->create($join);
+                        }
+                    }
+                }
+        
+                // hapus user dari community yang dihapus
+                $deletedCommunityIds = array_diff($currentCommunityIds, $newCommunityIds);
+                foreach ($deletedCommunityIds as $communityId) {
+                    $community = $this->community->find($communityId);
+                    if ($community) {
+                        $this->memberCommunity->where('t_user_id', $dataUser->id)
+                            ->where('t_community_id', $community->id)
+                            ->delete();
+                    }
+                }
+            }
+        
+
             // if(!empty($datas['t_city_id'])){
             //     $city_code = ($this->city->where('id', $datas['t_city_id'])->first())->code;
             //     $datas = array_merge($request->all(), ['kota_kabupaten' => $city_code]);
