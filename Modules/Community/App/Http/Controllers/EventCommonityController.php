@@ -148,7 +148,12 @@ class EventCommonityController extends Controller
 
             if($show['sponsor_event'] == []) {
                 $suppPartner = $shows->with(['eventCommonity.sponsorCommonity.socialMedia'])->find($id);
-                $show['sponsor_event'] = $suppPartner['eventCommonity']['sponsorCommonity'];
+                
+                if (isset($suppPartner['eventCommonity']) && isset($suppPartner['eventCommonity']['sponsorCommonity'])) {
+                    $show['sponsor_event'] = $suppPartner['eventCommonity']['sponsorCommonity'];
+                } else {
+                    $show['sponsor_event'] = []; 
+                }            
             }
             // untuk jika seandai nya tidak ada punya album atau photo
             $coverEvent = [
