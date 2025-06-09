@@ -416,6 +416,7 @@ class UserManageController extends Controller
             $nomor_anggota = str_pad($digits, 3, '0', STR_PAD_LEFT).'-'.$region->code.'-'.$datas['status_anggota'];
 
             $datas['nomor_anggota'] = $nomor_anggota;
+            $datas['t_city_id'] = $datas['kota_kabupaten'];
             $model->update($datas);
 
             $this->helper->uploads($folder, $model, $column);
