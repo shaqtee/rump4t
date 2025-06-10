@@ -213,7 +213,7 @@ class EventCommunityController extends Controller
             $datas['period'] = 1;
 
             $datas['auto_scoring'] = isset($request->auto_scoring) && $request->auto_scoring == 'on' ? true : false;
-            $datas['course_area_ids'] = json_encode($orderedAreaIds);
+            $datas['course_area_ids'] = implode(',', $orderedAreaIds);
 
             //convert location to longitude & latitude
             // $latlng = $this->helper->gMaps($datas['location']);
@@ -343,7 +343,7 @@ class EventCommunityController extends Controller
                 'no_rekening' => 'required',
             ]);
 
-            $datas['course_area_ids'] = json_encode($orderedAreaIds);
+            $datas['course_area_ids'] = implode(',', $orderedAreaIds);
 
             $datas['auto_scoring'] = isset($request->auto_scoring) && $request->auto_scoring == 'on' ? true : false;
 
