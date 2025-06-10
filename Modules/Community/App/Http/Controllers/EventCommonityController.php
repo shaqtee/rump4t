@@ -612,7 +612,7 @@ class EventCommonityController extends Controller
             //     'komunitas' => $komunitas
             // ];
 
-            $semuaKomunitas = Community::get();
+            $semuaKomunitas = Community::orderBy('id', 'asc')->get();
             $komunitasUser = $user->membersCommonity()->pluck('t_community_id')->toArray();
 
             // Tandai mana yang sudah diikuti
