@@ -606,10 +606,10 @@ class ScoreHandicapController extends Controller
 
                         $index->myEventGolfList->transform(function ($event) {
                             if (!empty($event->course_area_ids)) {
-                                $areaOrder = collect(json_decode($event->course_area_ids, true))
-                                    ->map(fn($id) => (int)$id)
-                                    ->toArray();
-                
+                                $areaOrder = collect($event->course_area_ids)
+                                ->map(fn($id) => (int)$id)
+                                ->toArray();
+
                                 $sortedCourseArea = collect($event->courseArea)
                                     ->sortBy(function ($area) use ($areaOrder) {
                                         $idx = array_search($area->id, $areaOrder);
