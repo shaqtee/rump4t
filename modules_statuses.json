@@ -11,5 +11,6 @@
     "Regions": true,
     "Events": true,
     "Groups": true,
-    "Polling": true
+    "Polling": true,
+    "Donasi": true
 }
