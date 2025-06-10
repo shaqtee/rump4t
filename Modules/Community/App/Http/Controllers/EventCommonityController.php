@@ -605,6 +605,8 @@ class EventCommonityController extends Controller
     {
         try {
             $user = $request->user();
+            // dd($user);
+
             // $komunitas = $user->userCommonity()->get();
 
             // $show = [
@@ -613,9 +615,15 @@ class EventCommonityController extends Controller
             // ];
 
             $semuaKomunitas = Community::orderBy('id', 'asc')->get();
-            $komunitasUser = $user->membersCommonity()->pluck('t_community_id')->toArray();
-
-            // Tandai mana yang sudah diikuti
+            $komunitasUser = $user->membersCommonity()
+                ->pluck('t_community_id')
+                ->flatMap(function ($item) {
+                    return explode(',', $item);
+                })
+                ->map(fn($val) => (int) trim($val))
+                ->toArray();
+            // dd($komunitasUser);
+        
             $data = $semuaKomunitas->map(function ($komunitas) use ($komunitasUser) {
                 $komunitas->is_joined = in_array($komunitas->id, $komunitasUser);
                 return $komunitas;
