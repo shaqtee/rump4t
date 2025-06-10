@@ -187,8 +187,8 @@ class ScoreHandicapController extends Controller
                             ->where('t_eventgolf.id', $request->event_id)
                             ->select('m_golf_course.id as course_id', 'm_golf_course.name as course_name')
                             ->first();
-
-                            $courseIdToUse = $course->course_id ?? $course_id;
+                            
+                            $courseIdToUse = $request->course_id ?? $course->course_id;
                             $holeId = Hole::where('hole_number', $holeNumber)
                             ->where('course_id', $courseIdToUse)
                             ->value('id');
