@@ -20,6 +20,7 @@ use Modules\Community\App\Models\MemberEvent;
 use Illuminate\Validation\ValidationException;
 use Modules\Community\App\Models\CourseArea;
 use Modules\Community\App\Models\EventCommonity;
+use Modules\Community\App\Models\Hole;
 use Modules\Masters\App\Models\MasterGolfCourse;
 use Modules\Performace\App\Models\ScoreHandicap;
 use Modules\Masters\App\Models\MasterConfiguration;
@@ -163,8 +164,26 @@ class EventCommunityController extends Controller
                 $request['type_scoring'] = $request->type_scoring_show;
             }
 
-            $orderedAreaIds = $request->input('course_area_ids');
+            // cek apakah hole course ini lengkap atau tidak
+            $roundTypeConfig = MasterConfiguration::where('parameter', 'm_round_type')
+                ->where('id', $request->m_round_type_id)
+                ->first();
 
+            if (!$roundTypeConfig) {
+                return response()->json(['message' => 'Round type configuration not found'], 404);
+            }
+
+            preg_match('/^\d+/', $roundTypeConfig->value1, $matches);
+            $requiredHoleCount = isset($matches[0]) ? (int) $matches[0] : 0;
+
+            $totalAvailableHoles = Hole::where('course_id', $request->m_golf_course_id)->count();
+
+            // Validasi
+            if ($totalAvailableHoles < $requiredHoleCount) {
+                throw new \Exception("Jumlah hole tidak mencukupi. Dibutuhkan minimal {$requiredHoleCount}, tersedia hanya {$totalAvailableHoles}.");
+            }
+            
+            $orderedAreaIds = $request->input('course_area_ids');
             $datas = $request->validate([
                 // 't_community_id' => 'required',
                 'title' => 'required|string',
@@ -238,7 +257,7 @@ class EventCommunityController extends Controller
             return $this->web->store('event.semua');
         } catch (\Throwable $e) {
             DB::rollBack();
-            dd($e->getMessage(), $e->getFile(), $e->getLine()); 
+            // dd($e->getMessage(), $e->getFile(), $e->getLine()); 
             if($e instanceof ValidationException){
                 return $this->web->error_validation($e);
             }

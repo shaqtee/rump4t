@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/donasi",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Donasi\\": "",
+            "Modules\\Donasi\\App\\": "app/",
+            "Modules\\Donasi\\Database\\Factories\\": "database/factories/",
+            "Modules\\Donasi\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Donasi\\Tests\\": "tests/"
+        }
+    }
+}
