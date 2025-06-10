@@ -40,6 +40,7 @@ class EventCommonity extends Model
 
     protected $casts = [
         'data_input' => 'array',
+        'course_area_ids' => 'array',
     ];
     
     public function eventCommonity(){
