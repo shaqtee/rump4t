@@ -14,7 +14,7 @@
                     <div class="">
                         <input type="hidden" class="form-control @error('id') is-invalid @enderror"  value="{{ old('id', isset($golfCourse) ? $golfCourse->id : '') }}" name="course_id" id="id" required autofocus>
                         <div class="form-group">
-                            <label for="hole_number">Hole Number (1-18)</label>
+                            <label for="hole_number">Hole Number (1-45)</label>
                             @error('hole_number')
                                 <small style="color: red">{{ $message }}</small>
                             @enderror
