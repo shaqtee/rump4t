@@ -374,13 +374,17 @@ class AuthController extends Controller
                 $datas['year_of_retirement'] = (int) $datas['year_of_retirement'];
             }
 
-            $newCommunityIds = json_decode($request->input('t_community_id'), true); 
-            $newCommunityIds = is_array($newCommunityIds) ? $newCommunityIds : [];
-        
+            // $newCommunityIds = json_decode($request->input('t_community_id'), true); 
+            // $newCommunityIds = is_array($newCommunityIds) ? $newCommunityIds : [];
+
+            $newCommunityIds = $datas['t_community_id'] ?? [];
+            if (!is_array($newCommunityIds)) {
+                $newCommunityIds = explode(',', $newCommunityIds);
+            }
+            
             $currentCommunityIds = $dataUser->t_community_id ?? [];
-        
             if (!is_array($currentCommunityIds)) {
-                $currentCommunityIds = json_decode($currentCommunityIds, true);
+                $currentCommunityIds = explode(',', $currentCommunityIds);
             }
         
             $hasChanged = $newCommunityIds != $currentCommunityIds;
