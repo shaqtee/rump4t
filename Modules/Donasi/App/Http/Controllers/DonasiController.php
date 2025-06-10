@@ -3,117 +3,136 @@
 namespace Modules\Donasi\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Donasi;
+use App\Models\DonaturDonasi;
+use App\Models\ImgDonasi;
+use App\Services\ApiResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class DonasiController extends Controller
 {
-
+    
     /**
      * Display a listing of the resource.
      */
 
      protected $api;
-     protected $polling;
-     protected $option;
-     protected $vote;
+     protected $donasi;
+     protected $donatur;
+     protected $img;
      
-     public function __construct(ApiResponse $api, Polling $polling, PollingOption $option, PollingVote $vote)
+     public function __construct(ApiResponse $api, Donasi $donasi, DonaturDonasi $donatur, ImgDonasi $ImgDonasi )
      {
          $this->api = $api;
-         $this->polling = $polling;
-         $this->option = $option;
-         $this->vote = $vote;
+         $this->donasi = $donasi;
+         $this->donatur = $donatur;
+         $this->img = $ImgDonasi;
      }
  
      public function index(Request $request)
      {
          try {
-             $status = $request->query('status'); 
              $id = $request->query('id'); 
      
              if ($id) {
-                 // Detail polling
-                 $polling = Polling::with(['options.votes.created_by'])->findOrFail($id);
-                 $totalVotes = $polling->options->sum(fn($opt) => $opt->votes->count());
+                 // Detail donasi
+                $donasi = Donasi::with(['image_donasi', 'donatur.user'])->findOrFail($id);
+                $totalDonatur = $donasi->donatur->count();
      
-                 $userId = auth()->id();
-                 $hasVoted = $polling->options->flatMap->votes
-                     ->contains('user_id', $userId);
- 
-                 $options = $polling->options->map(fn($option) => [
-                     'id' => $option->id,
-                     'text' => $option->option_text,
-                     'image' => $option->option_image,
-                     'votes_count' => $option->votes->count(),
-                 ]);
+                $userId = auth()->id();
+                $hasDonated = $donasi->donatur->contains('user_id', $userId);
+
+                $nominal_terkini = $donasi->donatur->sum('nominal');
+
+                $persentase_nt = ($donasi->target_sumbangan > 0)
+                            ? round(($nominal_terkini / $donasi->target_sumbangan) * 100, 1) : 0;
+
+                $donaturs = $donasi->donatur->map(fn($donatur) => [
+                    'id' => $donatur->id,
+                    'user_name' => $donatur->user->name ?? null,
+                    'nominal' => $donatur->nominal ?? null, 
+                    'bukti_donasi' => $donatur->bukti_donasi ?? null, 
+                    'note' => $donatur->note ?? null, 
+                ]);
+
+                $img_slider = $donasi->image_donasi->map(fn($img) => [
+                    'id' => $img->id,
+                    'image' => $img->url_image
+                ]);
+    
+                $data = [                    
+                    'id' => $donasi->id,
+                    'title' => $donasi->title,
+                    'start_date' => $donasi->start_date,
+                    'end_date' => $donasi->end_date,
+                    'target_sumbangan' => $donasi->target_sumbangan,
+                    'nominal_terkini' => $nominal_terkini,
+                    'persentase_terkini' => $persentase_nt,
+                    'description' => $donasi->description,
+                    'img_penggalang_dana' => $donasi->img_penggalang_dana,
+                    'nama_penggalang_dana' => $donasi->nama_penggalang_dana,
+                    'nama_bank' => $donasi->nama_bank,
+                    'nomor_rekening' => $donasi->nomor_rekening,
+                    'is_donated' => $hasDonated,
+                    'total_donatur' => $totalDonatur,
+                    'created_by' => $userId,
+                    'created_at' => $donasi->created_at,
+                    'image_slider' => $img_slider,
+                    'donaturs' => $donaturs,
+                ];
      
-                 $data = [
-                     'id' => $polling->id,
-                     'title' => $polling->title,
-                     'title_description' => $polling->title_description,
-                     'question' => $polling->question,
-                     'question_description' => $polling->question_description,
-                     'is_active' => $polling->is_active,
-                     'start_date' => $polling->start_date,
-                     'deadline' => $polling->deadline,
-                     'created_at' => $polling->created_at,
-                     'total_votes' => $totalVotes,
-                     'is_votes' => $hasVoted,
-                     'options' => $options,
-                 ];
-     
-                 return $this->api->list($data, $this->polling);
+                 return $this->api->list($data, $this->donatur);
              }
              // List polling
  
-             // update is_active
-             Polling::whereNotNull('deadline')
-                     ->where('deadline', '<', now())
-                     ->where('is_active', true)
-                     ->update(['is_active' => false]);
+            $query = Donasi::with(['image_donasi', 'donatur.user'])->orderBy('created_at', 'desc');
  
-             $query = Polling::with(['options.votes'])->orderBy('created_at', 'desc');
+             $donasis = $query->get()->map(function ($donasi) {
  
-             if ($status === 'active') {
-                 $query->where('is_active', true);
-             } elseif ($status === 'inactive') {
-                 $query->where('is_active', false);
-             }
-     
-             $pollings = $query->get()->map(function ($polling) {
- 
-                 $totalVotes = $polling->options->sum(fn($opt) => $opt->votes->count());
- 
-                 $userId = auth()->id();
-                 $hasVoted = $polling->options->flatMap->votes
-                     ->contains('user_id', $userId);
-     
-                 $options = $polling->options->map(fn($option) => [
-                     'id' => $option->id,
-                     'text' => $option->option_text,
-                     'image' => $option->option_image,
-                     'votes_count' => $option->votes->count(),
-                 ]);
-     
-                 return [
-                     'id' => $polling->id,
-                     'title' => $polling->title,
-                     'title_description' => $polling->title_description,
-                     'question' => $polling->question,
-                     'question_description' => $polling->question_description,
-                     'is_active' => $polling->is_active,
-                     'start_date' => $polling->start_date,
-                     'deadline' => $polling->deadline,
-                     'created_at' => $polling->created_at,
-                     'total_votes' => $totalVotes,
-                     'is_votes' => $hasVoted,
-                     'options' => $options,
-                 ];
+                $totalDonatur = $donasi->donatur->count();
+        
+                $userId = auth()->id();
+                $hasDonated = $donasi->donatur->contains('user_id', $userId);
+
+                $nominal_terkini = $donasi->donatur->sum('nominal');
+
+                $donaturs = $donasi->donatur->map(fn($donatur) => [
+                    'id' => $donatur->id,
+                    'user_name' => $donatur->user->name ?? null,
+                    'nominal' => $donatur->nominal ?? null, 
+                    'bukti_donasi' => $donatur->bukti_donasi ?? null, 
+                    'note' => $donatur->note ?? null, 
+                ]);
+
+                $img_slider = $donasi->image_donasi->map(fn($img) => [
+                    'id' => $img->id,
+                    'image' => $img->url_image
+                ]);
+    
+                return [
+                    'id' => $donasi->id,
+                    'title' => $donasi->title,
+                    'start_date' => $donasi->start_date,
+                    'end_date' => $donasi->end_date,
+                    'target_sumbangan' => $donasi->target_sumbangan,
+                    'nominal_terkini' => $nominal_terkini,
+                    'description' => $donasi->description,
+                    'img_penggalang_dana' => $donasi->img_penggalang_dana,
+                    'nama_penggalang_dana' => $donasi->nama_penggalang_dana,
+                    'nama_bank' => $donasi->nama_bank,
+                    'nomor_rekening' => $donasi->nomor_rekening,
+                    'is_donated' => $hasDonated,
+                    'total_donatur' => $totalDonatur,
+                    'created_by' => $userId,
+                    'created_at' => $donasi->created_at,
+                    'image_slider' => $img_slider,
+                    'donaturs' => $donaturs,
+                ];
              });  
      
-             return $this->api->list($pollings, $this->polling);
+             return $this->api->list($donasis, $this->donasi);
          } catch (\Throwable $e) {
              if (config('envconfig.app_debug')) {
                  return $this->api->error_code($e->getMessage(), $e->getCode());
@@ -124,7 +143,7 @@ class DonasiController extends Controller
      }
  
  
-     public function submit_vote(Request $request)
+     public function store(Request $request)
      {
          try {
              $request->validate([
@@ -135,11 +154,11 @@ class DonasiController extends Controller
              $userId = Auth::id(); 
  
              $option = $this->option->findOrFail($request->polling_option_id);
-             $pollingId = $option->polling_id;
+             $donasiId = $option->polling_id;
  
              $alreadyVoted = $this->vote
                  ->where('user_id', $userId)
-                 ->whereHas('option', fn($q) => $q->where('polling_id', $pollingId))
+                 ->whereHas('option', fn($q) => $q->where('polling_id', $donasiId))
                  ->exists();
  
              if ($alreadyVoted) {
@@ -147,7 +166,7 @@ class DonasiController extends Controller
              }
  
              $this->vote->create([
-                 'polling_id' => $pollingId,
+                 'polling_id' => $donasiId,
                  'polling_option_id' => $request->polling_option_id,
                  'user_id' => $userId,
                  'note' => $request->note
@@ -164,77 +183,6 @@ class DonasiController extends Controller
          }
      }
  
-     public function polling_report(Request $request)
-     {
-         try {
-             $id = $request->input('polling_id');
- 
-             if (!$id) {
-                 return $this->api->error_code("Polling ID is required", 400);
-             }
- 
-             $polling = Polling::with(['options.votes'])->findOrFail($id);
-             // dd($polling);
-             $totalVotes = $polling->options->sum(fn($opt) => $opt->votes->count());
- 
-             $lastUpdate = collect([
-                 $polling->created_at,
-                 $polling->votes->max('created_at'),
-                 $polling->votes->flatMap(fn($opt) => $opt->votes)->max('created_at'),
-             ])->filter()->max();
- 
-             $options = $polling->options->map(function ($option) use ($totalVotes) {
-                 $votesCount = $option->votes->count();
-                 $percentage = $totalVotes > 0 ? round(($votesCount / $totalVotes) * 100, 1) : 0;
- 
-                 return [
-                     'text' => $option->option_text,
-                     'votes_count' => $votesCount,
-                     'percentage' => $percentage
-                 ];
-             });
- 
-             $data = [
-                 'title' => $polling->title,
-                 'last_update' => $lastUpdate?->format('Y-m-d H:i:s'),
-                 'options' => $options
-             ];
- 
-             return $this->api->success($data);
-         } catch (\Throwable $e) {
-             if (config('envconfig.app_debug')) {
-                 return $this->api->error_code($e->getMessage(), $e->getCode());
-             } else {
-                 return $this->api->error_code_log("Internal Server Error", $e->getMessage());
-             };
-         }
-     }
-  
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('donasi::index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('donasi::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
-    }
-
     /**
      * Show the specified resource.
      */
