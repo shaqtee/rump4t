@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Donasi\App\Http\Controllers\DonasiController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +15,5 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('donasi', fn (Request $request) => $request->user())->name('donasi');
-});
+Route::get('/', [DonasiController::class, 'index']);
+Route::post('/store', [DonasiController::class, 'store']);
