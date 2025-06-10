@@ -210,6 +210,31 @@ class DonasiController extends Controller
          }
      }
   
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return view('donasi::index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('donasi::create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        //
+    }
+
     /**
      * Show the specified resource.
      */
