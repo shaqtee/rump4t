@@ -390,13 +390,13 @@ class MasterGolfCourseController extends Controller
                 'hole_number' => 'required',
                 'par' => 'required',
             ]);
-            $model = $this->hole->findOrfail($id)->update($datas);
+            $model = $this->hole->findOrfail($request->course_id)->update($datas);
 
-            $course_id =$this->hole->findOrfail($id)->course_id;
+            $course_id =$this->hole->findOrfail($request->course_id);
 
             DB::commit();
             // return $this->web->updateBack();
-            return redirect()->route('golf-course.hole.index', ['golf_course_id' => $course_id])->with('success', 'Data successfully updated');;
+            return redirect()->route('golf-course.hole.index', ['golf_course_id' => $course_id->course_id])->with('success', 'Data successfully updated');;
         } catch (\Throwable $e) {
             DB::rollBack();
             if($e instanceof ValidationException){
