@@ -41,7 +41,7 @@
                             <th>Candidates</th>
                             <th>Quick Count</th>
                             <th>Total Votes</th>
-                            <th>Action</th>
+                            <th colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -138,6 +138,9 @@
                                             Votes
                                         </button>
                                     @endif
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-primary " href="{{ route('pemilu.pollings.index_voted', $pollingId) }}">Check</a>
                                 </td>
                             </tr>
                         @endforeach

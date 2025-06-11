@@ -1,0 +1,11 @@
+{
+    "name": "Pemilu",
+    "alias": "pemilu",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Pemilu\\App\\Providers\\PemiluServiceProvider"
+    ],
+    "files": []
+}

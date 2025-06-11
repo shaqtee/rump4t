@@ -302,6 +302,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('', [PemiluPollingsController::class, 'index'])->name('pemilu.pollings');
                 Route::post('ajax-user-vote', [PemiluPollingsController::class, 'ajax_user_vote'])->name('pemilu.pollings.ajax_user_vote');
                 Route::post('vote', [PemiluPollingsController::class, 'vote'])->name('pemilu.pollings.vote');
+                Route::get('index-voted/{pemilu_id}', [PemiluPollingsController::class, 'index_voted'])->name('pemilu.pollings.index_voted');
+                Route::delete('voted/cancel/{voted_id}', [PemiluPollingsController::class, 'cancel_voted'])->name('pemilu.pollings.cancel_voted');
             });
         });
 
