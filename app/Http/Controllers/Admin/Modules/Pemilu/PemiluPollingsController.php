@@ -62,6 +62,32 @@ class PemiluPollingsController extends Controller
         }
     }
 
+    public function index_voted(Request $request, $pemilu_id)
+    {
+        try{
+            $page = $request->size ?? 10;
+            $data = [
+                'content' => 'Admin/Pemilu/Pollings/index_voted',
+                'title' => 'Data Pollings',
+                'pollings' => $this->model
+                    ->with([
+                        'candidate_users:id,name',
+                        'polling_users:id,name'
+                        ])
+                    ->where('id', $pemilu_id)
+                    ->where('is_active', true)
+                    ->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
+                'columns' => $this->model->columnsPollings(),
+            ];
+
+            return view('Admin.Layouts.wrapper', $data);
+
+        } catch (\Exception $e) {
+            report($e);
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
     public function ajax_user_vote(Request $request)
     {
         $ids = $request->voted_users ?? [];
@@ -91,6 +117,25 @@ class PemiluPollingsController extends Controller
             DB::commit();
 
             return $this->web->store('pemilu.pollings');
+
+        } catch (\Exception $e) {
+            report($e);
+            DB::rollback();
+            return response()->json([
+                "status" => "failed"
+            ]);
+        }
+    }
+
+    public function cancel_voted($voted_id)
+    {
+        DB::beginTransaction();
+        try {
+            $pollings = $this->pollings->findOrFail($voted_id);
+            $pollings->delete();
+            DB::commit();
+            
+            return redirect()->back()->with('success','Vote has been cancelled.');
 
         } catch (\Exception $e) {
             report($e);
