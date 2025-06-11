@@ -160,7 +160,7 @@
                                 {{-- <td>{{ $usr->business_sector }}</td> --}}
                                 {{-- <td>{{ $usr->position }}</td> --}}
                                 {{-- <td>{{ (!$usr->t_group_id) ? 'NO' : 'YES' }}</td> --}}
-                                <td>{{ $usr->community->title }}</td>
+                                <td>{{ $usr->membersCommonity->first()?->title ?? '-' }}</td>
                                 <td>{{ ($usr->active == '1') ? 'Active' : 'Deactivate'}}</td>
                                 <td>
                                     <a class="{{ (!$usr->t_group_id) ? 'modal-effect btn btn-outline-primary ' : 'btn btn-primary  disabled' }}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo8{{ $usr->id }}" >Add To Manage People</a>

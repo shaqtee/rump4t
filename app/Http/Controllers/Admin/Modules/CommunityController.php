@@ -10,6 +10,7 @@ use App\Services\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Group;
+use App\Models\ImgCommunity;
 use App\Models\User;
 use Modules\Masters\App\Models\MasterCity;
 use Modules\Community\App\Models\Community;
@@ -26,9 +27,9 @@ class CommunityController extends Controller
     protected $users;
     protected $members;
     protected $groups;
-    // protected $images;
+    protected $community_image;
 
-    public function __construct(Community $model, Helper $helper, MasterCity $city, WebRedirect $web, Handler $handler, User $users, MembersCommonity $members, Group $groups)
+    public function __construct(Community $model, Helper $helper, MasterCity $city, WebRedirect $web, Handler $handler, User $users, MembersCommonity $members, Group $groups, ImgCommunity $community_image)
     {
         $this->model = $model;
         $this->helper = $helper;
@@ -38,7 +39,7 @@ class CommunityController extends Controller
         $this->users = $users;
         $this->members = $members;
         $this->groups = $groups;
-        // $this->images = $images;
+        $this->community_image = $community_image;
     }
 
     /**
@@ -185,7 +186,14 @@ class CommunityController extends Controller
             $data = [
                 'content' => 'Admin/Community/add-manage-people',
                 'title' => 'Data User For people Manage',
-                'users' => $this->users->where('flag_done_profile', 1)->where('active', 1)->where('flag_community', 'JOINED')->where('t_community_id', $community_id)->with(['community:id,title', 'group:id,name', 'city:id,name'])->whereRelation('membersCommonity', 'flag_manage', 1)->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()), //->whereRelation('membersCommonity', 'flag_manage', null)
+                'users' => $this->users->where('flag_done_profile', 1)->where('active', 1)
+                        ->where('flag_community', 'JOINED')
+                        ->with(['community:id,title', 'group:id,name', 'city:id,name'])
+                        ->whereHas('membersCommonity', function ($query) use ($community_id) {
+                            $query->where('t_community_id', $community_id)
+                                  ->where('flag_manage', 1);
+                        })                        
+                        ->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()), //->whereRelation('membersCommonity', 'flag_manage', null)
                 'groups' => $this->groups->where('active', 1)->get(),
                 'community' => $this->model->orderBy('id', 'asc')->get(),
                 'columns' => $this->users->columnsWeb(),
@@ -206,7 +214,13 @@ class CommunityController extends Controller
             $data = [
                 'content' => 'Admin/Community/member',
                 'title' => 'Data User Members',
-                'users' => $this->users->where('flag_done_profile', 1)->where('active', 1)->where('flag_community', 'JOINED')->where('t_community_id', $community_id)->with(['community:id,title', 'group:id,name', 'city:id,name'])->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()), //->whereRelation('membersCommonity', 'flag_manage', null)
+                'users' => $this->users->where('flag_done_profile', 1)
+                        ->where('active', 1)->where('flag_community', 'JOINED')
+                        ->with(['community:id,title', 'group:id,name', 'city:id,name'])
+                        ->whereHas('membersCommonity', function ($query) use ($community_id) {
+                            $query->where('t_community_id', $community_id);
+                        })
+                        ->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()), //->whereRelation('membersCommonity', 'flag_manage', null)
                 'groups' => $this->groups->where('active', 1)->get(),
                 'community' => $this->model->orderBy('id', 'asc')->get(),
                 'columns' => $this->users->columnsWeb(),
@@ -311,13 +325,10 @@ class CommunityController extends Controller
         try{
             $page = $request->size ?? 10;
             $data = [
-                'content' => 'Admin/Community/index_image',
+                'content' => 'Admin/Community/Img_slider_community/index_image',
                 'title' => 'Data Image Community',
-                'image' => $this->community_image->where('t_community_id', $community_id)->get(),
-                // 'users' => $this->users->where('flag_done_profile', 1)->where('active', 1)->where('flag_community', 'JOINED')->where('t_community_id', $community_id)->with(['community:id,title', 'group:id,name', 'city:id,name'])->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()), //->whereRelation('membersCommonity', 'flag_manage', null)
-                // 'groups' => $this->groups->where('active', 1)->get(),
-                // 'community' => $this->model->orderBy('id', 'asc')->get(),
-                // 'columns' => $this->users->columnsWeb(),
+                'images' => $this->community_image->with('komunitas')->where('komunitas_id', $community_id)->paginate($page)->appends($request->all()),
+                'columns' => $this->users->columnsWeb(),
                 // 'community_id' => $community_id,
             ];
 

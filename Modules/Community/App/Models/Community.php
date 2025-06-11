@@ -2,6 +2,7 @@
 
 namespace Modules\Community\App\Models;
 
+use App\Models\ImgCommunity;
 use App\Models\User;
 use App\Traits\Blameable;
 use App\Services\Helpers\Helper;
@@ -65,6 +66,15 @@ class Community extends Model
 
     public function getTotalMembersAttribute(){
         return $this->membersCommonity()->count();
+    }
+
+    public function img_slider()
+    {
+        return $this->hasMany(ImgCommunity::class, 'komunitas_id');
+    }
+
+    public function members(){
+    return $this->hasMany(MembersCommonity::class,"t_community_id");
     }
 
     public function getPastEventAttribute(){
