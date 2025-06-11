@@ -614,7 +614,13 @@ class EventCommonityController extends Controller
             //     'komunitas' => $komunitas
             // ];
 
-            $semuaKomunitas = Community::orderBy('id', 'asc')->get();
+            $semuaKomunitas = Community::with([
+                    'img_slider',
+                    'members' => function ($q) {
+                        $q->orderByDesc('created_at')
+                        ->with(['members:id,name,image']); 
+                    }
+                ])->select('id', 'title')->orderBy('id', 'asc')->get();
             $komunitasUser = $user->membersCommonity()
                 ->pluck('t_community_id')
                 ->flatMap(function ($item) {

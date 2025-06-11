@@ -142,7 +142,7 @@
                                 {{-- <td>{{ $usr->business_sector }}</td> --}}
                                 {{-- <td>{{ $usr->position }}</td> --}}
                                 {{-- <td>{{ (!$usr->t_group_id) ? 'NO' : 'YES' }}</td> --}}
-                                <td>{{ $usr->community->title }}</td>
+                                <td>{{ $usr->membersCommonity->first()?->title ?? '-' }}</td>
                                 <td>{{ ($usr->active == '1') ? 'Active' : 'Deactivate'}}</td>
                                 <td>
                                     <div class="d-flex">

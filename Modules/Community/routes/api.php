@@ -33,7 +33,7 @@ Route::get('/', function (){
 });
 
 Route::get('cmnty/leaderboard/{t_community_id}', [CommunityController::class, 'leaderboard']);
-Route::post('cmnty/join-community', [CommunityController::class, 'join_community']);
+Route::post('join-community', [CommunityController::class, 'join_community']);
 Route::apiResource('cmnty', CommunityController::class)->only(['index', 'show', 'store', 'update', 'destroy']);;
 Route::post('cmnty/bulk-destroy', [CommunityController::class, 'bulk_destroy']);
 Route::get('user', [CommunityController::class, 'community_user']);

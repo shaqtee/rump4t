@@ -225,6 +225,15 @@ Route::middleware(['auth'])->group(function () {
                 Route::delete('{id}/hapus', [PostingCommunityController::class, 'destroy'])->name('community.posting.hapus');
             });
 
+            Route::prefix('img_slider')->group(function () {
+                Route::get('index', [PostingCommunityController::class, 'index'])->name('community.posting.semua');
+                Route::get('tambah', [PostingCommunityController::class, 'create'])->name('community.posting.tambah');
+                Route::post('tambah', [PostingCommunityController::class, 'store'])->name('community.posting.tambah');
+                Route::get('{id}/ubah', [PostingCommunityController::class, 'edit'])->name('community.posting.ubah');
+                Route::patch('{id}/ubah', [PostingCommunityController::class, 'update'])->name('community.posting.ubah');
+                Route::delete('{id}/hapus', [PostingCommunityController::class, 'destroy'])->name('community.posting.hapus');
+            });
+
             Route::prefix('album')->group(function () {
                 Route::get('index', [AlbumCommunityController::class, 'index'])->name('community.album.semua');
                 Route::get('tambah', [AlbumCommunityController::class, 'create'])->name('community.album.tambah');
