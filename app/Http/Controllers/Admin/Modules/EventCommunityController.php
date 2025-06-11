@@ -421,7 +421,7 @@ class EventCommunityController extends Controller
             $data = [
                 'content' => 'Admin/Event/listRegistrant',
                 'title' => 'List Registrant',
-                'members' =>  $this->memberEvent->with(['event:id,title', 'user:id,name'])->where('t_event_id', $event_id)->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
+                'members' =>  $this->memberEvent->with(['event:id,title', 'user:id,name'])->where('t_event_id', $event_id)->whereHas('user')->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
                 'users' => $this->user->where('flag_done_profile', 1)->get(),
                 'columns' => $this->memberEvent->columnsWeb(),
                 'event_id' => $event_id,
