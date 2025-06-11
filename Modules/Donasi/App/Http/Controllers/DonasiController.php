@@ -10,6 +10,7 @@ use App\Services\ApiResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 
 class DonasiController extends Controller
 {
@@ -147,32 +148,38 @@ class DonasiController extends Controller
      {
          try {
              $request->validate([
-                 'polling_option_id' => 'required|exists:t_polling_options,id',
-                 'note' => 'nullable|string|max:500'
+                 'donasi_id' => 'required|exists:t_donasi,id',
+                 'note' => 'nullable|string|max:500',
+                 'nominal' => 'required|numeric|min:1',
+                 'bukti_donasi' => 'required|image|mimes:jpeg,png,jpg|max:2048',
              ]);
  
-             $userId = Auth::id(); 
+             $userId = auth()->id();
  
-             $option = $this->option->findOrFail($request->polling_option_id);
-             $donasiId = $option->polling_id;
+             $donasi = $this->donasi->findOrFail($request->donasi_id);
  
-             $alreadyVoted = $this->vote
+             $alreadyDonate = $this->donatur
                  ->where('user_id', $userId)
-                 ->whereHas('option', fn($q) => $q->where('polling_id', $donasiId))
+                 ->where('donasi_id', $request->donasi_id)
                  ->exists();
  
-             if ($alreadyVoted) {
-                 return $this->api->error("You have already voted in this poll.");
+             if ($alreadyDonate) {
+                 return $this->api->error("You have already donate in this event.");
              }
  
-             $this->vote->create([
-                 'polling_id' => $donasiId,
-                 'polling_option_id' => $request->polling_option_id,
+             $file = $request->file('bukti_donasi');
+             $path = $file->store('rump4t/donasi/bukti-donasi', 's3');
+             $url = Storage::disk('s3')->url($path);
+
+             $this->donatur->create([
+                 'donasi_id' => $request->donasi_id,
                  'user_id' => $userId,
-                 'note' => $request->note
+                 'note' => $request->note,
+                 'nominal' => $request->nominal,
+                 'bukti_donasi' => $url
              ]);
  
-             return $this->api->success("Vote submitted successfully.");
+             return $this->api->success("Donation submitted successfully.");
  
          } catch (\Throwable $e) {
              if (config('envconfig.app_debug')) {
