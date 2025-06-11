@@ -157,7 +157,7 @@ class DonasiController extends Controller
              $userId = auth()->id();
  
              $donasi = $this->donasi->findOrFail($request->donasi_id);
- 
+        
              $alreadyDonate = $this->donatur
                  ->where('user_id', $userId)
                  ->where('donasi_id', $request->donasi_id)
