@@ -115,7 +115,7 @@ class User extends Authenticatable
     // }
 
     public function membersCommonity(){
-        return $this->belongsToMany(Community::class, 't_member_community', 't_user_id', 't_community_id');
+        return $this->belongsToMany(Community::class, 't_member_community', 't_user_id', 't_community_id')->withPivot('flag_manage');
     }
 
     public function myEventList(){ // untuk module my games
