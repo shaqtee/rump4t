@@ -187,8 +187,8 @@ class ScoreHandicapController extends Controller
                             ->where('t_eventgolf.id', $request->event_id)
                             ->select('m_golf_course.id as course_id', 'm_golf_course.name as course_name')
                             ->first();
-
-                            $courseIdToUse = $course->course_id ?? $course_id;
+                            
+                            $courseIdToUse = $request->course_id ?? $course->course_id;
                             $holeId = Hole::where('hole_number', $holeNumber)
                             ->where('course_id', $courseIdToUse)
                             ->value('id');
@@ -606,10 +606,10 @@ class ScoreHandicapController extends Controller
 
                         $index->myEventGolfList->transform(function ($event) {
                             if (!empty($event->course_area_ids)) {
-                                $areaOrder = collect(json_decode($event->course_area_ids, true))
-                                    ->map(fn($id) => (int)$id)
-                                    ->toArray();
-                
+                                $areaOrder = collect($event->course_area_ids)
+                                ->map(fn($id) => (int)$id)
+                                ->toArray();
+
                                 $sortedCourseArea = collect($event->courseArea)
                                     ->sortBy(function ($area) use ($areaOrder) {
                                         $idx = array_search($area->id, $areaOrder);

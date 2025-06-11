@@ -12,5 +12,6 @@
     "Events": true,
     "Groups": true,
     "Polling": true,
-    "Pemilu": true
+    "Pemilu": true,
+    "Donasi": true
 }

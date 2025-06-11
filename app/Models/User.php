@@ -71,6 +71,7 @@ class User extends Authenticatable
         'phone_verified_at' => 'datetime',
         'password' => 'hashed',
         'reset_request' => 'boolean',
+        't_community_id' => 'array',
     ];
 
     public function candidates()

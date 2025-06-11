@@ -29,7 +29,7 @@
                                 <label class="form-check-label" style="font-weight: bold;" for="selectAllHoles">Select All</label>
                             </div>
                             <div id="holes">
-                                @for ($i = 1; $i <= 18; $i++)
+                                @for ($i = 1; $i <= 45; $i++)
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input hole-checkbox @error('holes') is-invalid @enderror" name="holes[]" id="hole{{ $i }}" value="{{ $i }}"
                                             {{ in_array($i, old('holes', isset($rulesScore) ? $rulesScore->holes ?? [] : [])) ? 'checked' : '' }}>

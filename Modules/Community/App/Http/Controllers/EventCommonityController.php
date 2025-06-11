@@ -148,7 +148,12 @@ class EventCommonityController extends Controller
 
             if($show['sponsor_event'] == []) {
                 $suppPartner = $shows->with(['eventCommonity.sponsorCommonity.socialMedia'])->find($id);
-                $show['sponsor_event'] = $suppPartner['eventCommonity']['sponsorCommonity'];
+                
+                if (isset($suppPartner['eventCommonity']) && isset($suppPartner['eventCommonity']['sponsorCommonity'])) {
+                    $show['sponsor_event'] = $suppPartner['eventCommonity']['sponsorCommonity'];
+                } else {
+                    $show['sponsor_event'] = []; 
+                }            
             }
             // untuk jika seandai nya tidak ada punya album atau photo
             $coverEvent = [
@@ -600,6 +605,8 @@ class EventCommonityController extends Controller
     {
         try {
             $user = $request->user();
+            // dd($user);
+
             // $komunitas = $user->userCommonity()->get();
 
             // $show = [
@@ -607,10 +614,16 @@ class EventCommonityController extends Controller
             //     'komunitas' => $komunitas
             // ];
 
-            $semuaKomunitas = Community::get();
-            $komunitasUser = $user->membersCommonity()->pluck('t_community_id')->toArray();
-
-            // Tandai mana yang sudah diikuti
+            $semuaKomunitas = Community::orderBy('id', 'asc')->get();
+            $komunitasUser = $user->membersCommonity()
+                ->pluck('t_community_id')
+                ->flatMap(function ($item) {
+                    return explode(',', $item);
+                })
+                ->map(fn($val) => (int) trim($val))
+                ->toArray();
+            // dd($komunitasUser);
+        
             $data = $semuaKomunitas->map(function ($komunitas) use ($komunitasUser) {
                 $komunitas->is_joined = in_array($komunitas->id, $komunitasUser);
                 return $komunitas;
