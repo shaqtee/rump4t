@@ -226,6 +226,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::delete('{id}/hapus', [PostingCommunityController::class, 'destroy'])->name('community.posting.hapus');
             });
 
+
             Route::prefix('img_slider')->group(function () {
                 Route::get('index', [ImgSliderCommunityController::class, 'index'])->name('community.img_slider.semua');
                 Route::get('tambah', [ImgSliderCommunityController::class, 'create'])->name('community.img_slider.tambah');
@@ -280,6 +281,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('index-admin', [DonationManageController::class, 'index_admin'])->name('donasi.admin');
                 Route::get('tambah', [DonationManageController::class, 'create'])->name('donasi_admin.create');
                 Route::post('tambah', [DonationManageController::class, 'store'])->name('donasi_admin.store');
+                
                 Route::get('tambah_image/{id}', [DonationManageController::class, 'create_image'])->name('donasi_image.add');
                 Route::post('image_donasi/store', [DonationManageController::class, 'store_image'])->name('donasi_image.store');
                 Route::get('donasi/{id}/edit-admin', [DonationManageController::class, 'edit_admin'])->name('donasi_admin.edit_form');

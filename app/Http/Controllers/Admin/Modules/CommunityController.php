@@ -325,11 +325,11 @@ class CommunityController extends Controller
         try{
             $page = $request->size ?? 10;
             $data = [
-                'content' => 'Admin/Community/Img_slider_community/index_image',
+                'content' => 'Admin/Community/Img_slider_community/addEdit',
                 'title' => 'Data Image Community',
                 'images' => $this->community_image->with('komunitas')->where('komunitas_id', $community_id)->paginate($page)->appends($request->all()),
                 'columns' => $this->users->columnsWeb(),
-                // 'community_id' => $community_id,
+                'community_id' => $community_id,
             ];
 
             return view('Admin.Layouts.wrapper', $data);
