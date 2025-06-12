@@ -948,7 +948,7 @@ class AuthController extends Controller
         try {
             $id = Auth::id();
             $user = User::with(['community', 'membersCommonity', 'city'])->find($id);
-            $member = MembersCommonity::where('t_user_id', $user->id)->first();
+            $member = MembersCommonity::where('t_user_id', $id)->first();
             $region = $this->references
                 ->where('parameter', 'm_region')
                 ->where('id', $user->region)
@@ -972,8 +972,8 @@ class AuthController extends Controller
                     "image" => $user->image,
                     "t_city_id" => $user->city->id ?? null,
                     "city" => $user->city->name ?? null,
-                    "t_community_id" => $user->community->id ?? null,
-                    "community" => $user->community->title ?? null,
+                    "t_community_id" => $user->t_community_id ?? null,
+                    "community" => $user->community ?? null,
                     "member_since" => Carbon::parse($user->created_at)->format('d/m/Y'),
                     
                     "url_barcode" => url('/rump4t/profile-user/' . $this->helper->encryptDecrypt($id)),

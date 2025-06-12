@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\Modules\LetsPlay\LetsPlayController;
 use App\Http\Controllers\Admin\Modules\Events\SponsorEventController;
 use App\Http\Controllers\Admin\Modules\Groups\GroupsPostingController;
 use App\Http\Controllers\Admin\Modules\Events\WinnerCategoryController;
+use App\Http\Controllers\Admin\Modules\ImgSliderCommunityController;
 use App\Http\Controllers\Admin\Modules\Pemilu\PemiluPollingsController;
 use App\Http\Controllers\Admin\Modules\SocialMedia\ElectionsController;
 use App\Http\Controllers\ManagePeople\Modules\ManageCommunityController;
@@ -226,12 +227,12 @@ Route::middleware(['auth'])->group(function () {
             });
 
             Route::prefix('img_slider')->group(function () {
-                Route::get('index', [PostingCommunityController::class, 'index'])->name('community.posting.semua');
-                Route::get('tambah', [PostingCommunityController::class, 'create'])->name('community.posting.tambah');
-                Route::post('tambah', [PostingCommunityController::class, 'store'])->name('community.posting.tambah');
-                Route::get('{id}/ubah', [PostingCommunityController::class, 'edit'])->name('community.posting.ubah');
-                Route::patch('{id}/ubah', [PostingCommunityController::class, 'update'])->name('community.posting.ubah');
-                Route::delete('{id}/hapus', [PostingCommunityController::class, 'destroy'])->name('community.posting.hapus');
+                Route::get('index', [ImgSliderCommunityController::class, 'index'])->name('community.img_slider.semua');
+                Route::get('tambah', [ImgSliderCommunityController::class, 'create'])->name('community.img_slider.tambah');
+                Route::post('tambah', [ImgSliderCommunityController::class, 'store'])->name('community.img_slider.tambah');
+                Route::get('{id}/ubah', [ImgSliderCommunityController::class, 'edit'])->name('community.img_slider.ubah');
+                Route::patch('{id}/ubah', [ImgSliderCommunityController::class, 'update'])->name('community.img_slider.ubah');
+                Route::delete('{id}/hapus', [ImgSliderCommunityController::class, 'destroy'])->name('community.img_slider.hapus');
             });
 
             Route::prefix('album')->group(function () {
