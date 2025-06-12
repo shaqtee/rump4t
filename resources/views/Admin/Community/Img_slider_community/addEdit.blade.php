@@ -1,77 +1,91 @@
-{{-- <style>
-    trix-toolbar [data-trix-button-group="file-tools"]{
-        display: none;
-    }
-</style> --}}
 <div class="mt-3">
-    <div class="card  box-shadow-0 ">
+    <div class="card box-shadow-0">
         <div class="card-header">
             <h4 class="card-title mb-1">{{ $title }}</h4>
         </div>
         <div class="card-body pt-0">
-            @if (isset($posting))
-            <form action="{{ route('community.posting.ubah', ['id' => $posting->id]) }}" method="POST" enctype="multipart/form-data">
-            @method('PATCH')
-            @else
-            <form action="{{ route('community.posting.tambah') }}" method="POST" enctype="multipart/form-data">
-            @endif
+            <form action="{{ route('donasi_image.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="t_community_id">Community</label>
-                            @error('t_community_id')
-                                <small style="color: red">{{ $message }}</small>
-                            @enderror
-                            {{-- {{ dump($posting) }} --}}
-                            <select name="t_community_id" id="t_community_id" class="form-control select2" required autofocus>
-                                    <option label="Choose one"></option>
-                                @foreach ($community as $com)
-                                    <option value="{{ $com->id }}"
-                                        @if(old('t_community_id', isset($posting) ? $posting->t_community_id : '') == $com->id)
-                                            selected
-                                        @endif
-                                    >
-                                        {{  $com->title }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            @error('title')
-                                <small style="color: red">{{ $message }}</small>
-                            @enderror
-                            <input type="text" class="form-control @error('title') is-invalid @enderror"  value="{{ old('title', isset($posting) ? $posting->title : '') }}" name="title" id="title" placeholder="Title" required autofocus>
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Image</label>
-                            @error('image')
-                                <small style="color: red">{{ $message }}</small>
-                            @enderror
-                            <img class="image-preview img-thumbnail wd-100p wd-sm-200 mb-3" style="display: block;">
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" value="{{ old('image', isset($posting) ? $posting->url_cover_image : '') }}" name="image" id="image" placeholder="Image" @if(!$posting) required autofocus @endif onchange="previewImage()">
-                        </div>
-                        @if (isset($posting))
-                            <div class="form-group">
-                                <img class="img-thumbnail mb-3" src="{{ isset($posting) ? $posting->url_cover_image : '' }}" alt="" width="300" height="200">
+                <input type="hidden" name="community_id" value="{{ $community_id }}">
+            
+                <div id="options-wrapper">
+                    @if (!empty($images) && count($images))
+                        @foreach ($images as $img)
+                            <div class="community-img border p-3 mb-3">
+                                <input type="hidden" name="img_id[]" value="{{ $img->id }}">
+                                <div>
+                                    <button type="button" class="btn btn-danger btn-sm remove-option float-right">Hapus Opsi</button>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label>Gambar</label>
+                                    <img class="image-preview img-thumbnail wd-100p wd-sm-200 mb-3" style="display: block;">
+                                    <input type="file" class="form-control" name="url_image[]" id="image" placeholder="Image" onchange="previewImageOption(this)">
+                                    @error('image')
+                                        <small style="color: red">{{ $message }}</small>
+                                    @enderror
+                                    <div class="mt-3">
+                                        <img class="wd-100p wd-sm-200" src="{{$img->url_image }}" alt="">
+                                    </div>
+                                </div>
                             </div>
-                        @endif
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="desc">Content</label>
-                            @error('desc')
-                                <small style="color: red">{{ $message }}</small>
-                            @enderror
-                            <textarea class="form-control" placeholder="Body" name="desc" rows="25" required autofocus>
-                                {{ isset($posting) ? $posting->desc : old('desc') }}
-                            </textarea>
+                        @endforeach
+                    @else
+                        <div class="community-img border p-3 mb-3">
+                            <input type="hidden" name="img_id[]" value="">
+                            <div class="form-group">
+                                <label>Gambar</label>
+                                <input type="file" name="url_image[]" class="form-control">
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm remove-option">Hapus Opsi</button>
                         </div>
-                    </div>
-                    </div>
-                <button type="submit" class="btn btn-success mt-3 mb-0">Submit</button>
+                    @endif
+                </div>
+                <div class="d-flex justify-content-start">
+                    <button type="button" class="btn btn-secondary" id="add-image" style="margin-right: 10px;">+ Tambah Gambar</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
             </form>
+            
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('add-image').addEventListener('click', function () {
+        const wrapper = document.getElementById('options-wrapper');
+        const newOption = `
+        <div class="community-img border p-3 mb-3">
+            <div>
+                <button type="button" class="btn btn-danger btn-sm remove-option float-right">Hapus Opsi</button>
+            </div>
+            <div class="form-group">
+                <label>Gambar</label>
+                <input type="file" name="url_image[]" class="form-control">
+            </div>
+        </div>`;
+        wrapper.insertAdjacentHTML('beforeend', newOption);
+    });
+
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-option')) {
+            e.target.closest('.community-img').remove();
+        }
+    });
+
+    function previewImageOption(input) {
+        const wrapper = input.closest('.form-group');
+        const preview = wrapper.querySelector('.image-preview');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+        }
+    }
+</script>

@@ -59,8 +59,8 @@ class ImgSliderCommunityController extends Controller
     {
         try{
             $data = [
-                'content' => 'Admin/Community/Posting/addEdit',
-                'title' => 'Create New Posting',
+                'content' => 'Admin/Community/Img_slider_community/addEdit',
+                'title' => 'Add New Image',
                 'community' => $this->community->get(),
                 'posting' => null,
             ];
