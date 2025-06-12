@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Groups\App\Http\Controllers\GroupsController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('groups', fn (Request $request) => $request->user())->name('groups');
+Route::middleware('auth:api')->group(function () {
+    Route::prefix('groups')->group(function() {
+        /* CRUD */
+        Route::get('/',[GroupsController::class, 'index']);
+        Route::post('store',[GroupsController::class, 'store']);
+        Route::post('update/{id}',[GroupsController::class, 'update']);
+        Route::delete('delete/{id}',[GroupsController::class, 'destroy']);
+    });
 });
