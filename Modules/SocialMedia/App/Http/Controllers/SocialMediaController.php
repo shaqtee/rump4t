@@ -176,20 +176,18 @@ class SocialMediaController extends Controller
             $post = $this->model->find($req->postId);
             if (!$post) return $this->api->error('Post not found');
 
-            $postlikeexist = (new Likes())->uniqueLike(auth()->id(), $req->postId);
+            // $postlikeexist = (new Likes())->uniqueLike(auth()->id(), $req->postId);
         
-            if ($postlikeexist) {
-                 return $this->api->error('Like not found');
-                 }else{
+            $like = Likes::where('t_user_id', auth()->id())
+            ->where('t_post_id', $req->postId)
+            ->first();
 
-                $like = Likes::where('t_user_id', auth()->id())
-                ->where('t_post_id', $req->postId)
-                ->first();
-
-
+            if ($like) {
+                    $like->delete();
+            }else{
+                    return $this->api->error('Like not found');
             }
 
-            $like->delete();
 
         } catch(\Throwable $e) {
             DB::rollback();
