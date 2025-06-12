@@ -30,18 +30,20 @@
                         @enderror
                     </div> --}}
                     <div class="form-group">
-                        <p class="mg-b-10">Region</p>
-                        <select class="form-control select2" name="location" required autofocus>
+                        <p class="mg-b-10">Kabupaten / Kota</p>
+                        <select onchange="change_location(this)" data-name="" class="form-control select2" required autofocus>
                             <option label="Choose one"></option>
                             @foreach ($city as $cty)
-                            <option value="{{ $cty->name }}, Indonesia">
-                                {{ $cty->name }}, Indonesia
+                            <option value="{{ $cty->id.'_'.$cty->name }}">
+                                {{ $cty->name }}
                             </option>
                             @endforeach
                         </select>
                         @error('location')
                             <small style="color: red">{{ $message }}</small>
                         @enderror
+                        <input id="location" type="hidden" name="location"/>
+                        <input id="t_city_id" type="hidden" name="t_city_id"/>
                     </div>
                     <div class="form-group">
                         <label for="image">Image</label>
@@ -57,3 +59,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    function change_location(v){
+        console.log($(v).val())
+        let dataLocation = $(v).val().split('_');
+        $('#t_city_id').val(dataLocation[0]);
+        $('#location').val(dataLocation[1]);
+    }
+</script>

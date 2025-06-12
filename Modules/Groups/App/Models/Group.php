@@ -14,6 +14,7 @@ use Modules\Community\Database\factories\CommunityFactory;
 use Modules\Masters\App\Models\MasterCity;
 use Modules\Masters\App\Models\MasterConfiguration;
 use Modules\Community\App\Models\EventCommonity;
+use Modules\Masters\App\Models\MasterReferences;
 
 class Group extends Model
 {
@@ -33,6 +34,11 @@ class Group extends Model
         'ongoing_event',
         'upcoming_event',
     ];
+
+    public function region()
+    {
+        return $this->belongsTo(MasterReferences::class,'location');
+    }
 
     public function small_group_users()
     {

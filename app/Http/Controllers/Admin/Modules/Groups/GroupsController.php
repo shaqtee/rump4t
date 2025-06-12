@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Group;
 use App\Models\SmallGroupUser;
 use Modules\Masters\App\Models\MasterCity;
+use Modules\Masters\App\Models\MasterRegency;
 use Modules\Groups\App\Models\Group as SmallGroup;
 use Illuminate\Validation\ValidationException;
 use Modules\Community\App\Models\MembersCommonity;
@@ -29,7 +30,7 @@ class GroupsController extends Controller
     protected $groups;
     protected $smallGroupUser;
 
-    public function __construct(SmallGroup $model,SmallGroupUser $smallGroupUser, Helper $helper, MasterCity $city, WebRedirect $web, Handler $handler, User $users, MembersCommonity $members, Group $groups)
+    public function __construct(SmallGroup $model,SmallGroupUser $smallGroupUser, Helper $helper, MasterRegency $city, WebRedirect $web, Handler $handler, User $users, MembersCommonity $members, Group $groups)
     {
         $this->model = $model;
         $this->helper = $helper;
@@ -79,10 +80,10 @@ class GroupsController extends Controller
                 'title' => 'required',
                 'description' => 'required',
                 'location' => 'required',
-                // 't_city_id' => 'required',
+                't_city_id' => 'required',
                 'image' => 'required',
             ]);
-
+            
             $folder = "rump4t/sm-group/sm-group-profile";
             $column = "image";
 
