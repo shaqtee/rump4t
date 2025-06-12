@@ -19,7 +19,7 @@
                             <th>Title</th>
                             <th>Image</th>
                             <th>Description</th>
-                            <th>Region</th>
+                            <th>City</th>
                             <th colspan="5">Action</th>
                         </tr>
                     </thead>
