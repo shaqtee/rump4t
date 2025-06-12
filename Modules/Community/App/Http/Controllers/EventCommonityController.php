@@ -620,7 +620,7 @@ class EventCommonityController extends Controller
                         $q->orderByDesc('created_at')
                         ->with(['members:id,name,image']); 
                     }
-                ])->select('id', 'title')->orderBy('id', 'asc')->get();
+                ])->orderBy('id', 'asc')->get();
             $komunitasUser = $user->membersCommonity()
                 ->pluck('t_community_id')
                 ->flatMap(function ($item) {
