@@ -48,7 +48,7 @@ class DonasiController extends Controller
                 $nominal_terkini = $donasi->donatur->sum('nominal');
 
                 $persentase_nt = ($donasi->target_sumbangan > 0)
-                            ? round(($nominal_terkini / $donasi->target_sumbangan) * 100, 1) : 0;
+                            ? round(($nominal_terkini / $donasi->target_sumbangan), 2) : 0;
 
                 $donaturs = $donasi->donatur->map(fn($donatur) => [
                     'id' => $donatur->id,
