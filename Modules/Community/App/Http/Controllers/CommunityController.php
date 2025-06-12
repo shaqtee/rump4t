@@ -459,9 +459,31 @@ class CommunityController extends Controller
     {
         DB::beginTransaction();
         try {
-            $index = $this->model->filter($request)->orderBy('id', 'asc')->get();
+            $user = $request->user();
+
+            $index = $this->model->with([
+                'img_slider',
+                'members' => function ($q) {
+                    $q->orderByDesc('created_at')
+                    ->with(['members:id,name,image']); 
+                }
+            ])->filter($request)->orderBy('id', 'asc')->get();
+            $komunitasUser = $user->membersCommonity()
+                ->pluck('t_community_id')
+                ->flatMap(function ($item) {
+                    return explode(',', $item);
+                })
+                ->map(fn($val) => (int) trim($val))
+                ->toArray();
+            // dd($komunitasUser);
+        
+            $data = $index->map(function ($komunitas) use ($komunitasUser) {
+                $komunitas->is_joined = in_array($komunitas->id, $komunitasUser);
+                return $komunitas;
+            });
             DB::commit();
-            return $this->api->success($index);
+            return $this->api->success($data);
+
         } catch(\Throwable $e) {
             DB::rollback();
             if (config('envconfig.app_debug')) {
