@@ -194,4 +194,103 @@ class GroupsController extends Controller
             ], 500);
         }
     }
+
+    public function index_member(Request $request, $group_id)
+    {
+        $members = $this->users->whereHas('small_groups', function($q) use($group_id) {
+                    $q->where('t_small_groups_user.t_small_groups_id', $group_id);
+                });
+                
+        $ids = [];
+        foreach($members->get()->toArray() as $m){
+            $ids[] = $m['id'];
+        }
+
+        try {
+            $page = $request->input('size', 10);
+            $data = [
+                'group' => $members->with('small_groups')->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
+                'users' => $this->users->whereNotIn('id', $ids)->where('active', 1)->get(),
+                'groups_id' => $group_id,
+            ];
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            report($e);
+
+            return response()->json([
+                'status' => 'failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function add_member(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $datas = $request->validate([
+                    't_small_groups_id' => 'required',
+                    'user_id' => 'required',
+                    'is_admin' => 'nullable',
+                ]);
+                
+            $data = $this->smallGroupUser->create($datas);
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $data
+            ]);
+
+        } catch (\Exception $e) {
+            report($e);
+            DB::rollback();
+
+            return response()->json([
+                'status' => 'failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function left_member(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $left_member = $this->smallGroupUser->find($request->t_small_group_user_id);
+            $left_member->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Member berhasil dikeluarkan dari Grup.'
+            ]);
+            
+        } catch (\Exception $e) {
+            report($e);
+            DB::rollback();
+
+            return response()->json([
+                'status' => 'failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function be_admin(Request $request)
+    {
+        $pivot = $this->smallGroupUser->find($request->t_small_group_user_id);
+        $pivot->is_admin = !$pivot->is_admin;
+        $pivot->save();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $pivot,
+        ]);
+    }
 }
