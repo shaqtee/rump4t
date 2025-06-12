@@ -973,7 +973,7 @@ class AuthController extends Controller
                     "t_city_id" => $user->city->id ?? null,
                     "city" => $user->city->name ?? null,
                     "t_community_id" => $user->t_community_id ?? null,
-                    "community" => $user->community ?? null,
+                    "community" => $user->membersCommonity ?? null,
                     "member_since" => Carbon::parse($user->created_at)->format('d/m/Y'),
                     
                     "url_barcode" => url('/rump4t/profile-user/' . $this->helper->encryptDecrypt($id)),
