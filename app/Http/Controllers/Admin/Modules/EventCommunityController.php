@@ -445,12 +445,12 @@ class EventCommunityController extends Controller
 
             $model->update($datas);
 
-            if($datas['approve'] == 'PAID'){
-                $email = new SuccessPayment($model);
-                Mail::to($model->user->email)->send($email);
-                $email = new EReceipt($model);
-                Mail::to($model->user->email)->send($email);
-            }
+            // if($datas['approve'] == 'PAID'){
+            //     $email = new SuccessPayment($model);
+            //     Mail::to($model->user->email)->send($email);
+            //     $email = new EReceipt($model);
+            //     Mail::to($model->user->email)->send($email);
+            // }
 
             DB::commit();
             return $this->web->updateBack();
