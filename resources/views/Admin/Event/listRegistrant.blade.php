@@ -43,6 +43,7 @@
                             <th>User Name</th>
                             <th>Status Approve</th>
                             <th>Proof Payment</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,6 +98,13 @@
                                             </div>
                                         </div>
                                     </div> --}}
+                                </td>
+                                <td>
+                                    <form action="{{ route('registrant.hapus', ['id' => $mbr->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">DELETE</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
