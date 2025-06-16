@@ -94,14 +94,25 @@
                                 {{-- <td>
                                     <a class="btn btn-info" href="{{ route('users.hcpindex', ['id' => $usr->id]) }}">Handicap</a>
                                 </td> --}}
-                                <td>
-                                    <form action="{{ route('users.hapus', ['id' => $usr->id]) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">DELETE</button>
-                                    </form>
-                                </td>
+                                @if(!empty($usr->deleted_at))
+                                    <td>
+                                        <form action="{{ route('users.aktifkan', ['id' => $usr->id]) }}" method="POST">
+                                            @csrf
+                                            @method('POST')
+                                            <button type="submit" class="btn btn-success">AKTIFKAN</button>
+                                        </form>
+                                    </td>
+                                @else
+                                    <td>
+                                        <form action="{{ route('users.hapus', ['id' => $usr->id]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">DELETE</button>
+                                        </form>
+                                    </td>
+                                
                             </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>

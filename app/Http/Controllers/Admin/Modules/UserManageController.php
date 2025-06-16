@@ -69,7 +69,7 @@ class UserManageController extends Controller
             $data = [
                 'content' => 'Admin/Users/index',
                 'title' => 'Data User',
-                'users' => $this->model->with(['community:id,title', 'group:id,name', 'city:id,name'])
+                'users' => $this->model->withTrashed()->with(['community:id,title', 'group:id,name', 'city:id,name'])
                     ->where(function($q){
                         if(auth()->user()->t_group_id == 3){
                             $q->where('region', auth()->user()->region);
@@ -631,9 +631,27 @@ class UserManageController extends Controller
     public function delete_soft($id)
     {
         $user = $this->model->find($id);
-        $user->delete();
+        $user['deleted_at'] = now();
+        $user['active'] = 0;
+        $user->save();
 
-        return redirect('/admin/users/index');
+        return $this->web->destroy('users.semua', 'User telah dinonaktifkan');
+    }
+
+    public function aktifkan_user($id)
+    {
+        $user = $this->model->withTrashed()->find($id);
+
+        if (!$user) {
+            return $this->web->error('User tidak ditemukan');
+        }
+    
+        $user->deleted_at = null;
+        $user->updated_at = now();
+        $user->active = 1;
+        $user->save();
+
+        return $this->web->update('users.semua', 'User telah diaktifkan kembali');
     }
 
     public function lists(Request $request, $scope)

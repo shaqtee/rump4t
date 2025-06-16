@@ -463,6 +463,14 @@ class EventCommunityController extends Controller
         }
     }
 
+    public function delete_registrant($id)
+    {
+        $user = $this->memberEvent->find($id);
+        $user->delete();
+
+        return $this->web->destroy('event.semua');
+    }
+
     public function leaderboard($id)
     {
         try{

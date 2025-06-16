@@ -115,6 +115,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('index-admin', [UserManageController::class, 'store_admin'])->name('users.admin.tambah');     // reset password
             Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');
             Route::delete('{id}/hapus', [UserManageController::class, 'delete_soft'])->name('users.hapus');
+            Route::post('{id}/aktifkan', [UserManageController::class, 'aktifkan_user'])->name('users.aktifkan');
+
 
             Route::post('lists/{scope}', [UserManageController::class, 'lists'])->name('lists');
             Route::post('{id}', [UserManageController::class, 'user_by_id']);
@@ -138,6 +140,7 @@ Route::middleware(['auth'])->group(function () {
             Route::prefix('registrant')->group(function(){
                 Route::get('{event_id}/index', [EventCommunityController::class, 'index_registrant'])->name('event.registrant.semua');
                 Route::patch('{id}/ubah', [EventCommunityController::class, 'update_registrant'])->name('event.registrant.ubah');
+                Route::delete('{id}/delete', [EventCommunityController::class, 'delete_registrant'])->name('registrant.hapus');
                 Route::post('tambah', [EventCommunityController::class, 'store_user_join'])->name('event.registrant.tambah');
             });
 
