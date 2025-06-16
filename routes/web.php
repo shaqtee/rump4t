@@ -216,6 +216,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('event/index', [EventCommunityController::class, 'index_community'])->name('community.event.semua'); // off
             Route::get('event/{event_id}/lihat', [EventCommunityController::class, 'show_community'])->name('community.event.lihat'); // off
             Route::get('{community_id}/image_slider', [CommunityController::class, 'image_slider'])->name('community.image_slider');
+            Route::post('image/store', [CommunityController::class, 'store_image_slider'])->name('community_image.store');
 
             Route::prefix('posting')->group(function () {
                 Route::get('index', [PostingCommunityController::class, 'index'])->name('community.posting.semua');

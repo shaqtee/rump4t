@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\ImgCommunity;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Modules\Masters\App\Models\MasterCity;
 use Modules\Community\App\Models\Community;
 use Illuminate\Validation\ValidationException;
@@ -335,6 +336,73 @@ class CommunityController extends Controller
             return view('Admin.Layouts.wrapper', $data);
 
         } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function store_image_slider(Request $request)
+    {
+        DB::beginTransaction();
+    
+        try {
+            $request->validate([
+                'community_id' => 'required|exists:t_community,id',
+                'url_image.*' => 'nullable|image|max:2048',
+                'img_id.*' => 'nullable|integer',
+            ]);
+    
+            $imgIds = $request->img_id ?? [];
+            $processedIds = [];
+    
+            if ($request->hasFile('url_image')) {
+                foreach ($request->file('url_image') as $index => $file) {
+                    $imageId = $imgIds[$index] ?? null;
+    
+                    if ($imageId) {
+                        $image = $this->community_image->where('komunitas_id', $request->community_id)
+                            ->where('id', $imageId)
+                            ->first();
+    
+                        if ($image) {
+                            if ($file && $file->isValid()) {
+                                $path = $file->store('rump4t/community/images-slide', 's3');
+                                $url = Storage::disk('s3')->url($path);
+                                $image->url_image = $url;
+                            }
+                            $image->save();
+                            $processedIds[] = $imageId;
+                        }
+                    } else {
+                        if ($file && $file->isValid()) {
+                            $path = $file->store('rump4t/community/images-slide', 's3');
+                            $url = Storage::disk('s3')->url($path);
+    
+                            $newImage = $this->community_image->create([
+                                'komunitas_id' => $request->community_id,
+                                'url_image' => $url,
+                            ]);
+                            $processedIds[] = $newImage->id;
+                        }
+                    }
+                }
+            }
+    
+            $toKeep = array_merge($imgIds, $processedIds);
+            $this->community_image
+                ->where('komunitas_id', $request->community_id)
+                ->whereNotIn('id', $toKeep)
+                ->delete();
+    
+            DB::commit();
+            return $this->web->store('community.semua');
+    
+        } catch (\Throwable $e) {
+            DB::rollBack();
+    
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                return $this->web->error_validation($e);
+            }
+    
             return $this->handler->handleExceptionWeb($e);
         }
     }

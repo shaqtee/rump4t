@@ -4,7 +4,7 @@
             <h4 class="card-title mb-1">{{ $title }}</h4>
         </div>
         <div class="card-body pt-0">
-            <form action="{{ route('donasi_image.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('community_image.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="community_id" value="{{ $community_id }}">
             
