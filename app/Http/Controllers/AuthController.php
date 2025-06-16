@@ -97,6 +97,8 @@ class AuthController extends Controller
 
     // register sync this
     public  function registrasi(RegisRequest $request){ //Tombol Send Verification Code Hal-6
+        return $this->api->error("Maaf, pendaftaran sedang ditutup sementara.");
+
         DB::beginTransaction();
         try {
             $datas = $request->validated();

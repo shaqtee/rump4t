@@ -94,7 +94,7 @@ class UserManageController extends Controller
             $model = $this->model->findOrfail($id);
 
             $model->update([
-                'password' => "rump4t123",
+                'password' => "123123",
                 "reset_request" => false,
             ]);
 
