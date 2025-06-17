@@ -41,7 +41,7 @@ class NewsController extends Controller
             if($request->has('featured') && $request->featured == true){
                 $news = $news->where('featured', true);
             }
-            $news = $news->get();
+            $news = $news->orderBy('created_at', 'desc')->get();
 
             $news->map(function($item){
                 if ($item->image) {
