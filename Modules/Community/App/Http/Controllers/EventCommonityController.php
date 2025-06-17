@@ -514,7 +514,7 @@ class EventCommonityController extends Controller
 
     public function store_proof_payment($t_event_id)
     {
-        dd($t_event_id);
+        // dd($t_event_id);
         DB::beginTransaction();
         try {
             $memberEvent = $this->memberEvent->where('t_event_id', $t_event_id)->where('t_user_id',  auth()->user()->id)->first();
