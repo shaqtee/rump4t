@@ -116,7 +116,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{id}/reset-password', [UserManageController::class, 'reset_password'])->name('users.resetpass');
             Route::delete('{id}/hapus', [UserManageController::class, 'delete_soft'])->name('users.hapus');
             Route::post('{id}/aktifkan', [UserManageController::class, 'aktifkan_user'])->name('users.aktifkan');
-
+            Route::get('/users/export', [UserManageController::class, 'export'])->name('users.export');
 
             Route::post('lists/{scope}', [UserManageController::class, 'lists'])->name('lists');
             Route::post('{id}', [UserManageController::class, 'user_by_id']);

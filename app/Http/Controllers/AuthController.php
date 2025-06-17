@@ -327,7 +327,7 @@ class AuthController extends Controller
             //save photo profile
             $datas['player_id'] = $this->helper->generatePlayerId('player_id', $datas['faculty']);
 
-            $folder = "dgolf/user-profile";
+            $folder = "rump4t/user-profile";
             $column = "image";
             $dataUser->update($datas);
             // $this->helper->compresedUploads($folder, $dataUser, $column);
