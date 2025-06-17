@@ -24,6 +24,8 @@ use Modules\Community\App\Models\MembersCommonity;
 use Modules\Performace\App\Models\ScoreHandicap;
 use Modules\Masters\App\Models\MasterConfiguration;
 use Modules\Performace\App\Http\Controllers\PerformaceController;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
 
 class UserManageController extends Controller
 {
@@ -672,5 +674,10 @@ class UserManageController extends Controller
             "status" => "success",
             "rsp" => $user,
         ],200);
+    }
+
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 }
