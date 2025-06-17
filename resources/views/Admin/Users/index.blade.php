@@ -22,14 +22,26 @@
                 </div>
                 <div class="col-auto">
                     {{-- {{ dump(request()->input('reset_request')) }} --}}
-                    <form action="{{ route('users.semua') }}" method="GET">
-                        <div class="d-flex justify-content-end w-100">
-                            <input type="hidden" name="reset_request" value="true" />
-                            <button type="submit" class="mb-2 btn btn-success">
-                                {{ 'Sortir Ganti Password' }}
-                            </button>
+                    <div class="d-flex justify-content-end">
+                        <div style="margin-right: 10px">
+                            <form action="{{ route('users.semua') }}" method="GET">
+                                <div class="d-flex justify-content-end w-100">
+                                    <input type="hidden" name="reset_request" value="true" />
+                                    <button type="submit" class="mb-2 btn btn-success">
+                                        {{ 'Sortir Ganti Password' }}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                        <div>
+                            <form action="{{ route('users.export') }}" method="GET">
+                                <div class="d-flex justify-content-end w-100">
+                                    <input type="hidden" name="reset_request" value="true" />
+                                    <button type="submit" class="mb-2 btn btn-outline-success"><i class="fa fa-file-excel-o mr-2"></i>Export Data User</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <form action="{{ route('users.semua') }}" method="GET" class="d-flex">
                             <select id="searchIndex" class="form-control" style="margin-right: 10px;">
                                 @foreach ($columns as $items => $values)

@@ -26,7 +26,7 @@ class Newsfeed extends Model
     
     public function getNews()
     {
-        $news =  $this->where("is_published" , true)->orderBy("created_at" , "asc")->get();
+        $news =  $this->where("is_published" , true)->orderBy("created_at" , "desc")->get();
 
         $news->map(function($item){
             if ($item->image) {
