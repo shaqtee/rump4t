@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class eVoucher extends Mailable
+class EVoucher extends Mailable
 {
     use Queueable, SerializesModels;
 
