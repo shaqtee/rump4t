@@ -27,22 +27,54 @@ class PollingsController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $page = $request->input('size', 10);
-    
-            $data = [
-                'pollings' => $this->pemilu
-                    ->with([
-                        'candidate_users:t_pemilu_id,name,is_active',
-                        'polling_users:id,name'
-                        ])
-                    ->where('is_active', true)
-                    ->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
-            ];
-    
+            // $page = $request->input('size', 10);
+
+            // Request output Anggun
+            $pollings = Pemilu::with([
+                'candidate_users:id,t_pemilu_id,name,is_active',
+                'polling_users:id,name,created_at'
+            ])
+            ->where('is_active', true)
+            ->orderByDesc('id')
+            ->get();
+
+            $data = $pollings->map(function($poll) {
+                $candidates = $poll->candidate_users;
+                $votes = collect($poll->polling_users)->groupBy('pivot.t_pemilu_candidates_id');
+                $totalVotes = $votes->flatten(1)->count();
+
+                $options = $candidates->map(function ($candidate) use ($votes, $totalVotes) {
+                    $voteCount = isset($votes[$candidate->id]) ? $votes[$candidate->id]->count() : 0;
+                    $percentage = $totalVotes > 0 ? round(($voteCount / $totalVotes) * 100) : 0;
+                    return [
+                        'text' => $candidate->name,
+                        'votes_count' => $voteCount,
+                        'percentage' => $percentage,
+                    ];
+                })->values();
+
+                // Ambil last_update dari created_at polling_users terbaru
+                $lastUpdate = collect($poll->polling_users)
+                    ->max(function($user) {
+                        // Asumsi pivot.created_at bertipe Carbonable atau string datetime
+                        return $user->pivot->created_at ?? null;
+                    });
+
+                // Format waktu ke Y-m-d H:i:s (jika ada)
+                $lastUpdateFormatted = $lastUpdate ? \Carbon\Carbon::parse($lastUpdate)->format('Y-m-d H:i:s') : null;
+
+                return [
+                    'title' => $poll->title,
+                    'last_update' => $lastUpdateFormatted,
+                    'options' => $options,
+                ];
+            });
+
             return response()->json([
-                    "status" => "success",
-                    "data" => $data
-                ]);
+                'message' => 'success',
+                'code' => 200,
+                'data' => $data,
+            ]);
 
         } catch (\Exception $e) {
             report($e);
