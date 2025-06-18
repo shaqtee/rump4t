@@ -47,7 +47,7 @@ class MasterGolfCourseController extends Controller
             $data = [
                 'content' => 'Admin/Masters/GolfCourse/index',
                 'title' => 'Data Golf Course',
-                'golfCourse' => $this->model->with(['teeCourse'])->filter($request)->paginate($page)->appends($request->all()),
+                'golfCourse' => $this->model->with(['teeCourse'])->filter($request)->orderBy('created_at', 'desc')->paginate($page)->appends($request->all()),
                 'columns' => $this->model->columnsWeb(),
             ];
             return view('Admin.Layouts.wrapper', $data);

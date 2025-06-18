@@ -293,6 +293,7 @@ class UserManageController extends Controller
             for ($i = 0; $i <= $yearAgo; $i++) { 
                 $dataYears[] = $now - $i;
             }
+            $users = $this->model->findOrfail($id);
 
             $data = [
                 'content' => 'Admin/Users/addEdit',
@@ -302,9 +303,9 @@ class UserManageController extends Controller
                 'faculty' => $this->config->where('parameter', 'm_faculty')->get(),
                 'years' => $dataYears,
                 'city' => $this->city->get(),
-                'villages' => $this->village->get(),
-                'districts' => $this->district->get(),
-                'regencies' => $this->regency->get(),
+                'regencies' => $this->regency->where('province_id', $users->provinsi)->get(),
+                'districts' => $this->district->where('regency_id', $users->kota_kabupaten)->get(),
+                'villages' => $this->village->where('district_id', $users->kecamatan)->get(),
                 'provinces' => $this->province->get(),
                 'regions' => $this->references->where('parameter', 'm_region')->get(),
                 'retirement_type' => $this->references->where('parameter', 'm_retirement_type')->get(),
@@ -680,4 +681,23 @@ class UserManageController extends Controller
     {
         return Excel::download(new UsersExport, 'users.xlsx');
     }
+
+    public function getRegencies($province_id)
+    {
+        $regencies = MasterRegency::where('province_id', $province_id)->get();
+        return response()->json($regencies);
+    }
+
+    public function getDistricts($regency_id)
+    {
+        $districts = MasterDistrict::where('regency_id', $regency_id)->get();
+        return response()->json($districts);
+    }
+
+    public function getVillages($district_id)
+    {
+        $villages = MasterVillage::where('district_id', $district_id)->get();
+        return response()->json($villages);
+    }
+
 }
