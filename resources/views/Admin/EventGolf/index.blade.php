@@ -78,7 +78,7 @@
                                 <td>{{ ($evt->active == '1') ? 'Active' : 'Deactivate'}}</td>
                                 <td>
                                     <a class="btn btn-info mb-1" href="{{ route('event.ubah', ['id' => $evt->id]) }}">EDIT</a>
-                                    <a class="btn btn-info mb-1" href="{{ route('event.winner-category', ['id' => $evt->id]) }}">Add Category</a>
+                                    {{-- <a class="btn btn-info mb-1" href="{{ route('event.winner-category', ['id' => $evt->id]) }}">Add Category</a> --}}
                                     <form action="{{ route('event.hapus', ['id' => $evt->id]) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
@@ -87,7 +87,7 @@
                                 </td>
                                 <td>
                                     <a class="btn btn-info mb-1" href="{{ route('event.registrant.semua', ['event_id' => $evt->id]) }}">List Registrant</a>
-                                    <a class="btn btn-info mb-1" href="{{ route('event.winners.semua', ['id' => $evt->id]) }}">Winner's</a>
+                                    {{-- <a class="btn btn-info mb-1" href="{{ route('event.winners.semua', ['id' => $evt->id]) }}">Winner's</a> --}}
                                     <a class="btn btn-info mb-1" href="{{ route('event.leaderboard', ['id' => $evt->id]) }}">Leaderboard</a>
                                     <a class="btn btn-info mb-1" href="{{ route('event.viewInputScore', ['id' => $evt->id]) }}">Input Score</a>
                                 </td>
