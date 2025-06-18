@@ -127,7 +127,7 @@ class PerformaceController extends Controller
                             'golfCourse:id,name,number_par'
                         ])->whereYear('created_at', $year)->take(5);
                 },
-                ])->orderByDesc('id')->findOrfail($user->id);
+                ])->orderBy('created_at', 'desc')->findOrfail($user->id);
 
             $data = $datas['MyScore'];
             // dd($data);
