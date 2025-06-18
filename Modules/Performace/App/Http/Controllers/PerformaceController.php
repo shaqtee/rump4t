@@ -125,7 +125,7 @@ class PerformaceController extends Controller
                                 $q->select('id', 'title', 'play_date', 'm_type_scor_id', 'm_round_type_id')->with(['roundType:id,value1']);
                             },
                             'golfCourse:id,name,number_par'
-                        ])->whereYear('created_at', $year)->take(5);
+                        ])->whereYear('created_at', $year)->orderBy('created_at', 'desc')->take(5);
                 },
                 ])->orderBy('created_at', 'desc')->findOrfail($user->id);
 
@@ -165,9 +165,9 @@ class PerformaceController extends Controller
                                 $q->select('id', 'title', 'play_date', 'm_type_scor_id', 'm_round_type_id')->with(['roundType:id,value1']);
                             },
                             'golfCourse:id,name,number_par',
-                        ])->groupBy('id', 't_user_id', 't_event_id', 't_lets_play_id', 't_course_id', 'gross_score', 'created_at')->whereYear('created_at', $year);
+                        ])->groupBy('id', 't_user_id', 't_event_id', 't_lets_play_id', 't_course_id', 'gross_score', 'created_at')->whereYear('created_at', $year)->orderBy('created_at', 'desc');
                 },
-                ])->orderByDesc('id')->findOrfail($user->id);
+                ])->orderBy('created_at', 'desc')->findOrfail($user->id);
 
             $data = $datas['MyScore'];
 
