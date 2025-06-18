@@ -39,6 +39,7 @@ Route::middleware('auth:api')->group(function () {
         /* Pollings */
         Route::prefix('pollings')->group(function() {
             Route::get('/', [PollingsController::class ,'index']);
+            Route::get('/{pemilu_id}/by-id', [PollingsController::class ,'index_by_id']);
             Route::get('pre-vote-users', [PollingsController::class ,'pre_vote_users']);
             Route::post('votes', [PollingsController::class ,'votes']);
             Route::get('index-voted/{pemilu_id}', [PollingsController::class ,'index_voted']);
