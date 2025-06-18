@@ -106,8 +106,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('tambah', [UserManageController::class, 'create'])->name('users.tambah');
             Route::post('tambah', [UserManageController::class, 'store'])->name('users.tambah');
             Route::get('{id}/lihat', [UserManageController::class, 'show'])->name('users.lihat');
-            Route::get('{id}/ubah', [UserManageController::class, 'edit'])->name('users.ubah');
-            Route::patch('{id}/ubah', [UserManageController::class, 'update'])->name('users.ubah');
+            Route::get('{id}/ubah', [UserManageController::class, 'edit'])->name('users.ubah.edit');
+            Route::patch('{id}/update', [UserManageController::class, 'update'])->name('users.ubah.update');
             Route::get('{id}/game-score', [UserManageController::class, 'game_score'])->name('users.gamescore');
             Route::get('{id}/handicap-index', [UserManageController::class, 'hcp_index'])->name('users.hcpindex');
             Route::get('index-admin', [UserManageController::class, 'index_admin'])->name('users.admin.semua');
@@ -120,6 +120,11 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('lists/{scope}', [UserManageController::class, 'lists'])->name('lists');
             Route::post('{id}', [UserManageController::class, 'user_by_id']);
+
+            Route::get('/get-regencies/{province_id}', [UserManageController::class, 'getRegencies'])->name('get-regencies');
+            Route::get('/get-districts/{regency_id}', [UserManageController::class, 'getDistricts'])->name('get-districts');
+            Route::get('/get-villages/{district_id}', [UserManageController::class, 'getVillages'])->name('get-villages');
+
         });
 
         Route::prefix('event')->group(function(){

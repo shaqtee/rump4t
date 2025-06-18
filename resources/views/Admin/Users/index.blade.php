@@ -86,7 +86,7 @@
                                 <td>{{ $usr->active == '1' ? 'Active' : 'Deactivate' }}</td>
                                 <td>{{ $usr->reset_request == '1' ? 'Yes' : 'No' }}</td>
                                 <td>
-                                    <a class="btn btn-info" href="{{ route('users.ubah', ['id' => $usr->id]) }}">EDIT</a>
+                                    <a class="btn btn-info" href="{{ route('users.ubah.edit', ['id' => $usr->id]) }}">EDIT</a>
                                 </td>
                                 <td>
                                     <a class="btn btn-info" href="{{ route('users.lihat', ['id' => $usr->id]) }}">SHOW</a>

@@ -5,7 +5,7 @@
         </div>
         <div class="card-body pt-0">
             @if (isset($users))
-                <form action="{{ route('users.ubah', ['id' => $users->id]) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('users.ubah.update', ['id' => $users->id]) }}" method="POST" enctype="multipart/form-data">
                 @method('PATCH')
             @else
                 <form action="{{ route('users.tambah') }}" method="POST" enctype="multipart/form-data">
@@ -234,7 +234,7 @@
                         </div>
 
                         {{-- KOTA / KABUPATEN --}}
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="kota_kabupaten">Kota / Kabupaten</label>&nbsp;&nbsp;
                             <div class="d-none loader-city spinner-border spinner-border-sm" role="status">
                                 <span class="sr-only">Loading...</span>
@@ -254,10 +254,10 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
 
                         {{-- KECAMATAN --}}
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="kecamatan">Kecamatan</label>&nbsp;&nbsp;
                             <div class="d-none loader-district spinner-border spinner-border-sm" role="status">
                                 <span class="sr-only">Loading...</span>
@@ -277,10 +277,10 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
 
                         {{-- DESA / KELURAHAN --}}
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="desa_kelurahan">Desa / Kelurahan</label>&nbsp;&nbsp;
                             <div class="d-none loader-village spinner-border spinner-border-sm" role="status">
                                 <span class="sr-only">Loading...</span>
@@ -298,6 +298,65 @@
                                     >
                                         {{ $v->name }}
                                     </option>
+                                @endforeach
+                            </select>
+                        </div> --}}
+
+                        {{-- Kota / Kabupaten --}}
+                        <div class="form-group">
+                            <label for="kota_kabupaten">Kota / Kabupaten</label>
+                            @error('kota_kabupaten')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                            <select name="kota_kabupaten" id="kota_kabupaten" class="form-control select2" data-area="{{ $users->kecamatan ?? '' }}">
+                                <option disabled selected>Choose one</option>
+                                @foreach ($regencies as $r)
+                                <option value="{{ $r->id }}" 
+                                    @if (old('kota_kabupaten', isset($users) ? $users->kota_kabupaten : '') == $r->id)
+                                        selected
+                                    @endif>
+                                    {{ $r->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Kecamatan --}}
+                        <div class="form-group">
+                            <label for="kecamatan">Kecamatan</label>
+                            @error('kecamatan')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                            <select name="kecamatan" id="kecamatan" class="form-control select2" data-area="{{ $users->desa_kelurahan ?? '' }}">
+                                <option disabled selected>Choose one</option>
+                                @foreach ($districts as $d)
+                                <option value="{{ $d->id }}" 
+                                    @if (old('kecamatan', isset($users) ? $users->kecamatan : '') == $d->id)
+                                        selected
+                                    @endif
+                                    >
+                                    {{ $d->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Desa / Kelurahan --}}
+                        <div class="form-group">
+                            <label for="desa_kelurahan">Desa / Kelurahan</label>
+                            @error('desa_kelurahan')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                            <select name="desa_kelurahan" id="desa_kelurahan" class="form-control select2">
+                                <option disabled selected>Choose one</option>
+                                @foreach ($villages as $v)
+                                <option value="{{ $v->id }}" 
+                                    @if (old('desa_kelurahan', isset($users) ? $users->desa_kelurahan : '') == $v->id)
+                                        selected
+                                    @endif
+                                    >
+                                    {{ $v->name }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -517,3 +576,86 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        // Saat Provinsi diganti
+        $('#provinsi').change(function () {
+            let provID = $(this).val();
+            $('#kota_kabupaten').html('<option selected disabled>Loading...</option>');
+            $('#kecamatan').html('<option selected disabled>Pilih Kecamatan</option>');
+            $('#desa_kelurahan').html('<option selected disabled>Pilih Desa</option>');
+    
+            $.get("{{ route('get-regencies', ':id') }}".replace(':id', provID), function(data) {
+                let options = '<option selected disabled>Pilih Kota/Kabupaten</option>';
+                data.forEach(item => {
+                    options += `<option value="${item.id}">${item.name}</option>`;
+                });
+                $('#kota_kabupaten').html(options).trigger('change.select2');
+            });
+        });
+    
+        // Saat Kota diganti
+        $('#kota_kabupaten').change(function () {
+            let kotaID = $(this).val();
+            $('#kecamatan').html('<option selected disabled>Loading...</option>');
+            $('#desa_kelurahan').html('<option selected disabled>Pilih Desa</option>');
+    
+            $.get("{{ route('get-districts', ':id') }}".replace(':id', kotaID), function(data) {
+                let options = '<option selected disabled>Pilih Kecamatan</option>';
+                data.forEach(item => {
+                    options += `<option value="${item.id}">${item.name}</option>`;
+                });
+                $('#kecamatan').html(options).trigger('change.select2');
+            });
+        });
+    
+        // Saat Kecamatan diganti
+        $('#kecamatan').change(function () {
+            let kecID = $(this).val();
+            $('#desa_kelurahan').html('<option selected disabled>Loading...</option>');
+    
+            $.get("{{ route('get-villages', ':id') }}".replace(':id', kecID), function(data) {
+                let options = '<option selected disabled>Pilih Desa/Kelurahan</option>';
+                data.forEach(item => {
+                    options += `<option value="${item.id}">${item.name}</option>`;
+                });
+                $('#desa_kelurahan').html(options).trigger('change.select2');
+            });
+        });
+    
+        const provID = $('#provinsi').val();
+        const regID = $('#kota_kabupaten').val();
+        const kecID = $('#kecamatan').val();
+        const desaID = $('#desa_kelurahan').val();
+    
+        if (provID && regID && kecID) {
+            // Trigger kota
+            $.get("{{ route('get-regencies', ':id') }}".replace(':id', provID), function(data) {
+                let options = '<option selected disabled>Pilih Kota/Kabupaten</option>';
+                data.forEach(item => {
+                    options += `<option value="${item.id}" ${item.id == regID ? 'selected' : ''}>${item.name}</option>`;
+                });
+                $('#kota_kabupaten').html(options).trigger('change');
+    
+                // Trigger kecamatan setelah kota
+                $.get("{{ route('get-districts', ':id') }}".replace(':id', regID), function(data) {
+                    let options = '<option selected disabled>Pilih Kecamatan</option>';
+                    data.forEach(item => {
+                        options += `<option value="${item.id}" ${item.id == kecID ? 'selected' : ''}>${item.name}</option>`;
+                    });
+                    $('#kecamatan').html(options).trigger('change');
+    
+                    // Trigger desa setelah kecamatan
+                    $.get("{{ route('get-villages', ':id') }}".replace(':id', kecID), function(data) {
+                        let options = '<option selected disabled>Pilih Desa/Kelurahan</option>';
+                        data.forEach(item => {
+                            options += `<option value="${item.id}" ${item.id == desaID ? 'selected' : ''}>${item.name}</option>`;
+                        });
+                        $('#desa_kelurahan').html(options).trigger('change');
+                    });
+                });
+            });
+        }
+    });
+    </script>
+    
