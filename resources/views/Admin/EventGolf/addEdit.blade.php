@@ -56,7 +56,7 @@
                             @error('description')
                                 <small style="color: red">{{ $message }}</small>
                             @enderror
-                            <input type="text" class="form-control @error('description') is-invalid @enderror"  value="{{ old('description', isset($event) ? $event->description : '') }}" name="description" id="description" placeholder="Description" required autofocus>
+                            <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" placeholder="Description" rows="4" required autofocus>{{ old('description', isset($event) ? $event->description : '') }}</textarea>
                         </div>
                         {{-- <div class="form-group">
                             <label for="location">Location</label>
