@@ -13,6 +13,8 @@ use App\Services\Helpers\Helper;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Modules\SocialMedia\App\Models\Post;
 use Modules\Masters\App\Models\MasterCity;
 use Modules\Community\App\Models\MembersCommonity;
@@ -88,49 +90,128 @@ class PostingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request, $group_id): JsonResponse
     {
         $validator = $request->validate([
             'title' => 'required',
             'desc' => 'required',
-            'image' => 'nullable',
+            'image' => 'nullable|image',
         ]);
+
+        try {
+            \DB::beginTransaction();
+
+            $img = null;
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'socialmedia/' . $filename;
+                \Storage::disk('s3')->put($path, file_get_contents($file));
+                $img = \Storage::disk('s3')->url($path);
+            }
+
+            $post = Post::create([
+                'title' => $validator['title'],
+                'desc' => $validator['desc'],
+                'id_user' => auth()->id(),
+                'url_cover_image' => $img,
+                't_small_groups_id' => $group_id,
+            ]);
+
+            \DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $post,
+            ], Response::HTTP_CREATED);
+        } catch (\Exception $e) {
+            \DB::rollBack();
+
+            return response()->json([
+                'status' => 'failed',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function show($group_id, $id): JsonResponse
+    {
+        $post = Post::where('t_small_groups_id', $group_id)->find($id);
+
+        if (!$post) {
+            return response()->json([
+                'status' => 'failed',
+                'error' => 'Post not found',
+            ], 404);
+        }
 
         return response()->json([
-            "status" => "success",
-            "data" => $validator
+            'status' => 'success',
+            'data' => $post,
         ]);
     }
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function update(Request $request, $group_id, $id): JsonResponse
     {
-        return view('groups::show');
+        $validator = $request->validate([
+            'title' => 'sometimes|required',
+            'desc' => 'sometimes|required',
+            'image' => 'nullable|image',
+        ]);
+
+        $post = Post::where('t_small_groups_id', $group_id)->find($id);
+        if (!$post) {
+            return response()->json([
+                'status' => 'failed',
+                'error' => 'Post not found',
+            ], 404);
+        }
+
+        try {
+            \DB::beginTransaction();
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'socialmedia/' . $filename;
+                \Storage::disk('s3')->put($path, file_get_contents($file));
+                $validator['url_cover_image'] = \Storage::disk('s3')->url($path);
+            }
+
+            $post->update($validator);
+
+            \DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $post,
+            ]);
+        } catch (\Exception $e) {
+            \DB::rollBack();
+
+            return response()->json([
+                'status' => 'failed',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function destroy($group_id, $id): JsonResponse
     {
-        return view('groups::edit');
+        $post = Post::where('t_small_groups_id', $group_id)->find($id);
+
+        if (!$post) {
+            return response()->json([
+                'status' => 'failed',
+                'error' => 'Post not found',
+            ], 404);
+        }
+
+        $post->delete();
+
+        return response()->json([
+            'status' => 'success',
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
