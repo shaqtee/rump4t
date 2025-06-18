@@ -87,9 +87,22 @@ class PemiluController extends Controller
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function show(Pemilu $pemilu)
     {
-        return view('pemilu::show');
+        try {
+            return response()->json([
+                "status" => "success",
+                "data" => $pemilu
+            ], 201);
+        } catch (\Exception $e) {
+            report($e);
+            DB::rollback();
+
+            return response()->json([
+                "status" => "failed",
+                "error" => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

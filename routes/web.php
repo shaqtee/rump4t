@@ -308,7 +308,10 @@ Route::middleware(['auth'])->group(function () {
             Route::prefix('candidate')->group(function () {
                 /* candidate */
                 Route::get('{pemilu_id}/list', [PemiluController::class, 'user_candidate'])->name('pemilu.candidate');
+                Route::get('{pemilu_id}/create', [PemiluController::class, 'create_candidate'])->name('pemilu.candidate.create');
                 Route::post('{pemilu_id}/add', [PemiluController::class, 'add_candidate'])->name('pemilu.candidate.add');
+                Route::get('{id}/{pemilu_id}/edit', [PemiluController::class, 'edit_candidate'])->name('pemilu.candidate.edit');
+                Route::patch('{id}/update', [PemiluController::class, 'update_candidate'])->name('pemilu.candidate.update');
                 Route::delete('{id}/left', [PemiluController::class, 'left_candidate'])->name('pemilu.candidate.left');
                 Route::post('activate', [PemiluController::class, 'activate_candidate'])->name('pemilu.candidate.activate');
             });

@@ -46,7 +46,7 @@ class PemiluPollingsController extends Controller
                 'title' => 'Data Pollings',
                 'pollings' => $this->model
                     ->with([
-                        'candidate_users:id,name',
+                        'candidate_users',
                         'polling_users'
                         ])
                     ->where('is_active', true)
@@ -64,6 +64,15 @@ class PemiluPollingsController extends Controller
 
     public function index_voted(Request $request, $pemilu_id)
     {
+        // dd(
+        //     $this->model
+        //             ->with([
+        //                 'candidate_users',
+        //                 'polling_users:id,name'
+        //                 ])
+        //             ->where('id', $pemilu_id)
+        //             ->where('is_active', true)->get()
+        //             );
         try{
             $page = $request->size ?? 10;
             $data = [
@@ -71,7 +80,7 @@ class PemiluPollingsController extends Controller
                 'title' => 'Data Pollings',
                 'pollings' => $this->model
                     ->with([
-                        'candidate_users:id,name',
+                        'candidate_users',
                         'polling_users:id,name'
                         ])
                     ->where('id', $pemilu_id)

@@ -73,7 +73,41 @@
 <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
 <style>
+    .riwayat-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        transition: background 0.15s;
+    }
+    .riwayat-item:hover {
+        background:rgb(199, 199, 199);
+        cursor: pointer;
+    }
+
+    .riwayat-text {
+        flex: 1 1 auto;
+        padding-right: 10px;
+    }
+
+    .riwayat-btn {
+        flex-shrink: 0;
+    }
+    .ui-datepicker {
+        z-index: 99999 !important;
+        position: relative;
+    }
+
+    .ui-datepicker select.ui-datepicker-year {
+        width: 90px !important;
+        min-width: 60px !important;
+        font-size: 1em;
+    }
+
     /* Hide days grid and month selector */
     .hide-calendar .ui-datepicker-calendar,
     .hide-calendar .ui-datepicker-month {
@@ -165,6 +199,7 @@
     display: block;
 }
 </style>
+
 </head>
 
 <body class="main-body app sidebar-mini">
