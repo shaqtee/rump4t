@@ -32,8 +32,8 @@ class PollingsController extends Controller
             $data = [
                 'pollings' => $this->pemilu
                     ->with([
-                        'candidate_users:id,name',
-                        'polling_users'
+                        'candidate_users:t_pemilu_id,name,is_active',
+                        'polling_users:id,name'
                         ])
                     ->where('is_active', true)
                     ->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
@@ -87,14 +87,26 @@ class PollingsController extends Controller
                 't_pemilu_candidates_id' => 'required',
                 'user_id' => 'required',
             ]);
+
+        $exist = $this->candidates
+            ->where('t_pemilu_id', $validated['t_pemilu_id'])
+            ->where('id', $validated['t_pemilu_candidates_id'])
+            ->exists();
+            
+        if(!$exist){
+            return response()->json([
+                'status' => 'failed',
+                'error' => "There is no such an election."
+            ], 500);
+        }
         
-        $exists = $this->pollings
+        $voted_user = $this->pollings
             ->where('t_pemilu_id', $validated['t_pemilu_id'])
             ->where('t_pemilu_candidates_id', $validated['t_pemilu_candidates_id'])
             ->where('user_id', $validated['user_id'])
             ->exists();
         
-        if($exists){
+        if($voted_user){
             return response()->json([
                 'status' => 'failed',
                 'error' => "User has voted in this election."
@@ -127,7 +139,7 @@ class PollingsController extends Controller
             $page = $request->input('size', 10);
             $voted = $this->pemilu
                 ->with([
-                    'candidate_users:id,name',
+                    'candidate_users:id,t_pemilu_id,name',
                     'polling_users:id,name'
                     ])
                 ->where('id', $pemilu_id)

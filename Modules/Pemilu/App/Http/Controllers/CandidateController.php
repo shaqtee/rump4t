@@ -26,26 +26,36 @@ class CandidateController extends Controller
     {
         try {
             $page = $request->input('size', 10);
-    
-            $candidates = $this->users->whereHas('candidates', function($q) use($pemilu_id) {
-                $q->where('t_pemilu_candidates.t_pemilu_id', $pemilu_id);
-            });
-    
-            $ids = [];
-            foreach($candidates->get()->toArray() as $c){
-                $ids[] = $c['id'];
-            }
+
+            $candidates = $this->candidates->where('t_pemilu_id', $pemilu_id);
     
             $data = [
                 'pemilu_id' => $pemilu_id,
-                'users' => $this->users->whereNotIn('id', $ids)->where('active', 1)->get(),
-                'candidates' => $candidates->with('candidates')->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
+                'candidates' => $candidates->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
             ];
     
             return response()->json([
                 "status" => "success",
                 "data" => $data
             ]);
+        } catch (\Exception $e) {
+            report($e);
+
+            return response()->json([
+                'status' => 'failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function show(PemiluCandidate $candidate)
+    {
+        try {
+            return response()->json([
+                "status" => "success",
+                "data" => $candidate
+            ]);
+            
         } catch (\Exception $e) {
             report($e);
 
@@ -63,30 +73,80 @@ class CandidateController extends Controller
             /* validator: regular */
             $data = $request->validate([
                     't_pemilu_id' => 'required',
-                    'user_id' => 'required',
+                    'name' => 'required',
+                    'birth_place' => 'required',
+                    'birth_date' => 'required',
+                    'riwayat_pendidikan' => 'required',
+                    'riwayat_pekerjaan' => 'required',
+                    'visi_misi' => 'required',
                     'is_active' => 'nullable',
                 ]);
-            
-            /* validasi: unique candidate */
-            $exists = $this->candidates
-                    ->where('t_pemilu_id', $data['t_pemilu_id'])
-                    ->where('user_id', $data['user_id'])
-                    ->exists();
 
-            if($exists){
-                return response()->json([
-                    'status' => 'failed',
-                    'error' => "candidate must be unique"
-                ], 500);
-            }
+            $folder = "rump4t/candidate/profile";
+            $column = "image";
                 
-            $new_candidate = $this->candidates->create($data);
+            $model = $this->candidates->create($data);
+
+            $this->helper->uploads($folder, $model, $column);
             DB::commit();
 
             return response()->json([
                 "status" => "success",
-                "data" => $new_candidate
+                "data" => $model
             ]);
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollBack();
+            
+            return response()->json([
+                'status' => 'failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function update(Request $request, PemiluCandidate $candidate)
+    {
+        // return response()->json($request->input('t_pemilu_id'));
+        DB::beginTransaction();
+        try {
+            /* validator: regular */
+            $datas = $request->validate([
+                    't_pemilu_id'           => 'required',
+                    'name'                  => 'sometimes|required',
+                    'birth_place'           => 'sometimes|required',
+                    'birth_date'            => 'sometimes|required',
+                    'riwayat_pendidikan'    => 'sometimes|required',
+                    'riwayat_pekerjaan'     => 'sometimes|array',
+                    'visi_misi'             => 'sometimes|required',
+                    'is_active'             => 'sometimes|nullable',
+                ]);
+
+            $check = $this->candidates
+                ->where('id', $candidate->id)
+                ->where('t_pemilu_id', $datas['t_pemilu_id'])
+                ->first();
+            
+            if(!$check){
+                return response()->json([
+                    'status' => 'failed',
+                    'error' => 'Kandidat tidak ada dalam pemilihan ini.'
+                ], 500);
+            }
+    
+            $folder = "rump4t/candidate/profile";
+            $column = "image";
+            
+            $candidate->update($datas);
+
+            $this->helper->uploads($folder, $candidate, $column);
+            DB::commit();
+
+            return response()->json([
+                "status" => "success",
+                "data" => $candidate
+            ]);
+
         } catch (\Throwable $e) {
             report($e);
             DB::rollBack();

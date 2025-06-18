@@ -26,7 +26,7 @@ Route::middleware('auth:api')->group(function () {
 
         Route::prefix('member')->group(function() {
             /* Member */
-            Route::get('/{group_id}',[GroupsController::class, 'index_member']);
+            Route::get('{group_id}',[GroupsController::class, 'index_member']);
             Route::post('add',[GroupsController::class, 'add_member']);
             Route::delete('left',[GroupsController::class, 'left_member']);
             Route::patch('be-admin',[GroupsController::class, 'be_admin']);
@@ -34,7 +34,9 @@ Route::middleware('auth:api')->group(function () {
 
         Route::prefix('posting')->group(function() {
             /* Posting */
-            Route::get('/{group_id}',[PostingController::class, 'index_posting']);
+            Route::get('{group_id}',[PostingController::class, 'index_posts']);
+            Route::post('store/{group_id}',[PostingController::class, 'store']);
+            
         });
     });
 });

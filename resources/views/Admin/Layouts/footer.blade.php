@@ -258,7 +258,7 @@
         });
 
         $('#datetimepicker').on('change', function() {
-            console.log('bith date',this.value);
+            console.log('birth date',this.value);
             let getBirthDate = this.value.split(' ')[0];
 
             const birthDate = new Date(getBirthDate);

@@ -50,7 +50,7 @@
                                 <th>{{ $p->name }}</th>
                                 <th>
                                     @foreach ( $pollings[0]->candidate_users as $cu )
-                                        @if($cu->pivot->id == $p->pivot->t_pemilu_candidates_id)
+                                        @if($cu->id == $p->pivot->t_pemilu_candidates_id)
                                             {{ $cu->name }}
                                         @endif
                                     @endforeach

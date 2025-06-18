@@ -6,52 +6,9 @@
             </div>
             <div class="row row-xs wd-xl-80p">
                 <div class="col-sm-1 col-md-1 mt-2">
-                    <a class="btn btn-success " data-effect="effect-scale" data-toggle="modal" href="#modalAddMember">
+                    <a class="btn btn-success " data-effect="effect-scale" href="{{ route('pemilu.candidate.create', $pemilu_id) }}">
                         <i class="fa fa-plus"></i> ADD
                     </a>
-                    {{-- modal Admin --}}
-                    <div class="modal" id="modalAddMember">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content modal-content-demo">
-                                <div class="modal-header">
-                                    <h6 class="modal-title">Add Candidate</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="card-body pt-0">
-                                        <form action="{{ route('pemilu.candidate.add', $pemilu_id) }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" id="t_pemilu_id" name="t_pemilu_id" value="{{ $pemilu_id }}">
-                                            <div class="form-group">
-                                                <label for="id">User</label>
-                                                @error('id')
-                                                    <small style="color: red">{{ $message }}</small>
-                                                @enderror
-                                                <select name="user_id" class="form-control select2" style="width: 100%" required autofocus>
-                                                    <option label="Choose one"></option>
-                                                    @foreach ($users as $usr)
-                                                        <option value="{{ $usr->id }}">
-                                                            {{  $usr->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="is_active" name="is_active" checked>
-                                                <label class="mt-0" for="is_active">Activate</label>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn ripple btn-success" type="submit">Save</button>
-                                                <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- end modal Admin --}}
                 </div>
             </div>
         </div>
@@ -86,11 +43,12 @@
                             <th>No</th>
                             <th>Name</th>
                             <th>Image</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Joined</th>
-                            <th>Active</th>
-                            <th>Action</th>
+                            <th>Kelahiran</th>
+                            <th>Pendidikan Terakhir</th>
+                            <th>Riwayat Pekerjaan</th>
+                            <th>Visi Misi</th>
+                            <th>Status</th>
+                            <th colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,33 +58,47 @@
                         @php $no = $candidates->firstItem(); @endphp
 
                         @foreach($candidates as $key => $c)
-                            @php
+                            {{-- @php
                                 foreach($c->candidates as $key => $usg){
                                     if($usg->pivot->t_pemilu_id == $pemilu_id){
                                         $i = $key;
                                     }
                                 }
                                 $usr = $c->candidates[$i];
-                            @endphp
+                            @endphp --}}
                             <tr>
                                 <th scope="row">{{ $no++ }}</th>
                                 <td>{{ $c->name }}</td>
-                                <td><img class="img-thumbnail" src="{{ $c->image }}"  onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" style="width: 100px; height: 100px; object-fit: cover;" alt="Profil User"></td>
-                                <td>{{ $c->email }}</td>
-                                <td>{{ $c->phone }}</td>
-                                <td>{{ date('d/m/Y', strtotime($usr->pivot?->created_at)) }}</td>
+                                <td><img class="img-thumbnail wd-100p wd-sm-200 mb-3" src="{{ $c->image }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120?text=No+Image';" alt=""></td>
+                                @if(!empty($c->birth_date))
+                                <td>{{ $c->birth_place.', '.date('d/m/Y', strtotime($c->birth_date)) }}</td>
+                                @else
+                                <td>-</td>
+                                @endif
+                                <td>{{ $c->riwayat_pendidikan }}</td>
+                                <td>
+                                    @if (!empty($c->riwayat_pekerjaan))
+                                        @foreach ($c->riwayat_pekerjaan as $rp )
+                                            <div>{{ $rp }}</div><br>
+                                        @endforeach
+                                    @endif
+                                </td>
+                                <td>{{ $c->visi_misi }}</td>
                                 <td>
                                     <div class="custom-control custom-switch w-100 d-flex justify-content-center">
-                                        <input type="checkbox" class="custom-control-input" onchange="change_status_active(this)" id="active_{{ $usr->pivot?->id }}" {{ $usr->pivot?->is_active ? 'checked' : '' }}>
-                                        <label class="custom-control-label bg-primary" for="active_{{ $usr->pivot?->id }}"></label>
+                                        <input type="checkbox" class="custom-control-input" onchange="change_status_active(this)" id="candidate_{{ $c->id }}" {{ $c->is_active ? 'checked' : '' }}>
+                                        <label class="custom-control-label bg-primary" for="candidate_{{ $c->id }}"></label>
                                     </div>
-                                    <div id="loader-{{ $usr->pivot?->id }}" class="d-none"> loading..</div>
+                                    <div id="loader-{{ $c->id }}" class="d-none"> loading..</div>
                                 </td>
                                 <td>
-                                    <form action="{{ route('pemilu.candidate.left', $usr->pivot?->id) }}" method="POST">
+                                    <a href="{{ route('pemilu.candidate.edit', ['id' => $c->id, 'pemilu_id' => $pemilu_id]) }}" class="btn btn-sm btn-info">edit</a>
+                                </td>
+                                <td>
+                                    <form action="{{ route('pemilu.candidate.left', $c->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Left Candidate</button>
+                                        <button type="submit" class="btn btn-sm btn-danger">Left</button>
                                     </form>
                                 </td>
                             </tr>   

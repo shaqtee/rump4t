@@ -21,6 +21,7 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('pemilu')->group(function() {
         /* CRUD */
         Route::get('/',[PemiluController::class, 'index']);
+        Route::get('{pemilu}/show',[PemiluController::class, 'show']);
         Route::post('store',[PemiluController::class, 'store']);
         Route::patch('update/{pemilu}',[PemiluController::class, 'update']);
         Route::delete('delete/{id}',[PemiluController::class, 'destroy']);
@@ -28,7 +29,9 @@ Route::middleware('auth:api')->group(function () {
         /* Kandidat */
         Route::prefix('candidate')->group(function() {
             Route::get('{pemilu_id}', [CandidateController::class ,'index']);
+            Route::get('{candidate}/show', [CandidateController::class ,'show']);
             Route::post('add', [CandidateController::class ,'add']);
+            Route::post('{candidate}/update', [CandidateController::class ,'update']);
             Route::delete('{candidate}/left', [CandidateController::class ,'left']);
             Route::patch('{candidate}/activate', [CandidateController::class ,'activate']);
         });

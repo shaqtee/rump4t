@@ -49,7 +49,7 @@
                             @php
                                 $today = date('Y-m-d H:i:s');
                                 $expired = strtotime($polling->end_date) < strtotime($today) ? true : false;
-
+                                
                                 $totalVotes = $polling->polling_users->count();
                                 $voteCounts = [];
                                 $pollingId = $polling->id;
@@ -61,12 +61,13 @@
                                 ];
 
                                 foreach ($polling->candidate_users as $candidate) {
-                                    $candidateId = $candidate->pivot->id;
+                                    //dd($candidate);
+                                    $candidateId = $candidate->id;
                                     $voteCounts[$candidateId] = $polling->polling_users
                                         ->where('pivot.t_pemilu_candidates_id', $candidateId)
                                         ->count();
 
-                                    if ($candidate->pivot->is_active) {
+                                    if ($candidate->is_active) {
                                         $options['candidates'][$pollingId][] = [
                                             't_pemilu_candidates_id' => $candidateId,
                                             'name' => $candidate->name,
@@ -91,7 +92,7 @@
 
                                 <td class="text-start">
                                     @foreach ($polling->candidate_users as $candidate)
-                                        @if ($candidate->pivot->is_active)
+                                        @if ($candidate->is_active)
                                             <div>
                                                 <a href="{{ route('users.lihat', $candidate->id) }}" target="_blank">
                                                     {{ $candidate->name }}
@@ -103,9 +104,9 @@
 
                                 <td>
                                     @foreach ($polling->candidate_users as $i => $candidate)
-                                        @if ($candidate->pivot->is_active)
+                                        @if ($candidate->is_active)
                                             @php
-                                                $count = $voteCounts[$candidate->pivot->id] ?? 0;
+                                                $count = $voteCounts[$candidate->id] ?? 0;
                                                 $percentage = $totalVotes > 0 ? round(($count / $totalVotes) * 100, 2) : 0;
                                                 $color = $colors[$i % count($colors)];
                                             @endphp
