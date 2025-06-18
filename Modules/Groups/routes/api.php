@@ -36,7 +36,10 @@ Route::middleware('auth:api')->group(function () {
             /* Posting */
             Route::get('{group_id}',[PostingController::class, 'index_posts']);
             Route::post('store/{group_id}',[PostingController::class, 'store']);
-            
+            Route::get('{group_id}/{id}', [PostingController::class, 'show']);
+            Route::post('update/{group_id}/{id}', [PostingController::class, 'update']);
+            Route::delete('delete/{group_id}/{id}', [PostingController::class, 'destroy']);
+
         });
     });
 });
