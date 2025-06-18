@@ -162,24 +162,33 @@ class PemiluController extends Controller
      * Candidate
      */
     public function user_candidate(Request $request, $pemilu_id)
-    {   
-        $candidates = $this->users->whereHas('candidates', function($q) use($pemilu_id) {
-            $q->where('t_pemilu_candidates.t_pemilu_id', $pemilu_id);
-        });
-
-        $ids = [];
-        foreach($candidates->get()->toArray() as $c){
-            $ids[] = $c['id'];
-        }
-        // dd($candidates);
+    { 
+        $candidates = $this->candidates->where('t_pemilu_id', $pemilu_id);  
         try{
             $page = $request->size ?? 10;
             $data = [
                 'content' => 'Admin/Pemilu/Candidate/index',
                 'title' => 'Data User Candidates',
-                'users' => $this->users->whereNotIn('id', $ids)->where('active', 1)->get(),
-                'candidates' => $candidates->with('candidates')->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
-                'columns' => $this->users->columnsWeb(),
+                'candidates' => $candidates->filter($request)->orderByDesc('id')->paginate($page)->appends($request->all()),
+                'columns' => $this->candidates->columnsWeb(),
+                'pemilu_id' => $pemilu_id,
+            ];
+
+            return view('Admin.Layouts.wrapper', $data);
+
+        } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function create_candidate($pemilu_id)
+    {
+        try{
+
+            $data = [
+                'content' => 'Admin/Pemilu/Candidate/addEdit',
+                'title' => 'Create Candidate',
+                'candidate' => null,
                 'pemilu_id' => $pemilu_id,
             ];
 
@@ -192,16 +201,25 @@ class PemiluController extends Controller
 
     public function add_candidate(Request $request, $pemilu_id)
     {
-        // dd($request->all());
         DB::beginTransaction();
         try {
             $datas = $request->validate([
                     't_pemilu_id' => 'required',
-                    'user_id' => 'required',
+                    'name' => 'required',
+                    'birth_place' => 'required',
+                    'birth_date' => 'required',
+                    'riwayat_pendidikan' => 'required',
+                    'riwayat_pekerjaan' => 'required',
+                    'visi_misi' => 'required',
                     'is_active' => 'nullable',
                 ]);
                 
-            $this->candidates->create($datas);
+            $folder = "rump4t/candidate/profile";
+            $column = "image";
+
+            $model = $this->candidates->create($datas);
+
+            $this->helper->uploads($folder, $model, $column);
             DB::commit();
 
             return $this->web->successReturn('pemilu.candidate', 'pemilu_id', $pemilu_id);
@@ -213,6 +231,50 @@ class PemiluController extends Controller
             }
             return $this->handler->handleExceptionWeb($e);
         }
+    }
+
+    public function edit_candidate($id,$pemilu_id)
+    {
+        try{
+            $candidate = $this->candidates->findOrFail($id);
+            $data = [
+                'content' => 'Admin/Pemilu/Candidate/addEdit',
+                'title' => 'Create Candidate',
+                'candidate' => $candidate,
+                'pemilu_id' => $pemilu_id,
+            ];
+
+            return view('Admin.Layouts.wrapper', $data);
+
+        } catch (\Throwable $e) {
+            return $this->handler->handleExceptionWeb($e);
+        }
+    }
+
+    public function update_candidate(Request $request, $id)
+    {
+        $datas = $request->validate([
+                    't_pemilu_id' => 'required',
+                    'name' => 'required',
+                    'birth_place' => 'required',
+                    'birth_date' => 'required',
+                    'riwayat_pendidikan' => 'required',
+                    'riwayat_pekerjaan' => 'required',
+                    'visi_misi' => 'required',
+                    'is_active' => 'nullable',
+                ]);
+                
+            $folder = "rump4t/candidate/profile";
+            $column = "image";
+
+            $model = $this->candidates->findOrfail($id);
+
+            $model->update($datas);
+
+            $this->helper->uploads($folder, $model, $column);
+            DB::commit();
+
+            return $this->web->successReturn('pemilu.candidate', 'pemilu_id', $request->t_pemilu_id);
     }
 
     public function left_candidate($id)

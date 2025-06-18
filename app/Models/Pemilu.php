@@ -20,14 +20,19 @@ class Pemilu extends Model
 
     public function candidate_users()
     {
-        return $this->belongsToMany(User::class, 't_pemilu_candidates', 't_pemilu_id', 'user_id')
-            ->withPivot(['id','is_active','created_at']);
+        return $this->hasMany(PemiluCandidate::class, 't_pemilu_id', 'id');
     }
+
+    // public function candidate_users()
+    // {
+    //     return $this->belongsToMany(User::class, 't_pemilu_candidates', 't_pemilu_id', 'user_id')
+    //         ->withPivot(['id','is_active','created_at']);
+    // }
 
     public function polling_users()
     {
         return $this->belongsToMany(User::class, 't_pemilu_pollings', 't_pemilu_id', 'user_id')
-            ->withPivot(['id', 't_pemilu_candidates_id' ,'vote','created_at']);
+            ->withPivot(['id', 't_pemilu_candidates_id' , 'vote', 'created_at']);
     }
 
     public function scopeFilter($query, $request)
