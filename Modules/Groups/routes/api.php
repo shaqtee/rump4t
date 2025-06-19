@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Groups\App\Http\Controllers\GroupsController;
 use Modules\Groups\App\Http\Controllers\PostingController;
+use Modules\Groups\App\Http\Controllers\PostingModerationController;
 
 /*
     |--------------------------------------------------------------------------
@@ -39,6 +40,18 @@ Route::middleware('auth:api')->group(function () {
             Route::get('{group_id}/{id}', [PostingController::class, 'show']);
             Route::post('update/{group_id}/{id}', [PostingController::class, 'update']);
             Route::delete('delete/{group_id}/{id}', [PostingController::class, 'destroy']);
+
+            Route::prefix('{group_id}/{post_id}')->group(function() {
+                Route::put('moderate', [PostingModerationController::class, 'moderate']);
+                Route::get('comments', [PostingModerationController::class, 'listComments']);
+                Route::post('comments', [PostingModerationController::class, 'storeComment']);
+                Route::put('comments/{comment_id}', [PostingModerationController::class, 'updateComment']);
+                Route::delete('comments/{comment_id}', [PostingModerationController::class, 'destroyComment']);
+                Route::get('comments/{comment_id}/replies', [PostingModerationController::class, 'listSubcomments']);
+                Route::post('comments/{comment_id}/replies', [PostingModerationController::class, 'storeSubcomment']);
+                Route::put('comments/{comment_id}/replies/{subcomment_id}', [PostingModerationController::class, 'updateSubcomment']);
+                Route::delete('comments/{comment_id}/replies/{subcomment_id}', [PostingModerationController::class, 'destroySubcomment']);
+            });
 
         });
     });
